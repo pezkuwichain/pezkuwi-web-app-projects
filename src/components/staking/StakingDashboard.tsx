@@ -658,7 +658,7 @@ export const StakingDashboard: React.FC = () => {
               <Alert className="bg-yellow-900/20 border-yellow-500">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-sm">
-                  Unbonded tokens will be locked for {bondingDuration} eras (~{bondingDuration} days) before withdrawal.
+                  Unbonded tokens will be locked for {bondingDuration} eras (~{Math.floor(bondingDuration / 4)} days) before withdrawal.
                 </AlertDescription>
               </Alert>
 
