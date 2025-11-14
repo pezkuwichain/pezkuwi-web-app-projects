@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { FileText, Vote, Clock, TrendingUp, Users, AlertCircle } from 'lucide-react';
+import { FileText, Vote, Clock, TrendingUp, Users, AlertCircle, Loader2, Activity } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Progress } from '../ui/progress';
+import { Alert, AlertDescription } from '../ui/alert';
+import { useGovernance } from '@/hooks/useGovernance';
+import { formatNumber } from '@/lib/utils';
 
 interface Proposal {
   id: number;
@@ -21,35 +24,46 @@ interface Proposal {
 }
 
 const ProposalsList: React.FC = () => {
-  const [proposals] = useState<Proposal[]>([
-    {
-      id: 1,
-      title: 'Treasury Allocation for Development Fund',
-      description: 'Allocate 500,000 PEZ for ecosystem development',
-      proposer: '5GrwvaEF...',
-      type: 'treasury',
-      status: 'active',
-      ayeVotes: 156,
-      nayVotes: 45,
-      totalVotes: 201,
-      quorum: 60,
-      deadline: '2 days',
-      requestedAmount: '500,000 PEZ'
-    },
-    {
-      id: 2,
-      title: 'Update Staking Parameters',
-      description: 'Increase minimum stake requirement to 1000 HEZ',
-      proposer: '5FHneW46...',
-      type: 'executive',
-      status: 'active',
-      ayeVotes: 89,
-      nayVotes: 112,
-      totalVotes: 201,
-      quorum: 60,
-      deadline: '5 days'
-    }
-  ]);
+  const { proposals: treasuryProposals, referenda, loading, error } = useGovernance();
+
+  // Format token amounts from blockchain units (12 decimals for HEZ)
+  const formatTokenAmount = (amount: string) => {
+    const value = BigInt(amount);
+    return formatNumber(Number(value) / 1e12, 2);
+  };
+
+  // Convert blockchain data to UI format
+  const proposals: Proposal[] = [
+    // Treasury proposals
+    ...treasuryProposals.map(p => ({
+      id: p.proposalIndex,
+      title: `Treasury Proposal #${p.proposalIndex}`,
+      description: `Requesting ${formatTokenAmount(p.value)} HEZ for ${p.beneficiary.substring(0, 10)}...`,
+      proposer: p.proposer,
+      type: 'treasury' as const,
+      status: p.status as 'active' | 'passed' | 'rejected' | 'pending',
+      ayeVotes: 0, // Treasury proposals don't have votes until they become referenda
+      nayVotes: 0,
+      totalVotes: 0,
+      quorum: 0,
+      deadline: 'Pending referendum',
+      requestedAmount: `${formatTokenAmount(p.value)} HEZ`
+    })),
+    // Democracy referenda
+    ...referenda.map(r => ({
+      id: r.index,
+      title: `Referendum #${r.index}`,
+      description: `Voting on proposal with ${r.threshold} threshold`,
+      proposer: 'Democracy',
+      type: 'executive' as const,
+      status: r.status as 'active' | 'passed' | 'rejected' | 'pending',
+      ayeVotes: Number(BigInt(r.ayeVotes) / BigInt(1e12)),
+      nayVotes: Number(BigInt(r.nayVotes) / BigInt(1e12)),
+      totalVotes: Number((BigInt(r.ayeVotes) + BigInt(r.nayVotes)) / BigInt(1e12)),
+      quorum: 50,
+      deadline: `Block ${r.end}`,
+    }))
+  ];
 
   const getStatusBadge = (status: string) => {
     switch(status) {
@@ -69,9 +83,47 @@ const ProposalsList: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-primary mr-3" />
+        <span className="text-muted-foreground">Loading proposals from blockchain...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          Failed to load proposals: {error}
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
     <div className="space-y-4">
-      {proposals.map((proposal) => {
+      {/* Live Data Badge */}
+      <div className="flex items-center gap-2 mb-4">
+        <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+          <Activity className="h-3 w-3 mr-1" />
+          Live Blockchain Data
+        </Badge>
+        <span className="text-sm text-muted-foreground">
+          {proposals.length} active proposals & referenda
+        </span>
+      </div>
+
+      {proposals.length === 0 ? (
+        <Card className="bg-gray-900/50 border-gray-800">
+          <CardContent className="pt-6 text-center text-gray-500">
+            No active proposals or referenda found on the blockchain.
+          </CardContent>
+        </Card>
+      ) : (
+        proposals.map((proposal) => {
         const ayePercentage = (proposal.ayeVotes / proposal.totalVotes) * 100;
         const nayPercentage = (proposal.nayVotes / proposal.totalVotes) * 100;
         const quorumReached = (proposal.totalVotes / 300) * 100 >= proposal.quorum;
@@ -148,7 +200,8 @@ const ProposalsList: React.FC = () => {
             </CardContent>
           </Card>
         );
-      })}
+      })
+      )}
     </div>
   );
 };
