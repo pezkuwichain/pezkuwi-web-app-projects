@@ -4,18 +4,21 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useTranslation } from 'react-i18next';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown, 
+import { useTreasury } from '@/hooks/useTreasury';
+import {
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
   PieChart,
   Activity,
   AlertCircle,
   CheckCircle,
   Clock,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Loader2
 } from 'lucide-react';
 
 interface TreasuryMetrics {
@@ -38,14 +41,7 @@ interface BudgetCategory {
 
 export const TreasuryOverview: React.FC = () => {
   const { t } = useTranslation();
-  const [metrics, setMetrics] = useState<TreasuryMetrics>({
-    totalBalance: 2500000,
-    monthlyIncome: 150000,
-    monthlyExpenses: 120000,
-    pendingProposals: 8,
-    approvedBudget: 1800000,
-    healthScore: 85
-  });
+  const { metrics, proposals, loading, error } = useTreasury();
 
   const [categories] = useState<BudgetCategory[]>([
     { id: '1', name: 'Development', allocated: 500000, spent: 320000, remaining: 180000, color: 'bg-blue-500' },
@@ -66,8 +62,39 @@ export const TreasuryOverview: React.FC = () => {
   const healthStatus = getHealthStatus(metrics.healthScore);
   const HealthIcon = healthStatus.icon;
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <span className="ml-3 text-muted-foreground">Loading treasury data from blockchain...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>
+          Failed to load treasury data: {error}
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Live Data Badge */}
+      <div className="flex items-center gap-2">
+        <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+          <Activity className="h-3 w-3 mr-1" />
+          Live Blockchain Data
+        </Badge>
+        <span className="text-sm text-muted-foreground">
+          {proposals.length} active proposals • {metrics.totalBalance.toFixed(2)} PZKW in treasury
+        </span>
+      </div>
+
       {/* Treasury Health Score */}
       <Card>
         <CardHeader>
