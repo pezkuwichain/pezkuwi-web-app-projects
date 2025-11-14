@@ -1,8 +1,12 @@
 /**
- * Shared i18n configuration and translations
+ * Shared i18n configuration for PezkuwiChain
+ * Exports comprehensive translations and language configuration
  */
 
-// Import all translations
+// Import comprehensive translations (2590+ lines covering all features)
+export { translations as comprehensiveTranslations, supportedLocales } from './translations';
+
+// Import all translation JSON files for i18next compatibility
 import en from './locales/en.json';
 import tr from './locales/tr.json';
 import kmr from './locales/kmr.json';
@@ -43,7 +47,7 @@ export const DEFAULT_LANGUAGE = 'en';
 export const LANGUAGE_STORAGE_KEY = '@pezkuwi_language';
 
 /**
- * Translation resources
+ * Translation resources (JSON format for i18next)
  */
 export const translations = {
   en,
