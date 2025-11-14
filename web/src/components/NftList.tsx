@@ -3,8 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Award, Crown, Shield, Users } from 'lucide-react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
-import { getUserTikis } from '@/lib/citizenship-workflow';
-import type { TikiInfo } from '@/lib/citizenship-workflow';
+import { getUserTikis } from '@pezkuwi/lib/citizenship-workflow';
+import type { TikiInfo } from '@pezkuwi/lib/citizenship-workflow';
 
 // Icon map for different Tiki roles
 const getTikiIcon = (role: string) => {

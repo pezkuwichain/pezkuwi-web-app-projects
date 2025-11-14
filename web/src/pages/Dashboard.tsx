@@ -9,8 +9,8 @@ import { usePolkadot } from '@/contexts/PolkadotContext';
 import { supabase } from '@/lib/supabase';
 import { User, Mail, Phone, Globe, MapPin, Calendar, Shield, AlertCircle, ArrowLeft, Award, Users, TrendingUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { fetchUserTikis, calculateTikiScore, getPrimaryRole, getTikiDisplayName, getTikiColor, getTikiEmoji, getUserRoleCategories } from '@/lib/tiki';
-import { getAllScores, type UserScores } from '@/lib/scores';
+import { fetchUserTikis, calculateTikiScore, getPrimaryRole, getTikiDisplayName, getTikiColor, getTikiEmoji, getUserRoleCategories } from '@pezkuwi/lib/tiki';
+import { getAllScores, type UserScores } from '@pezkuwi/lib/scores';
 
 export default function Dashboard() {
   const { user } = useAuth();

@@ -6,7 +6,7 @@ import PoolDashboard from '@/components/PoolDashboard';
 import { CreatePoolModal } from './CreatePoolModal';
 import { InitializeHezPoolModal } from './InitializeHezPoolModal';
 import { ArrowRightLeft, Droplet, Settings } from 'lucide-react';
-import { isFounderWallet } from '@/utils/auth';
+import { isFounderWallet } from '@pezkuwi/utils/auth';
 
 export const DEXDashboard: React.FC = () => {
   const { account } = useWallet();

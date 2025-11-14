@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useWallet } from '@/contexts/WalletContext';
-import { formatAddress, formatBalance } from '@/lib/wallet';
+import { formatAddress, formatBalance } from '@pezkuwi/lib/wallet';
 import { Badge } from '@/components/ui/badge';
 
 export const WalletButton: React.FC = () => {

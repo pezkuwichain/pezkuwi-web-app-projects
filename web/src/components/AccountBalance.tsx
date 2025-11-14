@@ -3,10 +3,10 @@ import { usePolkadot } from '@/contexts/PolkadotContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet, TrendingUp, ArrowUpRight, ArrowDownRight, RefreshCw, Award, Plus, Coins, Send, Shield, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ASSET_IDS, getAssetSymbol } from '@/lib/wallet';
+import { ASSET_IDS, getAssetSymbol } from '@pezkuwi/lib/wallet';
 import { AddTokenModal } from './AddTokenModal';
 import { TransferModal } from './TransferModal';
-import { getAllScores, type UserScores } from '@/lib/scores';
+import { getAllScores, type UserScores } from '@pezkuwi/lib/scores';
 
 interface TokenBalance {
   assetId: number;

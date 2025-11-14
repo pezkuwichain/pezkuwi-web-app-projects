@@ -9,7 +9,7 @@ import {
   generateZKProof,
   DEFAULT_BADGES,
   ROLES
-} from '@/lib/identity';
+} from '@pezkuwi/lib/identity';
 
 interface IdentityContextType {
   profile: IdentityProfile | null;

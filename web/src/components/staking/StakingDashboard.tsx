@@ -20,7 +20,7 @@ import {
   getCurrentEra,
   parseAmount,
   type StakingInfo
-} from '@/lib/staking';
+} from '@pezkuwi/lib/staking';
 
 export const StakingDashboard: React.FC = () => {
   const { t } = useTranslation();

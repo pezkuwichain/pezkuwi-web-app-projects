@@ -1,6 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pezkuwi/lib/*": ["../shared/lib/*"],
+      "@pezkuwi/utils/*": ["../shared/utils/*"],
+      "@pezkuwi/theme/*": ["../shared/theme/*"],
+      "@pezkuwi/types/*": ["../shared/types/*"],
+      "@pezkuwi/i18n": ["../shared/i18n"]
+    }
   }
 }

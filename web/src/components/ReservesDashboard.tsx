@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePolkadot } from '@/contexts/PolkadotContext';
-import { getWUSDTTotalSupply, checkReserveHealth, formatWUSDT } from '@/lib/usdt';
+import { getWUSDTTotalSupply, checkReserveHealth, formatWUSDT } from '@pezkuwi/lib/usdt';
 import { MultisigMembers } from './MultisigMembers';
 
 interface ReservesDashboardProps {

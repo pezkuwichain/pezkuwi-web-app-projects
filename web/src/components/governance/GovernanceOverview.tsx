@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { usePolkadot } from '../../contexts/PolkadotContext';
-import { formatBalance } from '../../lib/wallet';
+import { formatBalance } from '../@pezkuwi/lib/wallet';
 
 interface GovernanceStats {
   activeProposals: number;

@@ -9,8 +9,8 @@ import {
   calculateMultisigAddress,
   USDT_MULTISIG_CONFIG,
   formatMultisigAddress,
-} from '@/lib/multisig';
-import { getTikiDisplayName, getTikiEmoji } from '@/lib/tiki';
+} from '@pezkuwi/lib/multisig';
+import { getTikiDisplayName, getTikiEmoji } from '@pezkuwi/lib/tiki';
 
 interface MultisigMembersProps {
   specificAddresses?: Record<string, string>;

@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { usePolkadot } from '@/contexts/PolkadotContext';
-import { formatAddress } from '@/lib/wallet';
-import { getAllScores, type UserScores } from '@/lib/scores';
+import { formatAddress } from '@pezkuwi/lib/wallet';
+import { getAllScores, type UserScores } from '@pezkuwi/lib/scores';
 
 interface WalletModalProps {
   isOpen: boolean;

@@ -4,7 +4,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { X, Plus, AlertCircle, Loader2, CheckCircle, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PoolInfo } from '@/types/dex';
-import { parseTokenInput, formatTokenBalance, quote } from '@/utils/dex';
+import { parseTokenInput, formatTokenBalance, quote } from '@pezkuwi/utils/dex';
 
 interface AddLiquidityModalProps {
   isOpen: boolean;

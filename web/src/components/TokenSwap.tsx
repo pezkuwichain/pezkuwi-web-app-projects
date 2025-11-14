@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import { useWallet } from '@/contexts/WalletContext';
-import { ASSET_IDS, formatBalance, parseAmount } from '@/lib/wallet';
+import { ASSET_IDS, formatBalance, parseAmount } from '@pezkuwi/lib/wallet';
 import { useToast } from '@/hooks/use-toast';
 import { KurdistanSun } from './KurdistanSun';
 import { PriceChart } from './trading/PriceChart';

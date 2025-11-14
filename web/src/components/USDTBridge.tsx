@@ -13,8 +13,8 @@ import {
   getWithdrawalTier,
   formatDelay,
   formatWUSDT,
-} from '@/lib/usdt';
-import { isMultisigMember } from '@/lib/multisig';
+} from '@pezkuwi/lib/usdt';
+import { isMultisigMember } from '@pezkuwi/lib/multisig';
 
 interface USDTBridgeProps {
   isOpen: boolean;

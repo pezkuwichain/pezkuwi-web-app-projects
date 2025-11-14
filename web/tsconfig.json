@@ -8,7 +8,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@pezkuwi/i18n": ["../shared/i18n"]
+      "@pezkuwi/i18n": ["../shared/i18n"],
+      "@pezkuwi/lib": ["../shared/lib"],
+      "@pezkuwi/utils": ["../shared/utils"],
+      "@pezkuwi/theme": ["../shared/theme"],
+      "@pezkuwi/types": ["../shared/types"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,

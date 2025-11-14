@@ -5,7 +5,7 @@ import { X, Plus, AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { KNOWN_TOKENS } from '@/types/dex';
-import { parseTokenInput, formatTokenBalance } from '@/utils/dex';
+import { parseTokenInput, formatTokenBalance } from '@pezkuwi/utils/dex';
 
 interface CreatePoolModalProps {
   isOpen: boolean;

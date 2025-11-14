@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import { useWallet } from '@/contexts/WalletContext';
-import { ASSET_IDS, getAssetSymbol } from '@/lib/wallet';
+import { ASSET_IDS, getAssetSymbol } from '@pezkuwi/lib/wallet';
 import { AddLiquidityModal } from '@/components/AddLiquidityModal';
 import { RemoveLiquidityModal } from '@/components/RemoveLiquidityModal';
 

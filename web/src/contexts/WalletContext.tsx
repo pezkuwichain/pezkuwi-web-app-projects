@@ -6,7 +6,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { usePolkadot } from './PolkadotContext';
-import { WALLET_ERRORS, formatBalance, ASSET_IDS } from '@/lib/wallet';
+import { WALLET_ERRORS, formatBalance, ASSET_IDS } from '@pezkuwi/lib/wallet';
 import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import type { Signer } from '@polkadot/api/types';
 import { web3FromAddress } from '@polkadot/extension-dapp';

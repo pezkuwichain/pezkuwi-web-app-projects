@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, Droplet, BarChart3, Search, Plus } from 'lucide-react';
 import { PoolInfo } from '@/types/dex';
-import { fetchPools, formatTokenBalance } from '@/utils/dex';
-import { isFounderWallet } from '@/utils/auth';
+import { fetchPools, formatTokenBalance } from '@pezkuwi/utils/dex';
+import { isFounderWallet } from '@pezkuwi/utils/auth';
 
 interface PoolBrowserProps {
   onAddLiquidity?: (pool: PoolInfo) => void;

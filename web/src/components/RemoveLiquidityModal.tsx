@@ -5,7 +5,7 @@ import { usePolkadot } from '@/contexts/PolkadotContext';
 import { useWallet } from '@/contexts/WalletContext';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ASSET_IDS, getAssetSymbol } from '@/lib/wallet';
+import { ASSET_IDS, getAssetSymbol } from '@pezkuwi/lib/wallet';
 
 // Helper to get display name for tokens (users see HEZ not wHEZ, USDT not wUSDT)
 const getDisplayTokenName = (assetId: number): string => {

@@ -14,7 +14,7 @@ import {
   formatTokenBalance,
   getAmountOut,
   calculatePriceImpact,
-} from '@/utils/dex';
+} from '@pezkuwi/utils/dex';
 import { useToast } from '@/hooks/use-toast';
 
 interface SwapInterfaceProps {

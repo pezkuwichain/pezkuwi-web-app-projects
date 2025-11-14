@@ -23,6 +23,11 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@pezkuwi/i18n": path.resolve(__dirname, "../shared/i18n"),
+      "@pezkuwi/lib": path.resolve(__dirname, "../shared/lib"),
+      "@pezkuwi/utils": path.resolve(__dirname, "../shared/utils"),
+      "@pezkuwi/theme": path.resolve(__dirname, "../shared/theme"),
+      "@pezkuwi/types": path.resolve(__dirname, "../shared/types"),
+      'buffer': 'buffer/',
     },
   },
   json: {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight, Shield } from 'lucide-react';
 import { usePolkadot } from '../contexts/PolkadotContext';
-import { formatBalance } from '../lib/wallet';
+import { formatBalance } from '@pezkuwi/lib/wallet';
 
 const HeroSection: React.FC = () => {
   const { t } = useTranslation();

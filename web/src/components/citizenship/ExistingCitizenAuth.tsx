@@ -6,9 +6,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, AlertTriangle, Shield } from 'lucide-react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
-import { verifyNftOwnership } from '@/lib/citizenship-workflow';
-import { generateAuthChallenge, signChallenge, verifySignature, saveCitizenSession } from '@/lib/citizenship-crypto';
-import type { AuthChallenge } from '@/lib/citizenship-crypto';
+import { verifyNftOwnership } from '@pezkuwi/lib/citizenship-workflow';
+import { generateAuthChallenge, signChallenge, verifySignature, saveCitizenSession } from '@pezkuwi/lib/citizenship-crypto';
+import type { AuthChallenge } from '@pezkuwi/lib/citizenship-crypto';
 
 interface ExistingCitizenAuthProps {
   onClose: () => void;
