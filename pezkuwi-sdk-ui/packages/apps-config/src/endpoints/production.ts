@@ -490,8 +490,8 @@ export const prodChains: Omit<EndpointOption, 'teleport'>[] = [
     },
     text: 'Pezkuwi',
     ui: {
-      color: '#D4AF37',
-      logo: chainsPolkadotCircleSVG
+      color: '#00A94F', // Kurdistan Green (Kesk)
+      logo: chainsPolkadotCircleSVG // TODO: Replace with chainsPezkuwiPNG after running build:images
     }
   },
   {

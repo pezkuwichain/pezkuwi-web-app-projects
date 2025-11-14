@@ -76,25 +76,60 @@ The Pezkuwi network is configured in:
 - **Endpoint:** `wss://pezkuwichain.app:9944`
 - **Chain Info:** `info: 'pezkuwi'`
 
-## 🎨 Customization
+## 🎨 Branding & Customization
+
+### Kurdistan Color Palette
+
+Pezkuwi SDK UI uses the Kurdistan flag colors:
+
+| Color Name | Hex Code | Usage |
+|------------|----------|-------|
+| **Kesk** (Green) | `#00A94F` | Primary color, main UI elements |
+| **Sor** (Red) | `#EE2A35` | Accent color, alerts, important actions |
+| **Zer** (Gold/Yellow) | `#FFD700` | Secondary accent, highlights |
+| **Spi** (White) | `#FFFFFF` | Backgrounds, cards |
+| **Black** | `#000000` | Text, borders |
+
+The primary brand color (Kesk Green `#00A94F`) is used in:
+- Chain endpoint configuration (`packages/apps-config/src/endpoints/production.ts`)
+- UI theme elements
+- Primary buttons and active states
+
+### Updating the Pezkuwi Logo
+
+**Current Status:** Using placeholder logo
+
+**To update:**
+
+1. **Replace the logo file:**
+   ```bash
+   # Copy your logo to the chains directory
+   cp /path/to/pezkuwichain_logo.png packages/apps-config/src/ui/logos/chains/pezkuwi.png
+   ```
+
+2. **Run the image conversion script:**
+   ```bash
+   yarn run build:images
+   ```
+   This generates TypeScript exports in `packages/apps-config/src/ui/logos/chains/generated/`
+
+3. **Update the endpoint configuration:**
+   Edit `packages/apps-config/src/endpoints/production.ts`:
+   ```typescript
+   import { chainsPezkuwiPNG } from '../ui/logos/chains/index.js';
+
+   // In the Pezkuwi endpoint config:
+   ui: {
+     color: '#00A94F',
+     logo: chainsPezkuwiPNG  // Changed from chainsPolkadotCircleSVG
+   }
+   ```
 
 ### Adding Custom Chain Types
 
 If Pezkuwi uses custom types, add them to:
 ```
 packages/apps-config/src/api/spec/pezkuwi.ts
-```
-
-### Updating Logos
-
-Logos are located in:
-```
-packages/apps-config/src/ui/logos/
-```
-
-Run the image conversion script after adding new logos:
-```bash
-yarn run build:images
 ```
 
 ## 🧪 Testing
