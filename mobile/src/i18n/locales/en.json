@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "Welcome to Pezkuwi",
+    "subtitle": "Your gateway to decentralized governance",
+    "selectLanguage": "Select Your Language",
+    "continue": "Continue"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "createAccount": "Create Account",
+    "welcomeBack": "Welcome Back!",
+    "getStarted": "Get Started"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "wallet": "Wallet",
+    "staking": "Staking",
+    "governance": "Governance",
+    "dex": "Exchange",
+    "history": "History",
+    "settings": "Settings",
+    "balance": "Balance",
+    "totalStaked": "Total Staked",
+    "rewards": "Rewards",
+    "activeProposals": "Active Proposals"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "connect": "Connect Wallet",
+    "disconnect": "Disconnect",
+    "address": "Address",
+    "balance": "Balance",
+    "send": "Send",
+    "receive": "Receive",
+    "transaction": "Transaction",
+    "history": "History"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "security": "Security",
+    "about": "About",
+    "logout": "Logout"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "retry": "Retry",
+    "close": "Close"
+  }
+}

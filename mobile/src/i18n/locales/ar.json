@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "مرحباً بك في بيزكوي",
+    "subtitle": "بوابتك للحوكمة اللامركزية",
+    "selectLanguage": "اختر لغتك",
+    "continue": "متابعة"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "haveAccount": "هل لديك حساب بالفعل؟",
+    "createAccount": "إنشاء حساب",
+    "welcomeBack": "مرحباً بعودتك!",
+    "getStarted": "ابدأ الآن"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "wallet": "المحفظة",
+    "staking": "التخزين",
+    "governance": "الحوكمة",
+    "dex": "البورصة",
+    "history": "السجل",
+    "settings": "الإعدادات",
+    "balance": "الرصيد",
+    "totalStaked": "إجمالي المخزن",
+    "rewards": "المكافآت",
+    "activeProposals": "المقترحات النشطة"
+  },
+  "wallet": {
+    "title": "المحفظة",
+    "connect": "ربط المحفظة",
+    "disconnect": "فصل الاتصال",
+    "address": "العنوان",
+    "balance": "الرصيد",
+    "send": "إرسال",
+    "receive": "استقبال",
+    "transaction": "المعاملة",
+    "history": "السجل"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "notifications": "الإشعارات",
+    "security": "الأمان",
+    "about": "حول",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "save": "حفظ",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح",
+    "retry": "إعادة المحاولة",
+    "close": "إغلاق"
+  }
+}

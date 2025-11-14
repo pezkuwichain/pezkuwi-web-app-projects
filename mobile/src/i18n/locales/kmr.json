@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "Bi xêr hatî Pezkuwî",
+    "subtitle": "Deriyê te yê bo rêveberiya desentralîze",
+    "selectLanguage": "Zimanê Xwe Hilbijêre",
+    "continue": "Bidomîne"
+  },
+  "auth": {
+    "signIn": "Têkeve",
+    "signUp": "Tomar bibe",
+    "email": "E-posta",
+    "password": "Şîfre",
+    "confirmPassword": "Şîfreyê Bipejirîne",
+    "forgotPassword": "Şîfreyê te ji bîr kiriye?",
+    "noAccount": "Hesabê te tune ye?",
+    "haveAccount": "Jixwe hesabê te heye?",
+    "createAccount": "Hesab Biafirîne",
+    "welcomeBack": "Dîsa bi xêr hatî!",
+    "getStarted": "Dest pê bike"
+  },
+  "dashboard": {
+    "title": "Serûpel",
+    "wallet": "Berîk",
+    "staking": "Staking",
+    "governance": "Rêvebir",
+    "dex": "Guherîn",
+    "history": "Dîrok",
+    "settings": "Mîheng",
+    "balance": "Bilanço",
+    "totalStaked": "Hemû Stake",
+    "rewards": "Xelat",
+    "activeProposals": "Pêşniyarên Çalak"
+  },
+  "wallet": {
+    "title": "Berîk",
+    "connect": "Berîkê Girêde",
+    "disconnect": "Girêdanê Rake",
+    "address": "Navnîşan",
+    "balance": "Bilanço",
+    "send": "Bişîne",
+    "receive": "Bistîne",
+    "transaction": "Ragihandin",
+    "history": "Dîrok"
+  },
+  "settings": {
+    "title": "Mîheng",
+    "language": "Ziman",
+    "theme": "Tema",
+    "notifications": "Agahdarî",
+    "security": "Ewlekarî",
+    "about": "Derbarê",
+    "logout": "Derkeve"
+  },
+  "common": {
+    "cancel": "Betal bike",
+    "confirm": "Bipejirîne",
+    "save": "Tomar bike",
+    "loading": "Tê barkirin...",
+    "error": "Çewtî",
+    "success": "Serkeftin",
+    "retry": "Dîsa biceribîne",
+    "close": "Bigire"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "به پێزکووی خوش آمدید",
+    "subtitle": "دروازه شما به حکمرانی غیرمتمرکز",
+    "selectLanguage": "زبان خود را انتخاب کنید",
+    "continue": "ادامه"
+  },
+  "auth": {
+    "signIn": "ورود",
+    "signUp": "ثبت نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "confirmPassword": "تأیید رمز عبور",
+    "forgotPassword": "رمز عبور را فراموش کرده‌اید؟",
+    "noAccount": "حساب کاربری ندارید؟",
+    "haveAccount": "قبلاً حساب کاربری دارید؟",
+    "createAccount": "ایجاد حساب",
+    "welcomeBack": "خوش آمدید!",
+    "getStarted": "شروع کنید"
+  },
+  "dashboard": {
+    "title": "داشبورد",
+    "wallet": "کیف پول",
+    "staking": "سپرده‌گذاری",
+    "governance": "حکمرانی",
+    "dex": "صرافی",
+    "history": "تاریخچه",
+    "settings": "تنظیمات",
+    "balance": "موجودی",
+    "totalStaked": "کل سپرده",
+    "rewards": "پاداش‌ها",
+    "activeProposals": "پیشنهادات فعال"
+  },
+  "wallet": {
+    "title": "کیف پول",
+    "connect": "اتصال کیف پول",
+    "disconnect": "قطع اتصال",
+    "address": "آدرس",
+    "balance": "موجودی",
+    "send": "ارسال",
+    "receive": "دریافت",
+    "transaction": "تراکنش",
+    "history": "تاریخچه"
+  },
+  "settings": {
+    "title": "تنظیمات",
+    "language": "زبان",
+    "theme": "تم",
+    "notifications": "اعلان‌ها",
+    "security": "امنیت",
+    "about": "درباره",
+    "logout": "خروج"
+  },
+  "common": {
+    "cancel": "لغو",
+    "confirm": "تأیید",
+    "save": "ذخیره",
+    "loading": "در حال بارگذاری...",
+    "error": "خطا",
+    "success": "موفق",
+    "retry": "تلاش مجدد",
+    "close": "بستن"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "Pezkuwi'ye Hoş Geldiniz",
+    "subtitle": "Merkezi olmayan yönetim kapınız",
+    "selectLanguage": "Dilinizi Seçin",
+    "continue": "Devam Et"
+  },
+  "auth": {
+    "signIn": "Giriş Yap",
+    "signUp": "Kayıt Ol",
+    "email": "E-posta",
+    "password": "Şifre",
+    "confirmPassword": "Şifreyi Onayla",
+    "forgotPassword": "Şifremi Unuttum",
+    "noAccount": "Hesabınız yok mu?",
+    "haveAccount": "Zaten hesabınız var mı?",
+    "createAccount": "Hesap Oluştur",
+    "welcomeBack": "Tekrar Hoş Geldiniz!",
+    "getStarted": "Başlayın"
+  },
+  "dashboard": {
+    "title": "Ana Sayfa",
+    "wallet": "Cüzdan",
+    "staking": "Stake Etme",
+    "governance": "Yönetişim",
+    "dex": "Borsa",
+    "history": "Geçmiş",
+    "settings": "Ayarlar",
+    "balance": "Bakiye",
+    "totalStaked": "Toplam Stake",
+    "rewards": "Ödüller",
+    "activeProposals": "Aktif Teklifler"
+  },
+  "wallet": {
+    "title": "Cüzdan",
+    "connect": "Cüzdan Bağla",
+    "disconnect": "Bağlantıyı Kes",
+    "address": "Adres",
+    "balance": "Bakiye",
+    "send": "Gönder",
+    "receive": "Al",
+    "transaction": "İşlem",
+    "history": "Geçmiş"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "language": "Dil",
+    "theme": "Tema",
+    "notifications": "Bildirimler",
+    "security": "Güvenlik",
+    "about": "Hakkında",
+    "logout": "Çıkış Yap"
+  },
+  "common": {
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "save": "Kaydet",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "retry": "Tekrar Dene",
+    "close": "Kapat"
+  }
+}
