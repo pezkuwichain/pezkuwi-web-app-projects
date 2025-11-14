@@ -1,1 +1,1 @@
-# DKSweb
+# DKS web and mobil app
