@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable, web3FromAddress } from '@polkadot/extension-dapp';
 import type { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
+import { DEFAULT_ENDPOINT } from '../../../shared/blockchain/polkadot';
 
 interface PolkadotContextType {
   api: ApiPromise | null;
@@ -24,7 +25,7 @@ interface PolkadotProviderProps {
 
 export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   children,
-  endpoint = 'wss://beta-rpc.pezkuwi.art' // Beta testnet RPC
+  endpoint = DEFAULT_ENDPOINT // Beta testnet RPC from shared config
 }) => {
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [isApiReady, setIsApiReady] = useState(false);

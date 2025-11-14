@@ -1,0 +1,64 @@
+{
+  "welcome": {
+    "title": "بەخێربێیت بۆ پێزکووی",
+    "subtitle": "دەرگای تۆ بۆ بەڕێوەبردنی نامەرکەزی",
+    "selectLanguage": "زمانەکەت هەڵبژێرە",
+    "continue": "بەردەوام بە"
+  },
+  "auth": {
+    "signIn": "چوونەژوورەوە",
+    "signUp": "تۆمارکردن",
+    "email": "ئیمەیڵ",
+    "password": "وشەی نهێنی",
+    "confirmPassword": "پشتڕاستکردنەوەی وشەی نهێنی",
+    "forgotPassword": "وشەی نهێنیت لەبیرکردووە؟",
+    "noAccount": "هەژمارت نییە؟",
+    "haveAccount": "هەژمارت هەیە؟",
+    "createAccount": "دروستکردنی هەژمار",
+    "welcomeBack": "بەخێربێیتەوە!",
+    "getStarted": "دەست پێبکە"
+  },
+  "dashboard": {
+    "title": "سەرەتا",
+    "wallet": "جزدان",
+    "staking": "ستەیکینگ",
+    "governance": "بەڕێوەبردن",
+    "dex": "ئاڵوگۆڕ",
+    "history": "مێژوو",
+    "settings": "ڕێکخستنەکان",
+    "balance": "باڵانس",
+    "totalStaked": "کۆی گشتی",
+    "rewards": "خەڵات",
+    "activeProposals": "پێشنیارە چالاکەکان"
+  },
+  "wallet": {
+    "title": "جزدان",
+    "connect": "گرێدانی جزدان",
+    "disconnect": "پچڕاندنی گرێدان",
+    "address": "ناونیشان",
+    "balance": "باڵانس",
+    "send": "ناردن",
+    "receive": "وەرگرتن",
+    "transaction": "مامەڵە",
+    "history": "مێژوو"
+  },
+  "settings": {
+    "title": "ڕێکخستنەکان",
+    "language": "زمان",
+    "theme": "ڕووکار",
+    "notifications": "ئاگادارییەکان",
+    "security": "پاراستن",
+    "about": "دەربارە",
+    "logout": "دەرچوون"
+  },
+  "common": {
+    "cancel": "هەڵوەشاندنەوە",
+    "confirm": "پشتڕاستکردنەوە",
+    "save": "پاشەکەوتکردن",
+    "loading": "بارکردن...",
+    "error": "هەڵە",
+    "success": "سەرکەوتوو",
+    "retry": "هەوڵ بدەرەوە",
+    "close": "داخستن"
+  }
+}

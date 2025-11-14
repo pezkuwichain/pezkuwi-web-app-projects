@@ -9,7 +9,7 @@ import type { BlockchainNetwork } from '../types/blockchain';
  */
 export const PEZKUWI_NETWORK: BlockchainNetwork = {
   name: 'Pezkuwi',
-  endpoint: 'wss://pezkuwichain.app:9944',
+  endpoint: 'wss://beta-rpc.pezkuwi.art',
   chainId: 'pezkuwi',
 };
 
@@ -17,9 +17,15 @@ export const PEZKUWI_NETWORK: BlockchainNetwork = {
  * Common blockchain endpoints
  */
 export const BLOCKCHAIN_ENDPOINTS = {
-  pezkuwi: 'wss://pezkuwichain.app:9944',
+  mainnet: 'wss://pezkuwichain.app:9944',
+  beta: 'wss://beta-rpc.pezkuwi.art',
   local: 'ws://127.0.0.1:9944',
 } as const;
+
+/**
+ * Default endpoint (currently using beta testnet)
+ */
+export const DEFAULT_ENDPOINT = BLOCKCHAIN_ENDPOINTS.beta;
 
 /**
  * Get block explorer URL for a transaction

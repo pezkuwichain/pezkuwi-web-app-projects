@@ -4,6 +4,7 @@ import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
+import { DEFAULT_ENDPOINT } from '../../../shared/blockchain/polkadot';
 
 interface Account {
   address: string;
@@ -39,7 +40,7 @@ interface PolkadotProviderProps {
 
 export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   children,
-  endpoint = 'wss://beta-rpc.pezkuwi.art', // Beta testnet RPC
+  endpoint = DEFAULT_ENDPOINT, // Beta testnet RPC from shared config
 }) => {
   const [api, setApi] = useState<ApiPromise | null>(null);
   const [isApiReady, setIsApiReady] = useState(false);
