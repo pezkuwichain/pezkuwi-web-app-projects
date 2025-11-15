@@ -19,6 +19,10 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react()
   ].filter(Boolean),
+  define: {
+    'global': 'globalThis',
+    'process.env': {}
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -27,11 +31,14 @@ export default defineConfig(({ mode }) => ({
       "@pezkuwi/utils": path.resolve(__dirname, "../shared/utils"),
       "@pezkuwi/theme": path.resolve(__dirname, "../shared/theme"),
       "@pezkuwi/types": path.resolve(__dirname, "../shared/types"),
-      'buffer': 'buffer/',
     },
   },
-  json: {
-    stringify: true,
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
   },
   assetsInclude: ['**/*.json'],
 }));

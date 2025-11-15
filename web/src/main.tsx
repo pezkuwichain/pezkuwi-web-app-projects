@@ -7,6 +7,8 @@ import './i18n/config'
 declare global {
   interface Window {
     ethereum?: any;
+    Buffer: any;
+    global: any;
   }
 }
 

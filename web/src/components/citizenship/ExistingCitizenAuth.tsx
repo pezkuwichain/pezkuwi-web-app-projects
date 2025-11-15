@@ -7,8 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Loader2, CheckCircle, AlertTriangle, Shield } from 'lucide-react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import { verifyNftOwnership } from '@pezkuwi/lib/citizenship-workflow';
-import { generateAuthChallenge, signChallenge, verifySignature, saveCitizenSession } from '@pezkuwi/lib/citizenship-crypto';
-import type { AuthChallenge } from '@pezkuwi/lib/citizenship-crypto';
+import { generateAuthChallenge, signChallenge, verifySignature, saveCitizenSession } from '@pezkuwi/lib/citizenship-workflow';
+import type { AuthChallenge } from '@pezkuwi/lib/citizenship-workflow';
 
 interface ExistingCitizenAuthProps {
   onClose: () => void;

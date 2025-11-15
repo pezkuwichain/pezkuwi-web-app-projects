@@ -1,5 +1,5 @@
 import { ApiPromise } from '@polkadot/api';
-import { KNOWN_TOKENS, PoolInfo, SwapQuote } from '../types/dex';
+import { KNOWN_TOKENS, PoolInfo, SwapQuote } from '@pezkuwi/types/dex';
 
 /**
  * Format balance with proper decimals

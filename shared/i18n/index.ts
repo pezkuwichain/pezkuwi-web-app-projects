@@ -7,12 +7,12 @@
 export { translations as comprehensiveTranslations, supportedLocales } from './translations';
 
 // Import all translation JSON files for i18next compatibility
-import en from './locales/en.json';
-import tr from './locales/tr.json';
-import kmr from './locales/kmr.json';
-import ckb from './locales/ckb.json';
-import ar from './locales/ar.json';
-import fa from './locales/fa.json';
+import en from './locales/en.json?url';
+import tr from './locales/tr.json?url';
+import kmr from './locales/kmr.json?url';
+import ckb from './locales/ckb.json?url';
+import ar from './locales/ar.json?url';
+import fa from './locales/fa.json?url';
 
 /**
  * Language configuration with RTL support
@@ -47,9 +47,9 @@ export const DEFAULT_LANGUAGE = 'en';
 export const LANGUAGE_STORAGE_KEY = '@pezkuwi_language';
 
 /**
- * Translation resources (JSON format for i18next)
+ * Translation resources (JSON URLs for dynamic loading)
  */
-export const translations = {
+export const translationUrls = {
   en,
   tr,
   kmr,
@@ -57,6 +57,11 @@ export const translations = {
   ar,
   fa,
 };
+
+/**
+ * Translation resources (empty - load dynamically)
+ */
+export const translations = {};
 
 /**
  * Check if a language is RTL

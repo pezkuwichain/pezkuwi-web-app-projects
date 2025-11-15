@@ -622,3 +622,116 @@ export function subscribeToKycApproval(
 // ========================================
 
 export const FOUNDER_ADDRESS = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'; // Satoshi Qazi Muhammed
+
+/**
+ * Generate authentication challenge for existing citizens
+ */
+export function generateAuthChallenge(tikiNumber: string): string {
+  const timestamp = Date.now();
+  return `pezkuwi-auth-${tikiNumber}-${timestamp}`;
+}
+
+/**
+ * Sign challenge with user's account
+ */
+export async function signChallenge(challenge: string, signer: any): Promise<string> {
+  // This would use Polkadot.js signing
+  // For now, return placeholder
+  return `signed-${challenge}`;
+}
+
+/**
+ * Verify signature
+ */
+export function verifySignature(challenge: string, signature: string, address: string): boolean {
+  // Implement signature verification
+  return true;
+}
+
+/**
+ * Save citizen session
+ */
+export function saveCitizenSession(tikiNumber: string, address: string): void {
+  localStorage.setItem('pezkuwi_citizen_session', JSON.stringify({
+    tikiNumber,
+    address,
+    timestamp: Date.now()
+  }));
+}
+
+/**
+ * Encrypt sensitive data for storage
+ */
+export function encryptData(data: any): string {
+  // In production, use proper encryption
+  // For now, base64 encode
+  return btoa(JSON.stringify(data));
+}
+
+/**
+ * Decrypt data
+ */
+export function decryptData(encrypted: string): any {
+  try {
+    return JSON.parse(atob(encrypted));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Generate commitment hash for citizenship data
+ */
+export function generateCommitmentHash(data: any): string {
+  const str = JSON.stringify(data);
+  // Simple hash for now - in production use proper cryptographic hash
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return hash.toString(16);
+}
+
+/**
+ * Generate nullifier hash
+ */
+export function generateNullifierHash(data: any): string {
+  const str = JSON.stringify(data) + Date.now();
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return 'nullifier_' + hash.toString(16);
+}
+
+/**
+ * Save citizenship data to local storage
+ */
+export function saveLocalCitizenshipData(data: any): void {
+  const encrypted = encryptData(data);
+  localStorage.setItem('pezkuwi_citizenship_data', encrypted);
+}
+
+/**
+ * Get local citizenship data
+ */
+export function getLocalCitizenshipData(): any {
+  const encrypted = localStorage.getItem('pezkuwi_citizenship_data');
+  if (!encrypted) return null;
+  return decryptData(encrypted);
+}
+
+/**
+ * Upload data to IPFS
+ */
+export async function uploadToIPFS(data: any): Promise<string> {
+  // In production, use Pinata or other IPFS service
+  // For now, return mock CID
+  const mockCID = 'Qm' + Math.random().toString(36).substring(2, 15);
+  console.log('Mock IPFS upload:', mockCID, data);
+  return mockCID;
+}

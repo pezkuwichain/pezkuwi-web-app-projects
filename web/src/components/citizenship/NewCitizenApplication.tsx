@@ -12,7 +12,7 @@ import { Loader2, AlertTriangle, CheckCircle, User, Users as UsersIcon, MapPin, 
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import type { CitizenshipData, Region, MaritalStatus } from '@pezkuwi/lib/citizenship-workflow';
 import { FOUNDER_ADDRESS, submitKycApplication, subscribeToKycApproval, getKycStatus } from '@pezkuwi/lib/citizenship-workflow';
-import { generateCommitmentHash, generateNullifierHash, encryptData, saveLocalCitizenshipData, uploadToIPFS } from '@pezkuwi/lib/citizenship-crypto';
+import { generateCommitmentHash, generateNullifierHash, encryptData, saveLocalCitizenshipData, uploadToIPFS } from '@pezkuwi/lib/citizenship-workflow';
 
 interface NewCitizenApplicationProps {
   onClose: () => void;
