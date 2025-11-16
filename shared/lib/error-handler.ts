@@ -140,6 +140,92 @@ const ERROR_MESSAGES: Record<string, ErrorMessage> = {
     kmr: 'Ji bo pêşniyara treasury-yê balance kêm e. Bond pêwîst e.',
   },
 
+  // Welati (Elections & Governance) errors
+  'welati.ElectionNotFound': {
+    en: 'Election not found. Please check the election ID.',
+    kmr: 'Hilbijartin nehat dîtin. Ji kerema xwe ID-ya hilbijartinê kontrol bike.',
+  },
+  'welati.ElectionNotActive': {
+    en: 'This election is not currently active.',
+    kmr: 'Ev hilbijartin niha ne çalak e.',
+  },
+  'welati.CandidacyPeriodExpired': {
+    en: 'Candidate registration period has ended.',
+    kmr: 'Dema qeydkirina berendaman qediya.',
+  },
+  'welati.VotingPeriodNotStarted': {
+    en: 'Voting period has not started yet. Please wait.',
+    kmr: 'Dema dengdanê hîn dest pê nekiriye. Ji kerema xwe bisekine.',
+  },
+  'welati.VotingPeriodExpired': {
+    en: 'Voting period has ended.',
+    kmr: 'Dema dengdanê qediya.',
+  },
+  'welati.AlreadyCandidate': {
+    en: 'You are already registered as a candidate in this election.',
+    kmr: 'We berê wekî berendam di vê hilbijartinê de tomar bûyî.',
+  },
+  'welati.AlreadyVoted': {
+    en: 'You have already voted in this election.',
+    kmr: 'We berê di vê hilbijartinê de deng da.',
+  },
+  'welati.InsufficientEndorsements': {
+    en: 'Insufficient endorsements. You need more citizen supporters.',
+    kmr: 'Piştgiriya têr tune. We piştgiriya zêdetir ji welatiyên pêwîst e.',
+  },
+  'welati.InsufficientTrustScore': {
+    en: 'Your trust score is too low for this election. Build your reputation first.',
+    kmr: 'Skora emîniya we ji bo vê hilbijartinê zêde kêm e. Pêşî navê xwe baş bike.',
+  },
+  'welati.NotACitizen': {
+    en: 'You must be a verified citizen (KYC approved) to participate.',
+    kmr: 'Divê we welatiyeke pejirandî (KYC pejirandî) bin da beşdar bibin.',
+  },
+  'welati.DepositRequired': {
+    en: 'Candidacy deposit required. Please pay the registration fee.',
+    kmr: 'Depozîta berendamiyê pêwîst e. Ji kerema xwe lêçûna qeydkirinê bidin.',
+  },
+  'welati.NotAuthorizedToNominate': {
+    en: 'You are not authorized to nominate officials. Minister or President only.',
+    kmr: 'We destûra hilbijartina karbidestan nîne. Tenê Wezîr an Serok.',
+  },
+  'welati.NotAuthorizedToApprove': {
+    en: 'Only the President can approve appointments.',
+    kmr: 'Tenê Serok dikare bicîhbûnan bipejirîne.',
+  },
+  'welati.NotAuthorizedToPropose': {
+    en: 'You are not authorized to submit proposals. Parliament members only.',
+    kmr: 'We destûra pêşniyaran pêşkêş kirinê nîne. Tenê endamên parlamentoyê.',
+  },
+  'welati.NotAuthorizedToVote': {
+    en: 'You are not authorized to vote on this proposal.',
+    kmr: 'We destûra dengdanê li ser vê pêşniyarê nîne.',
+  },
+  'welati.ProposalNotFound': {
+    en: 'Proposal not found. Please check the proposal ID.',
+    kmr: 'Pêşniyar nehat dîtin. Ji kerema xwe ID-ya pêşniyarê kontrol bike.',
+  },
+  'welati.ProposalNotActive': {
+    en: 'This proposal is not currently active or voting has ended.',
+    kmr: 'Ev pêşniyar niha ne çalak e an dengdan qediya.',
+  },
+  'welati.ProposalAlreadyVoted': {
+    en: 'You have already voted on this proposal.',
+    kmr: 'We berê li ser vê pêşniyarê deng da.',
+  },
+  'welati.QuorumNotMet': {
+    en: 'Quorum not met. Insufficient participation for this decision.',
+    kmr: 'Quorum nehat bidest xistin. Beşdariya têr ji bo vê biryarê tune ye.',
+  },
+  'welati.InvalidDistrict': {
+    en: 'Invalid electoral district. Please select a valid district.',
+    kmr: 'Qeza hilbijartinê nederbasdar e. Ji kerema xwe qezayeke derbasdar hilbijêre.',
+  },
+  'welati.RoleAlreadyFilled': {
+    en: 'This government position is already filled.',
+    kmr: 'Ev pozîsyona hukûmetê berê hatiye dagirtin.',
+  },
+
   // System/General errors
   'system.CallFiltered': {
     en: 'This action is not permitted by the system filters.',
@@ -338,6 +424,36 @@ export const SUCCESS_MESSAGES: Record<string, SuccessMessage> = {
   'dex.liquidityRemoved': {
     en: 'Successfully removed liquidity from the pool!',
     kmr: 'Bi serkeftî liquidity ji pool-ê derxist!',
+  },
+
+  // Welati (Elections & Governance)
+  'welati.candidateRegistered': {
+    en: 'Successfully registered as candidate! Deposit: {{deposit}} HEZ. Good luck!',
+    kmr: 'Bi serkeftî wekî berendam tomar bûn! Depozît: {{deposit}} HEZ. Serkeftinê!',
+  },
+  'welati.voteCast': {
+    en: 'Your vote has been cast successfully! Thank you for participating.',
+    kmr: 'Deng-a we bi serkeftî hate dayîn! Spas ji bo beşdarî bûnê.',
+  },
+  'welati.proposalSubmitted': {
+    en: 'Proposal submitted successfully! Voting period: {{days}} days.',
+    kmr: 'Pêşniyar bi serkeftî hate şandin! Dema dengdanê: {{days}} roj.',
+  },
+  'welati.proposalVoted': {
+    en: 'Vote recorded on proposal #{{id}}. Your voice matters!',
+    kmr: 'Deng li ser pêşniyara #{{id}} tomar bû. Deng-a we girîng e!',
+  },
+  'welati.officialNominated': {
+    en: 'Official nominated successfully! Awaiting presidential approval.',
+    kmr: 'Karbides bi serkeftî hate hilbijartin! Li pejirandina serokê bisekine.',
+  },
+  'welati.appointmentApproved': {
+    en: 'Appointment approved! {{nominee}} is now {{role}}.',
+    kmr: 'Bicîhbûn pejirandî! {{nominee}} niha {{role}} ye.',
+  },
+  'welati.electionFinalized': {
+    en: 'Election finalized! {{winners}} elected. Turnout: {{turnout}}%',
+    kmr: 'Hilbijartin temam bû! {{winners}} hate hilbijartin. Beşdarî: {{turnout}}%',
   },
 };
 

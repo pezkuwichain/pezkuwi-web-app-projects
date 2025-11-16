@@ -10,6 +10,8 @@ import AdminPanel from '@/pages/AdminPanel';
 import WalletDashboard from './pages/WalletDashboard';
 import ReservesDashboardPage from './pages/ReservesDashboardPage';
 import BeCitizen from './pages/BeCitizen';
+import Elections from './pages/Elections';
+import EducationPlatform from './pages/EducationPlatform';
 import { AppProvider } from '@/contexts/AppContext';
 import { PolkadotProvider } from '@/contexts/PolkadotContext';
 import { WalletProvider } from '@/contexts/WalletContext';
@@ -64,6 +66,16 @@ function App() {
                       <Route path="/reserves" element={
                         <ProtectedRoute>
                           <ReservesDashboardPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/elections" element={
+                        <ProtectedRoute>
+                          <Elections />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/education" element={
+                        <ProtectedRoute>
+                          <EducationPlatform />
                         </ProtectedRoute>
                       } />
                       <Route path="*" element={<NotFound />} />
