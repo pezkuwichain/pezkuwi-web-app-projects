@@ -32,8 +32,10 @@ export default defineConfig(({ mode }) => ({
       "@pezkuwi/theme": path.resolve(__dirname, "../shared/theme"),
       "@pezkuwi/types": path.resolve(__dirname, "../shared/types"),
     },
+    dedupe: ['@polkadot/util-crypto', '@polkadot/util', '@polkadot/api', '@polkadot/extension-dapp', '@polkadot/keyring'],
   },
   optimizeDeps: {
+    include: ['@polkadot/util-crypto', '@polkadot/util', '@polkadot/api', '@polkadot/extension-dapp', '@polkadot/keyring'],
     esbuildOptions: {
       define: {
         global: 'globalThis'

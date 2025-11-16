@@ -17,15 +17,32 @@ export const PEZKUWI_NETWORK: BlockchainNetwork = {
  * Common blockchain endpoints
  */
 export const BLOCKCHAIN_ENDPOINTS = {
-  mainnet: 'wss://pezkuwichain.app:9944',
-  beta: 'wss://beta-rpc.pezkuwi.art',
+  mainnet: 'wss://mainnet.pezkuwichain.io',
+  testnet: 'wss://ws.pezkuwichain.io',
   local: 'ws://127.0.0.1:9944',
 } as const;
 
 /**
- * Default endpoint (currently using beta testnet)
+ * Get the appropriate WebSocket endpoint based on environment
  */
-export const DEFAULT_ENDPOINT = BLOCKCHAIN_ENDPOINTS.beta;
+function getWebSocketEndpoint(): string {
+  const network = import.meta.env.VITE_NETWORK || 'local';
+
+  switch (network) {
+    case 'mainnet':
+      return import.meta.env.VITE_WS_ENDPOINT_MAINNET || BLOCKCHAIN_ENDPOINTS.mainnet;
+    case 'testnet':
+      return import.meta.env.VITE_WS_ENDPOINT_TESTNET || BLOCKCHAIN_ENDPOINTS.testnet;
+    case 'local':
+    default:
+      return import.meta.env.VITE_WS_ENDPOINT_LOCAL || BLOCKCHAIN_ENDPOINTS.local;
+  }
+}
+
+/**
+ * Default endpoint (reads from environment variables)
+ */
+export const DEFAULT_ENDPOINT = getWebSocketEndpoint();
 
 /**
  * Get block explorer URL for a transaction

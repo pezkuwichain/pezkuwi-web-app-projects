@@ -27,7 +27,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
         <AppProvider>
-          <PolkadotProvider endpoint="ws://127.0.0.1:9944">
+          <PolkadotProvider>
             <WalletProvider>
               <WebSocketProvider>
                 <IdentityProvider>
