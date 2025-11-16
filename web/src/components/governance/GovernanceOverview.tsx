@@ -9,6 +9,7 @@ import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { usePolkadot } from '../../contexts/PolkadotContext';
 import { formatBalance } from '@pezkuwi/lib/wallet';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 interface GovernanceStats {
   activeProposals: number;
@@ -122,6 +123,10 @@ const GovernanceOverview: React.FC = () => {
       default: return <Activity className="w-4 h-4 text-gray-400" />;
     }
   };
+
+  if (loading) {
+    return <LoadingState message="Loading governance data..." />;
+  }
 
   return (
     <div className="space-y-6">

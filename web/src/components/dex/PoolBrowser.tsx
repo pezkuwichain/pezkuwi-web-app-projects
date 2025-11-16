@@ -7,6 +7,7 @@ import { TrendingUp, Droplet, BarChart3, Search, Plus } from 'lucide-react';
 import { PoolInfo } from '@/types/dex';
 import { fetchPools, formatTokenBalance } from '@pezkuwi/utils/dex';
 import { isFounderWallet } from '@pezkuwi/utils/auth';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 interface PoolBrowserProps {
   onAddLiquidity?: (pool: PoolInfo) => void;
@@ -63,11 +64,7 @@ export const PoolBrowser: React.FC<PoolBrowserProps> = ({
   });
 
   if (loading && pools.length === 0) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-gray-400">Loading pools...</div>
-      </div>
-    );
+    return <LoadingState message="Loading liquidity pools..." />;
   }
 
   return (

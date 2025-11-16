@@ -20,6 +20,7 @@ import {
   ArrowDownRight,
   Loader2
 } from 'lucide-react';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 interface TreasuryMetrics {
   totalBalance: number;
@@ -63,12 +64,7 @@ export const TreasuryOverview: React.FC = () => {
   const HealthIcon = healthStatus.icon;
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-3 text-muted-foreground">Loading treasury data from blockchain...</span>
-      </div>
-    );
+    return <LoadingState message="Loading treasury data from blockchain..." />;
   }
 
   if (error) {

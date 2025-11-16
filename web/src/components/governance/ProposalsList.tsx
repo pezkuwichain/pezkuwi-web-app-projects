@@ -7,6 +7,7 @@ import { Progress } from '../ui/progress';
 import { Alert, AlertDescription } from '../ui/alert';
 import { useGovernance } from '@/hooks/useGovernance';
 import { formatNumber } from '@/lib/utils';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 interface Proposal {
   id: number;
@@ -84,12 +85,7 @@ const ProposalsList: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary mr-3" />
-        <span className="text-muted-foreground">Loading proposals from blockchain...</span>
-      </div>
-    );
+    return <LoadingState message="Loading proposals from blockchain..." />;
   }
 
   if (error) {

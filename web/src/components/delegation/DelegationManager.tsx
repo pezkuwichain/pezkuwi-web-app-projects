@@ -13,6 +13,7 @@ import DelegateProfile from './DelegateProfile';
 import { useDelegation } from '@/hooks/useDelegation';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import { formatNumber } from '@/lib/utils';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 const DelegationManager: React.FC = () => {
   const { t } = useTranslation();
@@ -37,14 +38,7 @@ const DelegationManager: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-green-600 mr-3" />
-          <span className="text-lg">Loading delegation data from blockchain...</span>
-        </div>
-      </div>
-    );
+    return <LoadingState message="Loading delegation data from blockchain..." />;
   }
 
   if (error) {

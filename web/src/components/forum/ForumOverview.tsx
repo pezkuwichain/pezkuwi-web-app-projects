@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 import {
   MessageSquare,
   Users,
@@ -105,12 +106,7 @@ export function ForumOverview() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-3 text-muted-foreground">Loading forum...</span>
-      </div>
-    );
+    return <LoadingState message="Loading forum..." />;
   }
 
   return (

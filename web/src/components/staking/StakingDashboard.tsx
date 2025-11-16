@@ -21,6 +21,7 @@ import {
   parseAmount,
   type StakingInfo
 } from '@pezkuwi/lib/staking';
+import { LoadingState } from '@pezkuwi/components/AsyncComponent';
 
 export const StakingDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -421,11 +422,7 @@ export const StakingDashboard: React.FC = () => {
   };
 
   if (isLoadingData) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400">Loading staking data...</div>
-      </div>
-    );
+    return <LoadingState message="Loading staking data..." />;
   }
 
   return (
