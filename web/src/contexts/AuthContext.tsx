@@ -1,6 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
+
+// Session timeout configuration
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+const ACTIVITY_CHECK_INTERVAL_MS = 60 * 1000; // Check every 1 minute
+const LAST_ACTIVITY_KEY = 'last_activity_timestamp';
 
 interface AuthContextType {
   user: User | null;
@@ -26,6 +31,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // ========================================
+  // SESSION TIMEOUT MANAGEMENT
+  // ========================================
+
+  // Update last activity timestamp
+  const updateLastActivity = useCallback(() => {
+    localStorage.setItem(LAST_ACTIVITY_KEY, Date.now().toString());
+  }, []);
+
+  // Check if session has timed out
+  const checkSessionTimeout = useCallback(async () => {
+    if (!user) return;
+
+    const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
+    if (!lastActivity) {
+      updateLastActivity();
+      return;
+    }
+
+    const lastActivityTime = parseInt(lastActivity, 10);
+    const now = Date.now();
+    const inactiveTime = now - lastActivityTime;
+
+    if (inactiveTime >= SESSION_TIMEOUT_MS) {
+      console.log('⏱️ Session timeout - logging out due to inactivity');
+      await signOut();
+    }
+  }, [user]);
+
+  // Setup activity listeners
+  useEffect(() => {
+    if (!user) return;
+
+    // Update activity on user interactions
+    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+
+    const handleActivity = () => {
+      updateLastActivity();
+    };
+
+    // Register event listeners
+    activityEvents.forEach((event) => {
+      window.addEventListener(event, handleActivity);
+    });
+
+    // Initial activity timestamp
+    updateLastActivity();
+
+    // Check for timeout periodically
+    const timeoutChecker = setInterval(checkSessionTimeout, ACTIVITY_CHECK_INTERVAL_MS);
+
+    // Cleanup
+    return () => {
+      activityEvents.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+      clearInterval(timeoutChecker);
+    };
+  }, [user, updateLastActivity, checkSessionTimeout]);
 
   useEffect(() => {
     // Check active sessions and sets the user
@@ -134,6 +199,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     setIsAdmin(false);
+    setUser(null);
+    localStorage.removeItem(LAST_ACTIVITY_KEY);
     await supabase.auth.signOut();
   };
 
