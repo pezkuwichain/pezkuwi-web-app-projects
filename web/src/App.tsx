@@ -12,6 +12,7 @@ import ReservesDashboardPage from './pages/ReservesDashboardPage';
 import BeCitizen from './pages/BeCitizen';
 import Elections from './pages/Elections';
 import EducationPlatform from './pages/EducationPlatform';
+import P2PPlatform from './pages/P2PPlatform';
 import { AppProvider } from '@/contexts/AppContext';
 import { PolkadotProvider } from '@/contexts/PolkadotContext';
 import { WalletProvider } from '@/contexts/WalletContext';
@@ -76,6 +77,11 @@ function App() {
                       <Route path="/education" element={
                         <ProtectedRoute>
                           <EducationPlatform />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/p2p" element={
+                        <ProtectedRoute>
+                          <P2PPlatform />
                         </ProtectedRoute>
                       } />
                       <Route path="*" element={<NotFound />} />

@@ -32,6 +32,7 @@ import { useWallet } from '@/contexts/WalletContext';
 import { supabase } from '@/lib/supabase';
 import { PolkadotWalletButton } from './PolkadotWalletButton';
 import { DEXDashboard } from './dex/DEXDashboard';
+import { P2PDashboard } from './p2p/P2PDashboard';
 import EducationPlatform from '../pages/EducationPlatform';
 
 const AppLayout: React.FC = () => {
@@ -49,6 +50,7 @@ const AppLayout: React.FC = () => {
   const [showMultiSig, setShowMultiSig] = useState(false);
   const [showDEX, setShowDEX] = useState(false);
   const [showEducation, setShowEducation] = useState(false);
+  const [showP2P, setShowP2P] = useState(false);
   const { t } = useTranslation();
   const { isConnected } = useWebSocket();
   const { account } = useWallet();
@@ -182,6 +184,16 @@ const AppLayout: React.FC = () => {
                       >
                         <Droplet className="w-4 h-4" />
                         DEX Pools
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowP2P(true);
+                          navigate('/p2p');
+                        }}
+                        className="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white flex items-center gap-2"
+                      >
+                        <Users className="w-4 h-4" />
+                        P2P
                       </button>
                       <button
                         onClick={() => setShowStaking(true)}
@@ -386,6 +398,10 @@ const AppLayout: React.FC = () => {
           <div className="pt-20 min-h-screen bg-gray-950">
             <EducationPlatform />
           </div>
+        ) : showP2P ? (
+          <div className="pt-20 min-h-screen bg-gray-950">
+            <P2PDashboard />
+          </div>
         ) : (
           <>
             <HeroSection />
@@ -410,7 +426,7 @@ const AppLayout: React.FC = () => {
         )}
         
 
-        {(showDEX || showProposalWizard || showDelegation || showForum || showModeration || showTreasury || showStaking || showMultiSig || showEducation) && (
+        {(showDEX || showProposalWizard || showDelegation || showForum || showModeration || showTreasury || showStaking || showMultiSig || showEducation || showP2P) && (
           <div className="fixed bottom-8 right-8 z-50">
             <button
               onClick={() => {
@@ -423,7 +439,7 @@ const AppLayout: React.FC = () => {
                 setShowStaking(false);
                 setShowMultiSig(false);
                 setShowEducation(false);
-                setShowEducation(false);
+                setShowP2P(false);
               }}
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 transition-all"
             >
