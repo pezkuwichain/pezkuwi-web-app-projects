@@ -19,6 +19,8 @@ import {
   getBondingDuration,
   getCurrentEra,
   parseAmount,
+  claimPezRewards,
+  startScoreTracking,
   type StakingInfo
 } from '@pezkuwi/lib/staking';
 import { LoadingState } from '@pezkuwi/components/AsyncComponent';
@@ -371,6 +373,52 @@ export const StakingDashboard: React.FC = () => {
     }
   };
 
+  const handleClaimPezRewards = async () => {
+    if (!api || !selectedAccount) return;
+
+    if (!stakingInfo?.pezRewards || !stakingInfo.pezRewards.hasPendingClaim) {
+      toast({
+        title: 'Info',
+        description: 'No PEZ rewards available to claim',
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const injector = await web3FromAddress(selectedAccount.address);
+      const epochs = stakingInfo.pezRewards.claimableRewards.map(r => r.epoch);
+
+      await claimPezRewards(api, selectedAccount.address, epochs)
+        .then(() => {
+          handleBlockchainSuccess('pezRewards.claimed', toast, {
+            amount: stakingInfo.pezRewards!.totalClaimable,
+            count: epochs.length.toString()
+          });
+          refreshBalances();
+          // Refresh staking data to update rewards
+          setTimeout(() => {
+            if (api && selectedAccount) {
+              getStakingInfo(api, selectedAccount.address).then(setStakingInfo);
+            }
+          }, 3000);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          handleBlockchainError(error, api, toast);
+          setIsLoading(false);
+        });
+    } catch (error: any) {
+      console.error('Claim PEZ rewards failed:', error);
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to claim PEZ rewards',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+    }
+  };
+
   const toggleValidator = (validator: string) => {
     setSelectedValidators(prev => {
       if (prev.includes(validator)) {
@@ -491,16 +539,11 @@ export const StakingDashboard: React.FC = () => {
                 </p>
                 <Button
                   size="sm"
-                  onClick={() => {
-                    toast({
-                      title: 'Coming Soon',
-                      description: 'Claim PEZ rewards functionality will be available soon',
-                    });
-                  }}
-                  disabled={isLoading}
+                  onClick={handleClaimPezRewards}
+                  disabled={isLoading || !selectedAccount}
                   className="mt-2 w-full bg-orange-600 hover:bg-orange-700"
                 >
-                  Claim Rewards
+                  {isLoading ? 'Claiming...' : 'Claim Rewards'}
                 </Button>
               </>
             ) : (

@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
+import {
+  getTreasuryInfo,
+  getActiveProposals,
+  getTreasuryStats,
+  calculateHealthScore,
+} from '@pezkuwi/lib/pez-treasury';
 
 export interface TreasuryMetrics {
   totalBalance: number;
@@ -21,7 +27,7 @@ export interface TreasuryProposal {
 }
 
 export function useTreasury() {
-  const { api, isConnected } = usePolkadot();
+  const { api, isApiReady } = usePolkadot();
   const [metrics, setMetrics] = useState<TreasuryMetrics>({
     totalBalance: 0,
     monthlyIncome: 0,
@@ -35,7 +41,7 @@ export function useTreasury() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!api || !isConnected) {
+    if (!api || !isApiReady) {
       setLoading(false);
       return;
     }
@@ -45,58 +51,48 @@ export function useTreasury() {
         setLoading(true);
         setError(null);
 
-        // Get treasury account balance
-        const treasuryAccount = await api.query.treasury?.treasury?.();
-        let totalBalance = 0;
+        // Get PezTreasury info
+        const [treasuryInfo, activeProposals, stats] = await Promise.all([
+          getTreasuryInfo(api),
+          getActiveProposals(api),
+          getTreasuryStats(api),
+        ]);
 
-        if (treasuryAccount) {
-          totalBalance = parseInt(treasuryAccount.toString()) / 1e12; // Convert from planck to tokens
-        }
+        // Convert to number format for UI
+        const totalBalance = parseFloat(treasuryInfo.totalBalance.replace(/,/g, ''));
+        const totalAllocated = parseFloat(treasuryInfo.totalAllocated.replace(/,/g, ''));
+        const totalDistributed = parseFloat(stats.totalDistributed.replace(/,/g, ''));
 
-        // Fetch all treasury proposals
-        const proposalsData = await api.query.treasury?.proposals?.entries();
-        const proposalsList: TreasuryProposal[] = [];
-        let approvedBudget = 0;
-        let pendingCount = 0;
+        // Calculate health score
+        const healthScore = calculateHealthScore(
+          treasuryInfo.totalBalance,
+          treasuryInfo.totalAllocated
+        );
 
-        if (proposalsData) {
-          proposalsData.forEach(([key, value]: any) => {
-            const index = key.args[0].toNumber();
-            const proposal = value.unwrap();
-            const valueAmount = parseInt(proposal.value.toString()) / 1e12;
-
-            const proposalItem: TreasuryProposal = {
-              id: `treasury-${index}`,
-              index,
-              proposer: proposal.proposer.toString(),
-              beneficiary: proposal.beneficiary.toString(),
-              value: proposal.value.toString(),
-              bond: proposal.bond.toString(),
-              status: 'pending'
-            };
-
-            proposalsList.push(proposalItem);
-            pendingCount++;
-            approvedBudget += valueAmount;
-          });
-        }
-
-        // Calculate health score (simplified)
-        const healthScore = Math.min(100, Math.round((totalBalance / (approvedBudget || 1)) * 100));
+        // Convert proposals to UI format
+        const proposalsList: TreasuryProposal[] = activeProposals.map((p) => ({
+          id: `pez-treasury-${p.proposalId}`,
+          index: p.proposalId,
+          proposer: p.proposer,
+          beneficiary: p.beneficiary,
+          value: p.amount,
+          bond: '0', // PezTreasury might not have bonds
+          status: p.status.toLowerCase() as 'pending' | 'approved' | 'rejected',
+        }));
 
         setMetrics({
           totalBalance,
-          monthlyIncome: 0, // This would require historical data
-          monthlyExpenses: 0, // This would require historical data
-          pendingProposals: pendingCount,
-          approvedBudget,
-          healthScore: isNaN(healthScore) ? 0 : healthScore
+          monthlyIncome: 0, // Could be calculated from historical data
+          monthlyExpenses: totalDistributed / 12, // Rough estimate
+          pendingProposals: treasuryInfo.activeProposals,
+          approvedBudget: totalAllocated,
+          healthScore,
         });
 
         setProposals(proposalsList);
 
       } catch (err) {
-        console.error('Error fetching treasury data:', err);
+        console.error('Error fetching PezTreasury data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch treasury data');
       } finally {
         setLoading(false);
@@ -108,7 +104,7 @@ export function useTreasury() {
     // Subscribe to updates
     const interval = setInterval(fetchTreasuryData, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
-  }, [api, isConnected]);
+  }, [api, isApiReady]);
 
   return {
     metrics,

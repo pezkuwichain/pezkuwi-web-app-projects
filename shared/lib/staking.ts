@@ -475,6 +475,71 @@ export async function getBondingDuration(api: ApiPromise): Promise<number> {
 }
 
 /**
+ * Claim PEZ rewards for specific epochs
+ */
+export async function claimPezRewards(
+  api: ApiPromise,
+  signerAddress: string,
+  epochs: number[]
+): Promise<void> {
+  if (!api.tx.pezRewards || !api.tx.pezRewards.claimReward) {
+    throw new Error('PezRewards pallet not available');
+  }
+
+  // Claim each epoch individually (pallet doesn't support batch claims)
+  // We'll use utility.batch for efficiency if available
+  const txs = epochs.map(epoch => api.tx.pezRewards.claimReward(epoch));
+
+  let finalTx;
+  if (txs.length === 1) {
+    finalTx = txs[0];
+  } else if (api.tx.utility && api.tx.utility.batch) {
+    finalTx = api.tx.utility.batch(txs);
+  } else {
+    // Fallback: just claim the first one
+    finalTx = txs[0];
+  }
+
+  return new Promise((resolve, reject) => {
+    finalTx.signAndSend(signerAddress, ({ status, dispatchError }) => {
+      if (status.isInBlock) {
+        if (dispatchError) {
+          reject(dispatchError);
+        } else {
+          resolve();
+        }
+      }
+    });
+  });
+}
+
+/**
+ * Start staking score tracking
+ */
+export async function startScoreTracking(
+  api: ApiPromise,
+  signerAddress: string
+): Promise<void> {
+  if (!api.tx.stakingScore || !api.tx.stakingScore.startStakingScoreTracking) {
+    throw new Error('StakingScore pallet not available');
+  }
+
+  const tx = api.tx.stakingScore.startStakingScoreTracking();
+
+  return new Promise((resolve, reject) => {
+    tx.signAndSend(signerAddress, ({ status, dispatchError }) => {
+      if (status.isInBlock) {
+        if (dispatchError) {
+          reject(dispatchError);
+        } else {
+          resolve();
+        }
+      }
+    });
+  });
+}
+
+/**
  * Parse amount to blockchain format (12 decimals for HEZ)
  */
 export function parseAmount(amount: string | number, decimals: number = 12): string {

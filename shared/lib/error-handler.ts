@@ -426,6 +426,12 @@ export const SUCCESS_MESSAGES: Record<string, SuccessMessage> = {
     kmr: 'Şopa staking dest pê kir! Xala we dê bi demê re kom bibe.',
   },
 
+  // PEZ Rewards
+  'pezRewards.claimed': {
+    en: 'Successfully claimed {{amount}} PEZ from {{count}} epoch(s)! Rewards added to your balance.',
+    kmr: 'Bi serkeftî {{amount}} PEZ ji {{count}} epoch(an) stendin! Xelat hate zêdekirin.',
+  },
+
   // Citizenship
   'citizenship.applied': {
     en: 'Citizenship application submitted successfully! We will review your application.',
