@@ -1,0 +1,22 @@
+{
+  "name": "pezkuwi-kyc-backend",
+  "version": "1.0.0",
+  "description": "KYC Approval Council Backend",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "@polkadot/api": "^10.11.1",
+    "@polkadot/keyring": "^12.5.1",
+    "@polkadot/util-crypto": "^12.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
