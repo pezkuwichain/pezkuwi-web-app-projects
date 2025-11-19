@@ -863,8 +863,8 @@ const TokenSwap = () => {
                   type="number"
                   value={fromAmount}
                   onChange={(e) => setFromAmount(e.target.value)}
-                  placeholder="0.0"
-                  className="text-2xl font-bold border-0 bg-transparent text-white placeholder:text-gray-600"
+                  placeholder="Amount"
+                  className="text-2xl font-bold border-0 bg-transparent text-white placeholder:text-gray-500 placeholder:opacity-50"
                   disabled={!selectedAccount}
                 />
                 <Select
@@ -934,8 +934,8 @@ const TokenSwap = () => {
                   type="text"
                   value={toAmount}
                   readOnly
-                  placeholder="0.0"
-                  className="text-2xl font-bold border-0 bg-transparent text-white placeholder:text-gray-600"
+                  placeholder="Amount"
+                  className="text-2xl font-bold border-0 bg-transparent text-white placeholder:text-gray-500 placeholder:opacity-50"
                 />
                 <Select
                   value={toToken}

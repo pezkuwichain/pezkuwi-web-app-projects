@@ -10,13 +10,13 @@ import type { TikiInfo } from '@pezkuwi/lib/citizenship-workflow';
 const getTikiIcon = (role: string) => {
   const roleLower = role.toLowerCase();
 
-  if (roleLower.includes('hemwelatî') || roleLower.includes('welati') || roleLower.includes('citizen')) {
+  if (roleLower.includes('welati') || roleLower.includes('citizen')) {
     return <Shield className="w-6 h-6 text-cyan-500" />;
   }
-  if (roleLower.includes('leader') || roleLower.includes('chief')) {
+  if (roleLower.includes('serok') || roleLower.includes('leader') || roleLower.includes('chief')) {
     return <Crown className="w-6 h-6 text-yellow-500" />;
   }
-  if (roleLower.includes('elder') || roleLower.includes('wise')) {
+  if (roleLower.includes('axa') || roleLower.includes('hekem') || roleLower.includes('elder') || roleLower.includes('wise')) {
     return <Award className="w-6 h-6 text-purple-500" />;
   }
   return <Users className="w-6 h-6 text-green-500" />;
@@ -26,13 +26,13 @@ const getTikiIcon = (role: string) => {
 const getRoleBadgeColor = (role: string) => {
   const roleLower = role.toLowerCase();
 
-  if (roleLower.includes('hemwelatî') || roleLower.includes('welati') || roleLower.includes('citizen')) {
+  if (roleLower.includes('welati') || roleLower.includes('citizen')) {
     return 'bg-cyan-500/10 text-cyan-500 border-cyan-500/30';
   }
-  if (roleLower.includes('leader') || roleLower.includes('chief')) {
+  if (roleLower.includes('serok') || roleLower.includes('leader') || roleLower.includes('chief')) {
     return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30';
   }
-  if (roleLower.includes('elder') || roleLower.includes('wise')) {
+  if (roleLower.includes('axa') || roleLower.includes('hekem') || roleLower.includes('elder') || roleLower.includes('wise')) {
     return 'bg-purple-500/10 text-purple-500 border-purple-500/30';
   }
   return 'bg-green-500/10 text-green-500 border-green-500/30';
@@ -149,7 +149,7 @@ export const NftList: React.FC = () => {
                       Tiki #{tiki.id}
                     </h3>
                     <Badge className={getRoleBadgeColor(tiki.role)}>
-                      {tiki.role === 'Hemwelatî' ? 'Welati' : tiki.role}
+                      {tiki.role}
                     </Badge>
                   </div>
 

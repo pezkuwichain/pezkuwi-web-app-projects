@@ -24,6 +24,7 @@ import { WebSocketProvider } from '@/contexts/WebSocketContext';
 import { IdentityProvider } from '@/contexts/IdentityContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { DashboardProvider } from '@/contexts/DashboardContext';
+import { ReferralProvider } from '@/contexts/ReferralContext';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import NotFound from '@/pages/NotFound';
 import { Toaster } from '@/components/ui/toaster';
@@ -42,7 +43,8 @@ function App() {
                 <WebSocketProvider>
                   <IdentityProvider>
                     <DashboardProvider>
-                      <Router>
+                      <ReferralProvider>
+                        <Router>
                       <Routes>
                       <Route path="/login" element={<Login />} />
 
@@ -100,7 +102,8 @@ function App() {
                       } />
                       <Route path="*" element={<NotFound />} />
                     </Routes>
-                      </Router>
+                        </Router>
+                      </ReferralProvider>
                     </DashboardProvider>
                   </IdentityProvider>
                 </WebSocketProvider>

@@ -78,8 +78,9 @@ export async function checkValidatorStatus(
 // ========================================
 
 // Tiki role enum mapping (from pallet-tiki)
+// IMPORTANT: Must match /Pezkuwi-SDK/pezkuwi/pallets/tiki/src/lib.rs
 const TIKI_ROLES = [
-  'Hemwelatî',           // 0 - Citizen
+  'Welati',              // 0 - Citizen
   'Parlementer',         // 1 - Parliament Member
   'SerokiMeclise',       // 2 - Speaker of Parliament
   'Serok',               // 3 - President
@@ -127,7 +128,7 @@ const TIKI_ROLES = [
 
 /**
  * Check if user has specific Tiki role
- * @param role - Kurdish name of role (e.g., 'Hemwelatî', 'Perwerdekar')
+ * @param role - Kurdish name of role (e.g., 'Welati', 'Perwerdekar')
  */
 export async function checkTikiRole(
   api: ApiPromise | null,

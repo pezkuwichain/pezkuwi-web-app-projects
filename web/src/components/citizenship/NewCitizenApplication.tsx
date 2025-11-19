@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, AlertTriangle, CheckCircle, User, Users as UsersIcon, MapPin, Briefcase, Mail, Clock } from 'lucide-react';
+import { Loader2, AlertTriangle, CheckCircle, User, Users as UsersIcon, MapPin, Briefcase, Mail, Clock, Check, X, AlertCircle } from 'lucide-react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import type { CitizenshipData, Region, MaritalStatus } from '@pezkuwi/lib/citizenship-workflow';
 import { FOUNDER_ADDRESS, submitKycApplication, subscribeToKycApproval, getKycStatus } from '@pezkuwi/lib/citizenship-workflow';
@@ -16,11 +16,12 @@ import { generateCommitmentHash, generateNullifierHash, encryptData, saveLocalCi
 
 interface NewCitizenApplicationProps {
   onClose: () => void;
+  referrerAddress?: string | null;
 }
 
 type FormData = Omit<CitizenshipData, 'walletAddress' | 'timestamp'>;
 
-export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ onClose }) => {
+export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ onClose, referrerAddress }) => {
   const { api, isApiReady, selectedAccount, connectWallet } = usePolkadot();
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>();
 
@@ -31,9 +32,79 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
   const [error, setError] = useState<string | null>(null);
   const [agreed, setAgreed] = useState(false);
   const [checkingStatus, setCheckingStatus] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const [applicationHash, setApplicationHash] = useState<string>('');
 
   const maritalStatus = watch('maritalStatus');
   const childrenCount = watch('childrenCount');
+
+  const handleApprove = async () => {
+    if (!api || !selectedAccount) {
+      setError('Please connect your wallet first');
+      return;
+    }
+
+    setConfirming(true);
+    try {
+      const { web3FromAddress } = await import('@polkadot/extension-dapp');
+      const injector = await web3FromAddress(selectedAccount.address);
+
+      console.log('Confirming citizenship application (self-confirmation)...');
+
+      // Call confirm_citizenship() extrinsic - self-confirmation for Welati Tiki
+      const tx = api.tx.identityKyc.confirmCitizenship();
+
+      await tx.signAndSend(selectedAccount.address, { signer: injector.signer }, ({ status, events, dispatchError }) => {
+        if (dispatchError) {
+          if (dispatchError.isModule) {
+            const decoded = api.registry.findMetaError(dispatchError.asModule);
+            console.error(`${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`);
+            setError(`${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`);
+          } else {
+            console.error(dispatchError.toString());
+            setError(dispatchError.toString());
+          }
+          setConfirming(false);
+          return;
+        }
+
+        if (status.isInBlock || status.isFinalized) {
+          console.log('✅ Citizenship confirmed successfully!');
+          console.log('Block hash:', status.asInBlock || status.asFinalized);
+
+          // Check for CitizenshipConfirmed event
+          events.forEach(({ event }) => {
+            if (event.section === 'identityKyc' && event.method === 'CitizenshipConfirmed') {
+              console.log('📢 CitizenshipConfirmed event detected');
+              setKycApproved(true);
+              setWaitingForApproval(false);
+
+              // Redirect to citizen dashboard after 2 seconds
+              setTimeout(() => {
+                onClose();
+                window.location.href = '/dashboard';
+              }, 2000);
+            }
+          });
+
+          setConfirming(false);
+        }
+      });
+
+    } catch (err: any) {
+      console.error('Approval error:', err);
+      setError(err.message || 'Failed to approve application');
+      setConfirming(false);
+    }
+  };
+
+  const handleReject = async () => {
+    // Cancel/withdraw the application - simply close modal and go back
+    // No blockchain interaction needed - application will remain Pending until confirmed or admin-rejected
+    console.log('Canceling citizenship application (no blockchain interaction)');
+    onClose();
+    window.location.href = '/';
+  };
 
   // Check KYC status on mount
   useEffect(() => {
@@ -139,6 +210,13 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
         return;
       }
 
+      // Note: Referral initiation must be done by the REFERRER before the referee does KYC
+      // The referrer calls api.tx.referral.initiateReferral(refereeAddress) from InviteUserModal
+      // Here we just use the referrerAddress in the citizenship data if provided
+      if (referrerAddress) {
+        console.log(`KYC application with referrer: ${referrerAddress}`);
+      }
+
       // Prepare complete citizenship data
       const citizenshipData: CitizenshipData = {
         ...data,
@@ -193,6 +271,11 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       console.log('✅ KYC application submitted to blockchain');
       console.log('Block hash:', result.blockHash);
 
+      // Save block hash for display
+      if (result.blockHash) {
+        setApplicationHash(result.blockHash.slice(0, 16) + '...');
+      }
+
       // Move to waiting for approval state
       setSubmitted(true);
       setSubmitting(false);
@@ -238,59 +321,107 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
     );
   }
 
-  // Waiting for approval - Loading state
+  // Waiting for self-confirmation
   if (waitingForApproval) {
     return (
       <Card>
         <CardContent className="pt-6 flex flex-col items-center justify-center py-8 space-y-6">
-          {/* Animated Loader with Halos */}
-          <div className="relative flex items-center justify-center">
-            {/* Outer halo */}
-            <div className="absolute w-32 h-32 border-4 border-cyan-500/20 rounded-full animate-ping"></div>
-            {/* Middle halo */}
-            <div className="absolute w-24 h-24 border-4 border-purple-500/30 rounded-full animate-pulse"></div>
-            {/* Inner spinning sun */}
-            <div className="relative w-16 h-16 flex items-center justify-center">
-              <Loader2 className="w-16 h-16 text-cyan-500 animate-spin" />
-              <Clock className="absolute w-8 h-8 text-yellow-400 animate-pulse" />
+          {/* Icon */}
+          <div className="relative">
+            <div className="h-24 w-24 rounded-full border-4 border-primary/20 flex items-center justify-center">
+              <CheckCircle className="h-10 w-10 text-primary" />
             </div>
           </div>
 
           <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold">Waiting for Admin Approval</h3>
+            <h3 className="text-lg font-semibold">Confirm Your Citizenship Application</h3>
             <p className="text-sm text-muted-foreground max-w-md">
-              Your application has been submitted to the blockchain and is waiting for admin approval.
-              This page will automatically update when your citizenship is approved.
+              Your application has been submitted to the blockchain. Please review and confirm your identity to mint your Citizen NFT (Welati Tiki).
             </p>
           </div>
 
           {/* Status steps */}
           <div className="w-full max-w-md space-y-3 pt-4">
-            <div className="flex items-center gap-3 text-sm">
-              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-              <span className="text-muted-foreground">Application encrypted and stored on IPFS</span>
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+                <Check className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium">Data Encrypted</p>
+                <p className="text-xs text-muted-foreground">Your KYC data has been encrypted and stored on IPFS</p>
+              </div>
             </div>
-            <div className="flex items-center gap-3 text-sm">
-              <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-              <span className="text-muted-foreground">Transaction submitted to blockchain</span>
+
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+                <Check className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium">Blockchain Submitted</p>
+                <p className="text-xs text-muted-foreground">Transaction hash: {applicationHash || 'Processing...'}</p>
+              </div>
             </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Loader2 className="h-5 w-5 text-cyan-500 animate-spin flex-shrink-0" />
-              <span className="font-medium">Waiting for admin to approve KYC...</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm opacity-50">
-              <Clock className="h-5 w-5 text-gray-400 flex-shrink-0" />
-              <span className="text-muted-foreground">Receive Welati Tiki NFT</span>
+
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
+                <AlertCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium">Awaiting Your Confirmation</p>
+                <p className="text-xs text-muted-foreground">Confirm or reject your application below</p>
+              </div>
             </div>
           </div>
 
-          {/* Info */}
-          <Alert className="bg-cyan-500/10 border-cyan-500/30">
-            <AlertDescription className="text-xs">
-              <strong>Note:</strong> Do not close this page. The system is monitoring the blockchain
-              for approval events in real-time. You will be automatically redirected once approved.
-            </AlertDescription>
-          </Alert>
+          {/* Action buttons */}
+          <div className="flex gap-3 w-full max-w-md pt-4">
+            <Button
+              onClick={handleApprove}
+              disabled={confirming}
+              className="flex-1 bg-green-600 hover:bg-green-700"
+            >
+              {confirming ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Confirming...
+                </>
+              ) : (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Approve
+                </>
+              )}
+            </Button>
+            <Button
+              onClick={handleReject}
+              disabled={confirming}
+              variant="destructive"
+              className="flex-1"
+            >
+              {confirming ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Rejecting...
+                </>
+              ) : (
+                <>
+                  <X className="h-4 w-4 mr-2" />
+                  Reject
+                </>
+              )}
+            </Button>
+          </div>
+
+          {error && (
+            <Alert variant="destructive" className="w-full max-w-md">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          <Button variant="outline" onClick={onClose} className="mt-2">
+            Close
+          </Button>
         </CardContent>
       </Card>
     );
@@ -493,7 +624,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Input {...register('referralCode')} placeholder="Optional - Leave empty to be auto-assigned to Founder" />
+          <Input {...register('referralCode')} placeholder="Referral code (optional)" className="placeholder:text-gray-500 placeholder:opacity-50" />
           <p className="text-xs text-muted-foreground mt-2">
             If empty, you will be automatically linked to the Founder (Satoshi Qazi Muhammed)
           </p>

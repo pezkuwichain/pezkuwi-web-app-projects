@@ -33,6 +33,19 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Wrapper to trigger events when wallet changes
+  const handleSetSelectedAccount = (account: InjectedAccountWithMeta | null) => {
+    setSelectedAccount(account);
+    if (account) {
+      localStorage.setItem('selectedWallet', account.address);
+      console.log('💾 Wallet saved:', account.address);
+      window.dispatchEvent(new Event('walletChanged'));
+    } else {
+      localStorage.removeItem('selectedWallet');
+      window.dispatchEvent(new Event('walletChanged'));
+    }
+  };
+
   // Initialize Polkadot API
   useEffect(() => {
     const initApi = async () => {
@@ -76,35 +89,73 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
     };
   }, [endpoint]);
 
+  // Auto-restore wallet on page load
+  useEffect(() => {
+    const restoreWallet = async () => {
+      const savedAddress = localStorage.getItem('selectedWallet');
+      if (!savedAddress) return;
+
+      try {
+        // Enable extension
+        const extensions = await web3Enable('PezkuwiChain');
+        if (extensions.length === 0) return;
+
+        // Get accounts
+        const allAccounts = await web3Accounts();
+        if (allAccounts.length === 0) return;
+
+        // Find saved account
+        const savedAccount = allAccounts.find(acc => acc.address === savedAddress);
+        if (savedAccount) {
+          setAccounts(allAccounts);
+          handleSetSelectedAccount(savedAccount);
+          console.log('✅ Wallet restored:', savedAddress.slice(0, 8) + '...');
+        }
+      } catch (err) {
+        console.error('Failed to restore wallet:', err);
+      }
+    };
+
+    restoreWallet();
+  }, []);
+
   // Connect wallet (Polkadot.js extension)
   const connectWallet = async () => {
     try {
       setError(null);
-      
+
       // Enable extension
       const extensions = await web3Enable('PezkuwiChain');
-      
+
       if (extensions.length === 0) {
         setError('Please install Polkadot.js extension');
         window.open('https://polkadot.js.org/extension/', '_blank');
         return;
       }
-      
+
       console.log('✅ Polkadot.js extension enabled');
-      
+
       // Get accounts
       const allAccounts = await web3Accounts();
-      
+
       if (allAccounts.length === 0) {
         setError('No accounts found. Please create an account in Polkadot.js extension');
         return;
       }
-      
+
       setAccounts(allAccounts);
-      setSelectedAccount(allAccounts[0]); // Auto-select first account
-      
+
+      // Try to restore previously selected account, otherwise use first
+      const savedAddress = localStorage.getItem('selectedWallet');
+      const accountToSelect = savedAddress
+        ? allAccounts.find(acc => acc.address === savedAddress) || allAccounts[0]
+        : allAccounts[0];
+
+      // Use wrapper to trigger events
+      handleSetSelectedAccount(accountToSelect);
+
       console.log(`✅ Found ${allAccounts.length} account(s)`);
-      
+
     } catch (err) {
       console.error('❌ Wallet connection failed:', err);
       setError('Failed to connect wallet');
@@ -114,7 +165,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   // Disconnect wallet
   const disconnectWallet = () => {
     setAccounts([]);
-    setSelectedAccount(null);
+    handleSetSelectedAccount(null);
     console.log('🔌 Wallet disconnected');
   };
 
@@ -124,7 +175,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
     isConnected: isApiReady, // Alias for backward compatibility
     accounts,
     selectedAccount,
-    setSelectedAccount,
+    setSelectedAccount: handleSetSelectedAccount,
     connectWallet,
     disconnectWallet,
     error,

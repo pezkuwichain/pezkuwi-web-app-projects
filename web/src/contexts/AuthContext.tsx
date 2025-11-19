@@ -96,42 +96,75 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus();
-      }
+      checkAdminStatus(); // Check admin status regardless of Supabase session
       setLoading(false);
     }).catch(() => {
-      // If Supabase is not available, continue without auth
+      // If Supabase is not available, still check wallet-based admin
+      checkAdminStatus();
       setLoading(false);
     });
 
     // Listen for changes on auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus();
-      }
+      checkAdminStatus(); // Check admin status on auth change
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Listen for wallet changes (from PolkadotContext)
+    const handleWalletChange = () => {
+      checkAdminStatus();
+    };
+    window.addEventListener('walletChanged', handleWalletChange);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('walletChanged', handleWalletChange);
+    };
   }, []);
 
   const checkAdminStatus = async () => {
+    // Admin wallet whitelist (blockchain-based auth)
+    const ADMIN_WALLETS = [
+      '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', // Founder (original)
+      '5DFwqK698vL4gXHEcanaewnAqhxJ2rjhAogpSTHw3iwGDwd3', // Founder delegate (initial KYC member)
+      '5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtuqjHioki45', // Founder (current dev wallet)
+    ];
+
     try {
+      // PRIMARY: Check wallet-based admin (blockchain auth)
+      const connectedWallet = localStorage.getItem('selectedWallet');
+      console.log('🔍 Admin check - Connected wallet:', connectedWallet);
+      console.log('🔍 Admin check - Whitelist:', ADMIN_WALLETS);
+
+      if (connectedWallet && ADMIN_WALLETS.includes(connectedWallet)) {
+        console.log('✅ Admin access granted (wallet-based)');
+        setIsAdmin(true);
+        return true;
+      }
+
+      // SECONDARY: Check Supabase admin_roles (if wallet not in whitelist)
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return false;
+      if (user) {
+        const { data, error } = await supabase
+          .from('admin_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .maybeSingle();
 
-      const { data, error } = await supabase
-        .from('admin_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .maybeSingle();
+        if (!error && data && ['admin', 'super_admin'].includes(data.role)) {
+          console.log('✅ Admin access granted (Supabase-based)');
+          setIsAdmin(true);
+          return true;
+        }
+      }
 
-      const adminStatus = !error && data && ['admin', 'super_admin'].includes(data.role);
-      setIsAdmin(adminStatus);
-      return adminStatus;
-    } catch {
+      console.log('❌ Admin access denied');
+      setIsAdmin(false);
+      return false;
+    } catch (err) {
+      console.error('Admin check error:', err);
+      setIsAdmin(false);
       return false;
     }
   };

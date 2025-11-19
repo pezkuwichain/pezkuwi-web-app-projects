@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, AlertTriangle, Shield } from 'lucide-react';
 import { usePolkadot } from '@/contexts/PolkadotContext';
-import { verifyNftOwnership } from '@pezkuwi/lib/citizenship-workflow';
+import { verifyCitizenNumber } from '@pezkuwi/lib/tiki';
 import { generateAuthChallenge, signChallenge, verifySignature, saveCitizenSession } from '@pezkuwi/lib/citizenship-workflow';
 import type { AuthChallenge } from '@pezkuwi/lib/citizenship-workflow';
 
@@ -17,7 +17,7 @@ interface ExistingCitizenAuthProps {
 export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClose }) => {
   const { api, isApiReady, selectedAccount, connectWallet } = usePolkadot();
 
-  const [tikiNumber, setTikiNumber] = useState('');
+  const [citizenNumber, setCitizenNumber] = useState('');
   const [step, setStep] = useState<'input' | 'verifying' | 'signing' | 'success' | 'error'>('input');
   const [error, setError] = useState<string | null>(null);
   const [challenge, setChallenge] = useState<AuthChallenge | null>(null);
@@ -28,8 +28,8 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
       return;
     }
 
-    if (!tikiNumber.trim()) {
-      setError('Please enter your Welati Tiki NFT number');
+    if (!citizenNumber.trim()) {
+      setError('Please enter your Citizen Number');
       return;
     }
 
@@ -37,22 +37,22 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
     setStep('verifying');
 
     try {
-      // Verify NFT ownership
-      const ownsNFT = await verifyNftOwnership(api, tikiNumber, selectedAccount.address);
+      // Verify Citizen Number
+      const isValid = await verifyCitizenNumber(api, citizenNumber, selectedAccount.address);
 
-      if (!ownsNFT) {
-        setError(`NFT #${tikiNumber} not found in your wallet or not a Welati Tiki`);
+      if (!isValid) {
+        setError(`Invalid Citizen Number or it doesn't match your wallet`);
         setStep('error');
         return;
       }
 
       // Generate challenge for signature
-      const authChallenge = generateAuthChallenge(tikiNumber);
+      const authChallenge = generateAuthChallenge(citizenNumber);
       setChallenge(authChallenge);
       setStep('signing');
     } catch (err) {
       console.error('Verification error:', err);
-      setError('Failed to verify NFT ownership');
+      setError('Failed to verify Citizen Number');
       setStep('error');
     }
   };
@@ -80,7 +80,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
 
       // Save session
       const session = {
-        tikiNumber,
+        tikiNumber: citizenNumber,
         walletAddress: selectedAccount.address,
         sessionToken: signature, // In production, use proper JWT
         lastAuthenticated: Date.now(),
@@ -91,11 +91,10 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
 
       setStep('success');
 
-      // Redirect to citizen dashboard after 2 seconds
+      // Redirect to citizens page after 2 seconds
       setTimeout(() => {
-        // TODO: Navigate to citizen dashboard
         onClose();
-        window.location.href = '/dashboard'; // Or use router.push('/dashboard')
+        window.location.href = '/citizens';
       }, 2000);
     } catch (err) {
       console.error('Signature error:', err);
@@ -121,24 +120,24 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
             Authenticate as Citizen
           </CardTitle>
           <CardDescription>
-            Enter your Welati Tiki NFT number to authenticate
+            Enter your Citizen Number from your Dashboard to authenticate
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Step 1: Enter NFT Number */}
+          {/* Step 1: Enter Citizen Number */}
           {step === 'input' && (
             <>
               <div className="space-y-2">
-                <Label htmlFor="tikiNumber">Welati Tiki NFT Number</Label>
+                <Label htmlFor="citizenNumber">Citizen Number</Label>
                 <Input
-                  id="tikiNumber"
-                  placeholder="e.g., 12345"
-                  value={tikiNumber}
-                  onChange={(e) => setTikiNumber(e.target.value)}
+                  id="citizenNumber"
+                  placeholder="e.g., #42-0-123456"
+                  value={citizenNumber}
+                  onChange={(e) => setCitizenNumber(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleVerifyNFT()}
                 />
                 <p className="text-xs text-muted-foreground">
-                  This is your unique citizen ID number received after KYC approval
+                  Enter your full Citizen Number from your Dashboard (format: #CollectionID-ItemID-6digits)
                 </p>
               </div>
 
@@ -148,7 +147,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
                 </Button>
               ) : (
                 <Button onClick={handleVerifyNFT} className="w-full">
-                  Verify NFT Ownership
+                  Verify Citizen Number
                 </Button>
               )}
             </>
@@ -158,7 +157,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
           {step === 'verifying' && (
             <div className="flex flex-col items-center justify-center py-8 space-y-4">
               <Loader2 className="h-12 w-12 animate-spin text-cyan-500" />
-              <p className="text-sm text-muted-foreground">Verifying NFT ownership on blockchain...</p>
+              <p className="text-sm text-muted-foreground">Verifying Citizen Number on blockchain...</p>
             </div>
           )}
 
@@ -191,7 +190,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
               <CheckCircle className="h-16 w-16 text-green-500" />
               <h3 className="text-lg font-semibold">Authentication Successful!</h3>
               <p className="text-sm text-muted-foreground text-center">
-                Welcome back, Citizen #{tikiNumber}
+                Welcome back, Citizen #{citizenNumber}
               </p>
               <p className="text-xs text-muted-foreground">
                 Redirecting to citizen dashboard...

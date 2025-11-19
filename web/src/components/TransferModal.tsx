@@ -269,8 +269,8 @@ export const TransferModal: React.FC<TransferModalProps> = ({ isOpen, onClose, s
                 id="recipient"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
-                placeholder="5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"
-                className="bg-gray-800 border-gray-700 text-white mt-2"
+                placeholder="Recipient address"
+                className="bg-gray-800 border-gray-700 text-white mt-2 placeholder:text-gray-500 placeholder:opacity-50"
                 disabled={isTransferring}
               />
             </div>
@@ -283,8 +283,8 @@ export const TransferModal: React.FC<TransferModalProps> = ({ isOpen, onClose, s
                 step={selectedToken === 'HEZ' || selectedToken === 'PEZ' ? '0.0001' : '0.000001'}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="0.0000"
-                className="bg-gray-800 border-gray-700 text-white mt-2"
+                placeholder="Amount"
+                className="bg-gray-800 border-gray-700 text-white mt-2 placeholder:text-gray-500 placeholder:opacity-50"
                 disabled={isTransferring}
               />
               <div className="text-xs text-gray-500 mt-1">

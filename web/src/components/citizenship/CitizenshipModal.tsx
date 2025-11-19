@@ -13,10 +13,11 @@ import { NewCitizenApplication } from './NewCitizenApplication';
 interface CitizenshipModalProps {
   isOpen: boolean;
   onClose: () => void;
+  referrerAddress?: string | null;
 }
 
-export const CitizenshipModal: React.FC<CitizenshipModalProps> = ({ isOpen, onClose }) => {
-  const [activeTab, setActiveTab] = useState<'existing' | 'new'>('existing');
+export const CitizenshipModal: React.FC<CitizenshipModalProps> = ({ isOpen, onClose, referrerAddress }) => {
+  const [activeTab, setActiveTab] = useState<'existing' | 'new'>(referrerAddress ? 'new' : 'existing');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -26,7 +27,9 @@ export const CitizenshipModal: React.FC<CitizenshipModalProps> = ({ isOpen, onCl
             🏛️ Digital Kurdistan Citizenship
           </DialogTitle>
           <DialogDescription>
-            Join the Digital Kurdistan State as a citizen or authenticate your existing citizenship
+            {referrerAddress
+              ? 'You have been invited to join Digital Kurdistan! Complete the application below.'
+              : 'Join the Digital Kurdistan State as a citizen or authenticate your existing citizenship'}
           </DialogDescription>
         </DialogHeader>
 
@@ -41,7 +44,7 @@ export const CitizenshipModal: React.FC<CitizenshipModalProps> = ({ isOpen, onCl
           </TabsContent>
 
           <TabsContent value="new" className="mt-6">
-            <NewCitizenApplication onClose={onClose} />
+            <NewCitizenApplication onClose={onClose} referrerAddress={referrerAddress} />
           </TabsContent>
         </Tabs>
       </DialogContent>

@@ -163,6 +163,13 @@ export default function CitizensIssues() {
     if (!api || !isApiReady) return;
 
     try {
+      // Check if welati pallet exists
+      if (!api.query.welati) {
+        console.log('Welati pallet not available yet');
+        setIssues([]);
+        return;
+      }
+
       const issueCountResult = await api.query.welati.issueCount();
       const issueCount = issueCountResult.toNumber();
 
@@ -188,11 +195,7 @@ export default function CitizensIssues() {
       setIssues(fetchedIssues.reverse());
     } catch (error) {
       console.error('Error fetching issues:', error);
-      toast({
-        title: 'Xeletî (Error)',
-        description: 'Pirsgirêk di barkirina pirsan de (Error loading issues)',
-        variant: 'destructive'
-      });
+      setIssues([]);
     }
   };
 
@@ -200,6 +203,13 @@ export default function CitizensIssues() {
     if (!api || !isApiReady || !selectedAccount) return;
 
     try {
+      // Check if welati pallet exists
+      if (!api.query.welati) {
+        console.log('Welati pallet not available yet');
+        setUserVotes(new Map());
+        return;
+      }
+
       const votesEntries = await api.query.welati.issueVotes.entries(selectedAccount.address);
       const votes = new Map<number, boolean>();
 
@@ -212,6 +222,7 @@ export default function CitizensIssues() {
       setUserVotes(votes);
     } catch (error) {
       console.error('Error fetching user votes:', error);
+      setUserVotes(new Map());
     }
   };
 
@@ -304,6 +315,13 @@ export default function CitizensIssues() {
     if (!api || !isApiReady) return;
 
     try {
+      // Check if welati pallet exists
+      if (!api.query.welati) {
+        console.log('Welati pallet not available yet');
+        setParliamentCandidates([]);
+        return;
+      }
+
       const candidatesEntries = await api.query.welati.parliamentCandidates.entries();
       const candidates: ParliamentCandidate[] = [];
 
@@ -333,6 +351,7 @@ export default function CitizensIssues() {
       }
     } catch (error) {
       console.error('Error fetching parliament candidates:', error);
+      setParliamentCandidates([]);
     }
   };
 
@@ -450,6 +469,13 @@ export default function CitizensIssues() {
     if (!api || !isApiReady) return;
 
     try {
+      // Check if welati pallet exists
+      if (!api.query.welati) {
+        console.log('Welati pallet not available yet');
+        setPresidentCandidates([]);
+        return;
+      }
+
       const candidatesEntries = await api.query.welati.presidentCandidates.entries();
       const candidates: PresidentCandidate[] = [];
 
@@ -479,6 +505,7 @@ export default function CitizensIssues() {
       }
     } catch (error) {
       console.error('Error fetching president candidates:', error);
+      setPresidentCandidates([]);
     }
   };
 
@@ -596,6 +623,14 @@ export default function CitizensIssues() {
     if (!api || !isApiReady) return;
 
     try {
+      // Check if welati pallet exists
+      if (!api.query.welati) {
+        console.log('Welati pallet not available yet');
+        setLegislationProposals([]);
+        setUserLegislationVotes(new Map());
+        return;
+      }
+
       const proposalsEntries = await api.query.welati.legislationProposals.entries();
       const proposals: LegislationProposal[] = [];
 
@@ -631,6 +666,8 @@ export default function CitizensIssues() {
       }
     } catch (error) {
       console.error('Error fetching legislation proposals:', error);
+      setLegislationProposals([]);
+      setUserLegislationVotes(new Map());
     }
   };
 
@@ -1085,9 +1122,10 @@ export default function CitizensIssues() {
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <Input
-                    placeholder="5Abc123... (Substrate Address)"
+                    placeholder="Candidate address"
                     value={nominateParliamentAddress}
                     onChange={(e) => setNominateParliamentAddress(e.target.value)}
+                    className="placeholder:text-gray-500 placeholder:opacity-50"
                   />
                   <Button
                     onClick={handleNominateParliament}
@@ -1196,9 +1234,10 @@ export default function CitizensIssues() {
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <Input
-                    placeholder="5Abc123... (Substrate Address)"
+                    placeholder="Candidate address"
                     value={nominatePresidentAddress}
                     onChange={(e) => setNominatePresidentAddress(e.target.value)}
+                    className="placeholder:text-gray-500 placeholder:opacity-50"
                   />
                   <Button
                     onClick={handleNominatePresident}

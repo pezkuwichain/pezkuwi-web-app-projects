@@ -172,13 +172,14 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
           </div>
           <div>
             <Label htmlFor="amountCrypto">Amount ({token})</Label>
-            <Input 
-              id="amountCrypto" 
-              type="number" 
+            <Input
+              id="amountCrypto"
+              type="number"
               step="0.01"
-              value={amountCrypto} 
+              value={amountCrypto}
               onChange={e => setAmountCrypto(e.target.value)}
-              placeholder="10.00"
+              placeholder="Amount"
+              className="placeholder:text-gray-500 placeholder:opacity-50"
             />
           </div>
         </div>
@@ -202,13 +203,14 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
           </div>
           <div>
             <Label htmlFor="fiatAmount">Total Amount ({fiatCurrency})</Label>
-            <Input 
-              id="fiatAmount" 
-              type="number" 
+            <Input
+              id="fiatAmount"
+              type="number"
               step="0.01"
-              value={fiatAmount} 
+              value={fiatAmount}
               onChange={e => setFiatAmount(e.target.value)}
-              placeholder="1000.00"
+              placeholder="Amount"
+              className="placeholder:text-gray-500 placeholder:opacity-50"
             />
           </div>
         </div>
@@ -254,6 +256,7 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
                   value={paymentDetails[field] || ''}
                   onChange={(e) => handlePaymentDetailChange(field, e.target.value)}
                   placeholder={placeholder}
+                  className="placeholder:text-gray-500 placeholder:opacity-50"
                 />
               </div>
             ))}
@@ -270,7 +273,8 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
               step="0.01"
               value={minOrderAmount}
               onChange={e => setMinOrderAmount(e.target.value)}
-              placeholder={`Min ${token} per trade`}
+              placeholder="Minimum amount (optional)"
+              className="placeholder:text-gray-500 placeholder:opacity-50"
             />
           </div>
           <div>
@@ -281,7 +285,8 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
               step="0.01"
               value={maxOrderAmount}
               onChange={e => setMaxOrderAmount(e.target.value)}
-              placeholder={`Max ${token} per trade`}
+              placeholder="Maximum amount (optional)"
+              className="placeholder:text-gray-500 placeholder:opacity-50"
             />
           </div>
         </div>

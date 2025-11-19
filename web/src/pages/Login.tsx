@@ -320,8 +320,8 @@ const Login: React.FC = () => {
                     <Input
                       id="referral-code"
                       type="text"
-                      placeholder={t('login.enterReferralCode', 'Enter referral code')}
-                      className="pl-10 bg-gray-800 border-gray-700 text-white"
+                      placeholder={t('login.enterReferralCode', 'Referral code (optional)')}
+                      className="pl-10 bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 placeholder:opacity-50"
                       value={signupData.referralCode}
                       onChange={(e) => setSignupData({...signupData, referralCode: e.target.value})}
                     />

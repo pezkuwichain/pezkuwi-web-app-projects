@@ -114,8 +114,8 @@ export function TradeModal({ offer, onClose }: TradeModalProps) {
               step="0.01"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              placeholder={`Enter amount (max ${offer.remaining_amount})`}
-              className="bg-gray-800 border-gray-700 text-white"
+              placeholder="Amount"
+              className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 placeholder:opacity-50"
             />
             {offer.min_order_amount && (
               <p className="text-xs text-gray-500 mt-1">

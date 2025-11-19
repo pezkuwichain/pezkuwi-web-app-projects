@@ -214,8 +214,8 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
                 type="number"
                 value={depositAmount}
                 onChange={(e) => setDepositAmount(e.target.value)}
-                placeholder="0.00"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                placeholder="Amount"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 placeholder:text-gray-500 placeholder:opacity-50"
                 disabled={isLoading}
               />
             </div>
@@ -279,9 +279,9 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
                 type="number"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
-                placeholder="0.00"
+                placeholder="Amount"
                 max={wusdtBalance}
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 placeholder:text-gray-500 placeholder:opacity-50"
                 disabled={isLoading}
               />
               <button
@@ -300,8 +300,8 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
                 type="text"
                 value={withdrawAddress}
                 onChange={(e) => setWithdrawAddress(e.target.value)}
-                placeholder="Enter bank account or crypto address"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                placeholder="Bank account or crypto address"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 placeholder:text-gray-500 placeholder:opacity-50"
                 disabled={isLoading}
               />
             </div>

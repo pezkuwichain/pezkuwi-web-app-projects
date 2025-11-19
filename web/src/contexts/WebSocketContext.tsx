@@ -38,9 +38,10 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const connectionAttempts = useRef(0);
   
   const ENDPOINTS = [
-    'wss://ws.pezkuwichain.io',           // Production WebSocket
-    'ws://localhost:9944',                 // Local development node
-    'ws://127.0.0.1:9944',                // Alternative local address
+    'ws://localhost:8082',                 // Local Vite dev server
+    'ws://127.0.0.1:9944',                // Local development node (primary)
+    'ws://localhost:9944',                 // Local development node (alternative)
+    'wss://ws.pezkuwichain.io',           // Production WebSocket (fallback)
   ];
 
   const connect = useCallback((endpointIndex: number = 0) => {

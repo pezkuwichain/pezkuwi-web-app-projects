@@ -7,10 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePolkadot } from '@/contexts/PolkadotContext';
 import { supabase } from '@/lib/supabase';
-import { User, Mail, Phone, Globe, MapPin, Calendar, Shield, AlertCircle, ArrowLeft, Award, Users, TrendingUp } from 'lucide-react';
+import { User, Mail, Phone, Globe, MapPin, Calendar, Shield, AlertCircle, ArrowLeft, Award, Users, TrendingUp, UserMinus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { fetchUserTikis, calculateTikiScore, getPrimaryRole, getTikiDisplayName, getTikiColor, getTikiEmoji, getUserRoleCategories } from '@pezkuwi/lib/tiki';
+import { fetchUserTikis, calculateTikiScore, getPrimaryRole, getTikiDisplayName, getTikiColor, getTikiEmoji, getUserRoleCategories, getAllTikiNFTDetails, generateCitizenNumber, type TikiNFTDetails } from '@pezkuwi/lib/tiki';
 import { getAllScores, type UserScores } from '@pezkuwi/lib/scores';
+import { getKycStatus } from '@pezkuwi/lib/kyc';
+import { ReferralDashboard } from '@/components/referral/ReferralDashboard';
+// Commission proposals card removed - no longer using notary system for KYC approval
+// import { CommissionProposalsCard } from '@/components/dashboard/CommissionProposalsCard';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -28,6 +32,13 @@ export default function Dashboard() {
     totalScore: 0
   });
   const [loadingScores, setLoadingScores] = useState(false);
+  const [kycStatus, setKycStatus] = useState<string>('NotStarted');
+  const [renouncingCitizenship, setRenouncingCitizenship] = useState(false);
+  const [nftDetails, setNftDetails] = useState<{ citizenNFT: TikiNFTDetails | null; roleNFTs: TikiNFTDetails[]; totalNFTs: number }>({
+    citizenNFT: null,
+    roleNFTs: [],
+    totalNFTs: 0
+  });
 
   useEffect(() => {
     fetchProfile();
@@ -107,6 +118,14 @@ export default function Dashboard() {
       // Also fetch tikis separately for role display (needed for role details)
       const userTikis = await fetchUserTikis(api, selectedAccount.address);
       setTikis(userTikis);
+
+      // Fetch NFT details including collection/item IDs
+      const details = await getAllTikiNFTDetails(api, selectedAccount.address);
+      setNftDetails(details);
+
+      // Fetch KYC status to determine if user is a citizen
+      const status = await getKycStatus(api, selectedAccount.address);
+      setKycStatus(status);
     } catch (error) {
       console.error('Error fetching scores and tikis:', error);
     } finally {
@@ -177,6 +196,98 @@ export default function Dashboard() {
         description: errorMessage,
         variant: "destructive"
       });
+    }
+  };
+
+  const handleRenounceCitizenship = async () => {
+    if (!api || !selectedAccount) {
+      toast({
+        title: "Error",
+        description: "Please connect your wallet first",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (kycStatus !== 'Approved') {
+      toast({
+        title: "Error",
+        description: "Only citizens can renounce citizenship",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Confirm action
+    const confirmed = window.confirm(
+      'Are you sure you want to renounce your citizenship? This will:\n' +
+      '• Burn your Citizen (Welati) NFT\n' +
+      '• Reset your KYC status to NotStarted\n' +
+      '• Remove all associated citizen privileges\n\n' +
+      'You can always reapply later if you change your mind.'
+    );
+
+    if (!confirmed) return;
+
+    setRenouncingCitizenship(true);
+    try {
+      const { web3FromAddress } = await import('@polkadot/extension-dapp');
+      const injector = await web3FromAddress(selectedAccount.address);
+
+      console.log('Renouncing citizenship...');
+
+      const tx = api.tx.identityKyc.renounceCitizenship();
+
+      await tx.signAndSend(selectedAccount.address, { signer: injector.signer }, ({ status, events, dispatchError }) => {
+        if (dispatchError) {
+          let errorMessage = 'Transaction failed';
+          if (dispatchError.isModule) {
+            const decoded = api.registry.findMetaError(dispatchError.asModule);
+            errorMessage = `${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`;
+          } else {
+            errorMessage = dispatchError.toString();
+          }
+          console.error(errorMessage);
+          toast({
+            title: "Renunciation Failed",
+            description: errorMessage,
+            variant: "destructive"
+          });
+          setRenouncingCitizenship(false);
+          return;
+        }
+
+        if (status.isInBlock || status.isFinalized) {
+          console.log('✅ Citizenship renounced successfully');
+
+          // Check for CitizenshipRenounced event
+          events.forEach(({ event }) => {
+            if (event.section === 'identityKyc' && event.method === 'CitizenshipRenounced') {
+              console.log('📢 CitizenshipRenounced event detected');
+              toast({
+                title: "Citizenship Renounced",
+                description: "Your citizenship has been successfully renounced. You can reapply anytime."
+              });
+
+              // Refresh data after a short delay
+              setTimeout(() => {
+                fetchScoresAndTikis();
+              }, 2000);
+            }
+          });
+
+          setRenouncingCitizenship(false);
+        }
+      });
+
+    } catch (err: any) {
+      console.error('Renunciation error:', err);
+      toast({
+        title: "Error",
+        description: err.message || 'Failed to renounce citizenship',
+        variant: "destructive"
+      });
+      setRenouncingCitizenship(false);
     }
   };
 
@@ -342,6 +453,7 @@ export default function Dashboard() {
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="roles">Roles & Tikis</TabsTrigger>
+          <TabsTrigger value="referrals">Referrals</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
@@ -436,7 +548,7 @@ export default function Dashboard() {
                     No roles assigned yet
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    Complete KYC to become a Citizen (Hemwelatî)
+                    Complete KYC to become a Citizen (Welati)
                   </p>
                 </div>
               )}
@@ -475,16 +587,155 @@ export default function Dashboard() {
                     </div>
                   </div>
 
+                  {nftDetails.totalNFTs > 0 && (
+                    <div className="border-t pt-4">
+                      <h4 className="font-medium mb-3">NFT Details ({nftDetails.totalNFTs})</h4>
+                      <div className="space-y-3">
+                        {nftDetails.citizenNFT && (
+                          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="font-medium text-blue-900 dark:text-blue-100">
+                                {nftDetails.citizenNFT.tikiEmoji} Citizen NFT
+                              </span>
+                              <Badge variant="outline" className="text-blue-700 border-blue-300">
+                                Primary
+                              </Badge>
+                            </div>
+
+                            {/* NFT Number and Citizen Number - Side by Side */}
+                            <div className="grid grid-cols-2 gap-3 mb-3">
+                              {/* NFT Number */}
+                              <div className="p-2 bg-white dark:bg-blue-950 rounded border border-blue-300 dark:border-blue-700">
+                                <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">NFT Number:</span>
+                                <div className="font-mono text-lg font-bold text-blue-900 dark:text-blue-100">
+                                  #{nftDetails.citizenNFT.collectionId}-{nftDetails.citizenNFT.itemId}
+                                </div>
+                              </div>
+
+                              {/* Citizen Number = NFT Number + 6 digits */}
+                              <div className="p-2 bg-white dark:bg-green-950 rounded border border-green-300 dark:border-green-700">
+                                <span className="text-xs text-green-600 dark:text-green-400 font-medium">Citizen Number:</span>
+                                <div className="font-mono text-lg font-bold text-green-900 dark:text-green-100">
+                                  #{nftDetails.citizenNFT.collectionId}-{nftDetails.citizenNFT.itemId}-{generateCitizenNumber(
+                                    nftDetails.citizenNFT.owner,
+                                    nftDetails.citizenNFT.collectionId,
+                                    nftDetails.citizenNFT.itemId
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-sm">
+                              <div>
+                                <span className="text-blue-700 dark:text-blue-300 font-medium">Collection ID:</span>
+                                <span className="ml-2 font-mono text-blue-900 dark:text-blue-100">
+                                  {nftDetails.citizenNFT.collectionId}
+                                </span>
+                              </div>
+                              <div>
+                                <span className="text-blue-700 dark:text-blue-300 font-medium">Item ID:</span>
+                                <span className="ml-2 font-mono text-blue-900 dark:text-blue-100">
+                                  {nftDetails.citizenNFT.itemId}
+                                </span>
+                              </div>
+                              <div className="col-span-2">
+                                <span className="text-blue-700 dark:text-blue-300 font-medium">Role:</span>
+                                <span className="ml-2 text-blue-900 dark:text-blue-100">
+                                  {nftDetails.citizenNFT.tikiDisplayName}
+                                </span>
+                              </div>
+                              <div className="col-span-2">
+                                <span className="text-blue-700 dark:text-blue-300 font-medium">Tiki Type:</span>
+                                <span className="ml-2 font-semibold text-purple-600 dark:text-purple-400">
+                                  {nftDetails.citizenNFT.tikiRole}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {nftDetails.roleNFTs.length > 0 && (
+                          <div className="space-y-2">
+                            <p className="text-sm text-muted-foreground font-medium">Additional Role NFTs:</p>
+                            {nftDetails.roleNFTs.map((nft, index) => (
+                              <div
+                                key={`${nft.collectionId}-${nft.itemId}`}
+                                className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3"
+                              >
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="font-medium">
+                                    {nft.tikiEmoji} {nft.tikiDisplayName}
+                                  </span>
+                                  <Badge variant="outline" className={nft.tikiColor}>
+                                    Score: {nft.tikiScore}
+                                  </Badge>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
+                                  <div>
+                                    <span className="font-medium">Collection:</span>
+                                    <span className="ml-2 font-mono">{nft.collectionId}</span>
+                                  </div>
+                                  <div>
+                                    <span className="font-medium">Item:</span>
+                                    <span className="ml-2 font-mono">{nft.itemId}</span>
+                                  </div>
+                                  <div className="col-span-2">
+                                    <span className="font-medium">Tiki Type:</span>
+                                    <span className="ml-2 font-semibold text-purple-600 dark:text-purple-400">{nft.tikiRole}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="border-t pt-4 bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
                     <h4 className="font-medium mb-2">Blockchain Address</h4>
                     <p className="text-sm text-muted-foreground font-mono break-all">
                       {selectedAccount.address}
                     </p>
                   </div>
+
+                  {kycStatus === 'Approved' && (
+                    <div className="border-t pt-4">
+                      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                        <h4 className="font-medium mb-2 text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                          <UserMinus className="h-4 w-4" />
+                          Renounce Citizenship
+                        </h4>
+                        <p className="text-sm text-yellow-700 dark:text-yellow-300 mb-3">
+                          You can voluntarily renounce your citizenship at any time. This will:
+                        </p>
+                        <ul className="text-sm text-yellow-700 dark:text-yellow-300 mb-3 list-disc list-inside space-y-1">
+                          <li>Burn your Citizen (Welati) NFT</li>
+                          <li>Reset your KYC status</li>
+                          <li>Remove citizen privileges</li>
+                        </ul>
+                        <p className="text-xs text-yellow-600 dark:text-yellow-400 mb-3">
+                          Note: You can always reapply for citizenship later if you change your mind.
+                        </p>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={handleRenounceCitizenship}
+                          disabled={renouncingCitizenship}
+                        >
+                          {renouncingCitizenship ? 'Renouncing...' : 'Renounce Citizenship'}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="referrals" className="space-y-4">
+          <ReferralDashboard />
         </TabsContent>
 
         <TabsContent value="security" className="space-y-4">

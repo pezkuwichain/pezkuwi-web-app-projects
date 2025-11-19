@@ -391,10 +391,10 @@ export function CommissionSetupTab() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <textarea
-                      placeholder="Paste addresses, one per line&#10;Example:&#10;5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty&#10;5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y"
+                      placeholder="Member addresses, one per line"
                       value={newMemberAddress}
                       onChange={(e) => setNewMemberAddress(e.target.value)}
-                      className="flex-1 font-mono text-sm p-3 bg-gray-800 border border-gray-700 rounded min-h-[120px]"
+                      className="flex-1 font-mono text-sm p-3 bg-gray-800 border border-gray-700 rounded min-h-[120px] placeholder:text-gray-500 placeholder:opacity-50"
                     />
                     <Button
                       onClick={handleAddMember}
