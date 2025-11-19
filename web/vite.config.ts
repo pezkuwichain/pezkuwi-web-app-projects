@@ -1,16 +1,22 @@
-import { defineConfig } from "vite";
+/// <reference types="vitest" />
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/tests/setup.ts',
+  },
   server: {
     host: "::",
-    port: 8081,
+    port: 8082,
+    strictPort: false, // Allow automatic port selection if 8082 is busy
     hmr: {
       protocol: 'ws',
       host: 'localhost',
-      port: 8081,
     },
     watch: {
       usePolling: true,

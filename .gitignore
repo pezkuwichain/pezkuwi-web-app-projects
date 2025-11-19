@@ -137,3 +137,14 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Local analysis and documentation
+*.md
+!README.md
+COMMISSION_SYSTEM_SUMMARY -
+     Copy.md:Zone.Identifier
+
+# Local analysis and documentation
+*.md
+!README.md
+COMMISSION_SYSTEM_SUMMARY - Copy.md:Zone.Identifier
