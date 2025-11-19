@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { ThemeProvider } from '@/components/theme-provider';
 import Index from '@/pages/Index';
 import Login from '@/pages/Login';
@@ -32,6 +33,24 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import './App.css';
 import './i18n/config';
 
+function ReferralHandler() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Check for ?ref= parameter in URL
+    const params = new URLSearchParams(location.search);
+    const refParam = params.get('ref');
+
+    if (refParam) {
+      // Store referrer address in localStorage
+      localStorage.setItem('referrerAddress', refParam);
+      console.log('Referrer address saved:', refParam);
+    }
+  }, [location]);
+
+  return null;
+}
+
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -45,8 +64,9 @@ function App() {
                     <DashboardProvider>
                       <ReferralProvider>
                         <Router>
-                      <Routes>
-                      <Route path="/login" element={<Login />} />
+                          <ReferralHandler />
+                          <Routes>
+                            <Route path="/login" element={<Login />} />
 
                       <Route path="/email-verification" element={<EmailVerification />} />
                       <Route path="/reset-password" element={<PasswordReset />} />

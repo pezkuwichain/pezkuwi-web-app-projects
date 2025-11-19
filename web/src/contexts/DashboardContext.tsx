@@ -35,7 +35,10 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
   }, [user, selectedAccount, api, isApiReady]);
 
   const fetchProfile = async () => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     try {
       const { data, error } = await supabase
@@ -45,13 +48,13 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) {
-        console.error('Profile fetch error:', error);
+        console.warn('Profile fetch error (this is normal if Supabase is not configured):', error.message);
         return;
       }
 
       setProfile(data);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.warn('Error fetching profile (this is normal if Supabase is not configured):', error);
     } finally {
       setLoading(false);
     }
