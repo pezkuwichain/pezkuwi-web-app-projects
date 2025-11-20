@@ -37,6 +37,7 @@ const Elections = lazy(() => import('./pages/Elections'));
 const EducationPlatform = lazy(() => import('./pages/EducationPlatform'));
 const P2PPlatform = lazy(() => import('./pages/P2PPlatform'));
 const DEXDashboard = lazy(() => import('./components/dex/DEXDashboard').then(m => ({ default: m.DEXDashboard })));
+const Presale = lazy(() => import('./pages/Presale'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 // Loading component
@@ -137,6 +138,7 @@ function App() {
                                   <DEXDashboard />
                                 </ProtectedRoute>
                               } />
+                              <Route path="/presale" element={<Presale />} />
                               <Route path="*" element={<NotFound />} />
                             </Routes>
                           </Suspense>

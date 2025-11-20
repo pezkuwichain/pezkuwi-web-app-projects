@@ -19,7 +19,7 @@ import { TreasuryOverview } from './treasury/TreasuryOverview';
 import { FundingProposal } from './treasury/FundingProposal';
 import { SpendingHistory } from './treasury/SpendingHistory';
 import { MultiSigApproval } from './treasury/MultiSigApproval';
-import { ExternalLink, Award, FileEdit, Users2, MessageSquare, ShieldCheck, Wifi, WifiOff, Wallet, DollarSign, PiggyBank, History, Key, TrendingUp, ArrowRightLeft, Lock, LogIn, LayoutDashboard, Settings, Users, Droplet, Mail } from 'lucide-react';
+import { ExternalLink, Award, FileEdit, Users2, MessageSquare, ShieldCheck, Wifi, WifiOff, Wallet, DollarSign, PiggyBank, History, Key, TrendingUp, ArrowRightLeft, Lock, LogIn, LayoutDashboard, Settings, Users, Droplet, Mail, Coins } from 'lucide-react';
 import GovernanceInterface from './GovernanceInterface';
 import RewardDistribution from './RewardDistribution';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -191,6 +191,13 @@ const AppLayout: React.FC = () => {
                       >
                         <Users className="w-4 h-4" />
                         P2P
+                      </button>
+                      <button
+                        onClick={() => navigate('/presale')}
+                        className="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white flex items-center gap-2"
+                      >
+                        <Coins className="w-4 h-4" />
+                        Presale
                       </button>
                       <button
                         onClick={() => setShowStaking(true)}
