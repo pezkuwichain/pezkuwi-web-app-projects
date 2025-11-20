@@ -133,7 +133,7 @@ export async function getReferralScore(
 ): Promise<number> {
   try {
     if (!api?.query?.trust?.referralScores) {
-      console.warn('Referral scores not available in trust pallet');
+      if (import.meta.env.DEV) console.warn('Referral scores not available in trust pallet');
       return 0;
     }
 
