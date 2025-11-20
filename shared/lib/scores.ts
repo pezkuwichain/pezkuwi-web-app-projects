@@ -125,25 +125,33 @@ export async function getTrustScoreDetails(
 
 /**
  * Fetch user's referral score
- * pallet_trust::ReferralScores storage
+ * Reads from pallet_referral::ReferralCount storage
+ *
+ * Score calculation based on referral count:
+ * - 0 referrals: 0 points
+ * - 1-5 referrals: count × 4 points (4, 8, 12, 16, 20)
+ * - 6-20 referrals: 20 + (count - 5) × 2 points
+ * - 21+ referrals: capped at 50 points
  */
 export async function getReferralScore(
   api: ApiPromise,
   address: string
 ): Promise<number> {
   try {
-    if (!api?.query?.trust?.referralScores) {
-      console.warn('Referral scores not available in trust pallet');
+    if (!api?.query?.referral?.referralCount) {
+      if (import.meta.env.DEV) console.warn('Referral pallet not available');
       return 0;
     }
 
-    const score = await api.query.trust.referralScores(address);
+    const count = await api.query.referral.referralCount(address);
+    const referralCount = Number(count.toString());
 
-    if (score.isEmpty) {
-      return 0;
-    }
+    // Calculate score based on referral count
+    if (referralCount === 0) return 0;
+    if (referralCount <= 5) return referralCount * 4;
+    if (referralCount <= 20) return 20 + ((referralCount - 5) * 2);
+    return 50; // Capped at 50 points
 
-    return Number(score.toString());
   } catch (error) {
     console.error('Error fetching referral score:', error);
     return 0;
