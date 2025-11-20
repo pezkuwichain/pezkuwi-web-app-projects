@@ -24,14 +24,6 @@ export default function Presale() {
   const [loading, setLoading] = useState(false);
   const [contributorsCount, setContributorsCount] = useState(0);
 
-  useEffect(() => {
-    if (isApiReady) {
-      loadPresaleData();
-      const interval = setInterval(loadPresaleData, 10000);
-      return () => clearInterval(interval);
-    }
-  }, [api, selectedAccount, isApiReady]);
-
   const loadPresaleData = async () => {
     if (!api) return;
 
@@ -79,6 +71,15 @@ export default function Presale() {
       if (import.meta.env.DEV) console.error('Error loading presale data:', error);
     }
   };
+
+  useEffect(() => {
+    if (isApiReady) {
+      loadPresaleData();
+      const interval = setInterval(loadPresaleData, 10000);
+      return () => clearInterval(interval);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, selectedAccount, isApiReady]);
 
   const handleContribute = async () => {
     if (!api || !selectedAccount) {
@@ -335,7 +336,7 @@ export default function Presale() {
                 <Alert className="mt-4 border-yellow-500/50 bg-yellow-500/10">
                   <AlertCircle className="h-4 w-4 text-yellow-500" />
                   <AlertDescription className="text-yellow-600 dark:text-yellow-400">
-                    You don't have wUSDT. Please bridge USDT to wUSDT first.
+                    You don&apos;t have wUSDT. Please bridge USDT to wUSDT first.
                   </AlertDescription>
                 </Alert>
               )}

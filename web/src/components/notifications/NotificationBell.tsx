@@ -31,9 +31,10 @@ export default function NotificationBell() {
   useEffect(() => {
     if (user) {
       loadNotifications();
-     
+
       subscribeToNotifications();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const loadNotifications = async () => {

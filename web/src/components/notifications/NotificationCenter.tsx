@@ -81,6 +81,7 @@ export const NotificationCenter: React.FC = () => {
       unsubscribe('mention', handleMention);
       unsubscribe('reply', handleReply);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subscribe, unsubscribe]);
 
   const addNotification = (notification: Notification) => {
