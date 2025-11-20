@@ -165,7 +165,7 @@ export default function CitizensIssues() {
     try {
       // Check if welati pallet exists
       if (!api.query.welati) {
-        console.log('Welati pallet not available yet');
+        if (import.meta.env.DEV) console.log('Welati pallet not available yet');
         setIssues([]);
         return;
       }
@@ -194,7 +194,7 @@ export default function CitizensIssues() {
 
       setIssues(fetchedIssues.reverse());
     } catch (error) {
-      console.error('Error fetching issues:', error);
+      if (import.meta.env.DEV) console.error('Error fetching issues:', error);
       setIssues([]);
     }
   };
@@ -205,7 +205,7 @@ export default function CitizensIssues() {
     try {
       // Check if welati pallet exists
       if (!api.query.welati) {
-        console.log('Welati pallet not available yet');
+        if (import.meta.env.DEV) console.log('Welati pallet not available yet');
         setUserVotes(new Map());
         return;
       }
@@ -221,7 +221,7 @@ export default function CitizensIssues() {
 
       setUserVotes(votes);
     } catch (error) {
-      console.error('Error fetching user votes:', error);
+      if (import.meta.env.DEV) console.error('Error fetching user votes:', error);
       setUserVotes(new Map());
     }
   };
@@ -270,7 +270,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error submitting issue:', error);
+      if (import.meta.env.DEV) console.error('Error submitting issue:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina pirsgirêkê de (Error submitting issue)',
@@ -300,7 +300,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error voting:', error);
+      if (import.meta.env.DEV) console.error('Error voting:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -317,7 +317,7 @@ export default function CitizensIssues() {
     try {
       // Check if welati pallet exists
       if (!api.query.welati) {
-        console.log('Welati pallet not available yet');
+        if (import.meta.env.DEV) console.log('Welati pallet not available yet');
         setParliamentCandidates([]);
         return;
       }
@@ -351,7 +351,7 @@ export default function CitizensIssues() {
         }
       }
     } catch (error) {
-      console.error('Error fetching parliament candidates:', error);
+      if (import.meta.env.DEV) console.error('Error fetching parliament candidates:', error);
       setParliamentCandidates([]);
     }
   };
@@ -373,7 +373,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error self-nominating for parliament:', error);
+      if (import.meta.env.DEV) console.error('Error self-nominating for parliament:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina namzediyê de (Error submitting nomination)',
@@ -401,7 +401,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error nominating for parliament:', error);
+      if (import.meta.env.DEV) console.error('Error nominating for parliament:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina namzediyê de (Error submitting nomination)',
@@ -428,7 +428,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error voting for parliament:', error);
+      if (import.meta.env.DEV) console.error('Error voting for parliament:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -455,7 +455,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error removing parliament nomination:', error);
+      if (import.meta.env.DEV) console.error('Error removing parliament nomination:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di jêbirina namzediyê de (Error removing nomination)',
@@ -472,7 +472,7 @@ export default function CitizensIssues() {
     try {
       // Check if welati pallet exists
       if (!api.query.welati) {
-        console.log('Welati pallet not available yet');
+        if (import.meta.env.DEV) console.log('Welati pallet not available yet');
         setPresidentCandidates([]);
         return;
       }
@@ -506,7 +506,7 @@ export default function CitizensIssues() {
         }
       }
     } catch (error) {
-      console.error('Error fetching president candidates:', error);
+      if (import.meta.env.DEV) console.error('Error fetching president candidates:', error);
       setPresidentCandidates([]);
     }
   };
@@ -528,7 +528,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error self-nominating for president:', error);
+      if (import.meta.env.DEV) console.error('Error self-nominating for president:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina namzediyê de (Error submitting nomination)',
@@ -556,7 +556,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error nominating for president:', error);
+      if (import.meta.env.DEV) console.error('Error nominating for president:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina namzediyê de (Error submitting nomination)',
@@ -583,7 +583,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error voting for president:', error);
+      if (import.meta.env.DEV) console.error('Error voting for president:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -610,7 +610,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error removing president nomination:', error);
+      if (import.meta.env.DEV) console.error('Error removing president nomination:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di jêbirina namzediyê de (Error removing nomination)',
@@ -627,7 +627,7 @@ export default function CitizensIssues() {
     try {
       // Check if welati pallet exists
       if (!api.query.welati) {
-        console.log('Welati pallet not available yet');
+        if (import.meta.env.DEV) console.log('Welati pallet not available yet');
         setLegislationProposals([]);
         setUserLegislationVotes(new Map());
         return;
@@ -668,7 +668,7 @@ export default function CitizensIssues() {
         setUserLegislationVotes(votes);
       }
     } catch (error) {
-      console.error('Error fetching legislation proposals:', error);
+      if (import.meta.env.DEV) console.error('Error fetching legislation proposals:', error);
       setLegislationProposals([]);
       setUserLegislationVotes(new Map());
     }
@@ -694,7 +694,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error proposing legislation:', error);
+      if (import.meta.env.DEV) console.error('Error proposing legislation:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina pêşniyarê de (Error submitting proposal)',
@@ -723,7 +723,7 @@ export default function CitizensIssues() {
         }
       });
     } catch (error) {
-      console.error('Error voting on legislation:', error);
+      if (import.meta.env.DEV) console.error('Error voting on legislation:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',

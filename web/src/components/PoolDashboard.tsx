@@ -92,7 +92,7 @@ const PoolDashboard = () => {
           }
         }
       } catch (err) {
-        console.error('Error discovering pools:', err);
+        if (import.meta.env.DEV) console.error('Error discovering pools:', err);
       }
     };
 
@@ -178,7 +178,7 @@ const PoolDashboard = () => {
           setError('Pool not found');
         }
       } catch (err) {
-        console.error('Error fetching pool data:', err);
+        if (import.meta.env.DEV) console.error('Error fetching pool data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch pool data');
       } finally {
         setIsLoading(false);
@@ -219,7 +219,7 @@ const PoolDashboard = () => {
           }
         }
       } catch (err) {
-        console.error('Error fetching LP position:', err);
+        if (import.meta.env.DEV) console.error('Error fetching LP position:', err);
       }
     };
 

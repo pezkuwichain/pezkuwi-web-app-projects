@@ -26,7 +26,7 @@ export function CourseList({ enrolledCourseIds, onEnroll }: CourseListProps) {
         const activeCourses = await getCourses('Active');
         setCourses(activeCourses);
       } catch (error) {
-        console.error('Failed to fetch courses:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch courses:', error);
         toast({
           title: 'Error',
           description: 'Failed to fetch courses',
@@ -54,7 +54,7 @@ export function CourseList({ enrolledCourseIds, onEnroll }: CourseListProps) {
       await enrollInCourse(api, selectedAccount, courseId);
       onEnroll();
     } catch (error) {
-      console.error('Enroll failed:', error);
+      if (import.meta.env.DEV) console.error('Enroll failed:', error);
     }
   };
 

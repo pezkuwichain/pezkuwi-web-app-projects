@@ -64,7 +64,7 @@ const AppLayout: React.FC = () => {
           .maybeSingle();
 
         if (error) {
-          console.warn('Admin check error:', error);
+          if (import.meta.env.DEV) console.warn('Admin check error:', error);
         }
         _setIsAdmin(!!data);
       } else {
@@ -300,7 +300,7 @@ const AppLayout: React.FC = () => {
             <div className="max-w-full mx-auto px-4">
               <ProposalWizard
                 onComplete={(proposal) => {
-                  console.log('Proposal created:', proposal);
+                  if (import.meta.env.DEV) console.log('Proposal created:', proposal);
                   setShowProposalWizard(false);
                 }}
                 onCancel={() => setShowProposalWizard(false)}

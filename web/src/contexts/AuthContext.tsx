@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const inactiveTime = now - lastActivityTime;
 
     if (inactiveTime >= SESSION_TIMEOUT_MS) {
-      console.log('⏱️ Session timeout - logging out due to inactivity');
+      if (import.meta.env.DEV) console.log('⏱️ Session timeout - logging out due to inactivity');
       await signOut();
     }
   }, [user]);
@@ -142,11 +142,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // PRIMARY: Check wallet-based admin (blockchain auth)
       const connectedWallet = localStorage.getItem('selectedWallet');
-      console.log('🔍 Admin check - Connected wallet:', connectedWallet);
-      console.log('🔍 Admin check - Whitelist:', ADMIN_WALLETS);
+      if (import.meta.env.DEV) console.log('🔍 Admin check - Connected wallet:', connectedWallet);
+      if (import.meta.env.DEV) console.log('🔍 Admin check - Whitelist:', ADMIN_WALLETS);
 
       if (connectedWallet && ADMIN_WALLETS.includes(connectedWallet)) {
-        console.log('✅ Admin access granted (wallet-based)');
+        if (import.meta.env.DEV) console.log('✅ Admin access granted (wallet-based)');
         setIsAdmin(true);
         return true;
       }
@@ -161,17 +161,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .maybeSingle();
 
         if (!error && data && ['admin', 'super_admin'].includes(data.role)) {
-          console.log('✅ Admin access granted (Supabase-based)');
+          if (import.meta.env.DEV) console.log('✅ Admin access granted (Supabase-based)');
           setIsAdmin(true);
           return true;
         }
       }
 
-      console.log('❌ Admin access denied');
+      if (import.meta.env.DEV) console.log('❌ Admin access denied');
       setIsAdmin(false);
       return false;
     } catch {
-      console.error('Admin check error:', err);
+      if (import.meta.env.DEV) console.error('Admin check error:', err);
       setIsAdmin(false);
       return false;
     }
@@ -224,7 +224,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (referralCode) {
           // You can add logic here to reward the referrer
           // For example, update their referral count or add rewards
-          console.log(`User registered with referral code: ${referralCode}`);
+          if (import.meta.env.DEV) console.log(`User registered with referral code: ${referralCode}`);
         }
       }
 

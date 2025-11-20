@@ -48,7 +48,7 @@ export function ValidatorPoolDashboard() {
         setPoolMember(memberData);
       }
     } catch (error) {
-      console.error('Failed to fetch validator pool data:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch validator pool data:', error);
       toast.error('Failed to fetch pool data');
     } finally {
       setLoading(false);
@@ -67,7 +67,7 @@ export function ValidatorPoolDashboard() {
       toast.success(`Joined the ${category} pool`);
       fetchData();
     } catch (error) {
-      console.error('Join pool error:', error);
+      if (import.meta.env.DEV) console.error('Join pool error:', error);
       // Error toast already shown in joinValidatorPool
     } finally {
       setActionLoading(false);
@@ -82,7 +82,7 @@ export function ValidatorPoolDashboard() {
       toast.success('Left the validator pool');
       fetchData();
     } catch (error) {
-      console.error('Leave pool error:', error);
+      if (import.meta.env.DEV) console.error('Leave pool error:', error);
       // Error toast already shown in leaveValidatorPool
     } finally {
       setActionLoading(false);
@@ -97,7 +97,7 @@ export function ValidatorPoolDashboard() {
       toast.success(`Switched to ${newCategory}`);
       fetchData();
     } catch (error) {
-      console.error('Switch category error:', error);
+      if (import.meta.env.DEV) console.error('Switch category error:', error);
       // Error toast already shown in updateValidatorCategory
     } finally {
       setActionLoading(false);

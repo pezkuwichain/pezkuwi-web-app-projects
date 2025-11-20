@@ -126,12 +126,12 @@ export const TransferModal: React.FC<TransferModalProps> = ({ isOpen, onClose, s
         { signer: injector.signer },
         ({ status, dispatchError }) => {
           if (status.isInBlock) {
-            console.log(`Transaction included in block: ${status.asInBlock}`);
+            if (import.meta.env.DEV) console.log(`Transaction included in block: ${status.asInBlock}`);
             setTxHash(status.asInBlock.toHex());
           }
 
           if (status.isFinalized) {
-            console.log(`Transaction finalized: ${status.asFinalized}`);
+            if (import.meta.env.DEV) console.log(`Transaction finalized: ${status.asFinalized}`);
             
             // Check for errors
             if (dispatchError) {
@@ -171,7 +171,7 @@ export const TransferModal: React.FC<TransferModalProps> = ({ isOpen, onClose, s
         }
       );
     } catch (error) {
-      console.error('Transfer error:', error);
+      if (import.meta.env.DEV) console.error('Transfer error:', error);
       setTxStatus('error');
       setIsTransferring(false);
 

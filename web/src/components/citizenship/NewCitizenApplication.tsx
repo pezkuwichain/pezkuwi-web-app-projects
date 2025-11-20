@@ -48,7 +48,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Confirming citizenship application (self-confirmation)...');
+      if (import.meta.env.DEV) console.log('Confirming citizenship application (self-confirmation)...');
 
       // Call confirm_citizenship() extrinsic - self-confirmation for Welati Tiki
       const tx = api.tx.identityKyc.confirmCitizenship();
@@ -57,10 +57,10 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
         if (dispatchError) {
           if (dispatchError.isModule) {
             const decoded = api.registry.findMetaError(dispatchError.asModule);
-            console.error(`${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`);
+            if (import.meta.env.DEV) console.error(`${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`);
             setError(`${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`);
           } else {
-            console.error(dispatchError.toString());
+            if (import.meta.env.DEV) console.error(dispatchError.toString());
             setError(dispatchError.toString());
           }
           setConfirming(false);
@@ -68,13 +68,13 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
         }
 
         if (status.isInBlock || status.isFinalized) {
-          console.log('✅ Citizenship confirmed successfully!');
-          console.log('Block hash:', status.asInBlock || status.asFinalized);
+          if (import.meta.env.DEV) console.log('✅ Citizenship confirmed successfully!');
+          if (import.meta.env.DEV) console.log('Block hash:', status.asInBlock || status.asFinalized);
 
           // Check for CitizenshipConfirmed event
           events.forEach(({ event }) => {
             if (event.section === 'identityKyc' && event.method === 'CitizenshipConfirmed') {
-              console.log('📢 CitizenshipConfirmed event detected');
+              if (import.meta.env.DEV) console.log('📢 CitizenshipConfirmed event detected');
               setKycApproved(true);
               setWaitingForApproval(false);
 
@@ -91,7 +91,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       });
 
     } catch (err) {
-      console.error('Approval error:', err);
+      if (import.meta.env.DEV) console.error('Approval error:', err);
       setError((err as Error).message || 'Failed to approve application');
       setConfirming(false);
     }
@@ -100,7 +100,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
   const handleReject = async () => {
     // Cancel/withdraw the application - simply close modal and go back
     // No blockchain interaction needed - application will remain Pending until confirmed or admin-rejected
-    console.log('Canceling citizenship application (no blockchain interaction)');
+    if (import.meta.env.DEV) console.log('Canceling citizenship application (no blockchain interaction)');
     onClose();
     window.location.href = '/';
   };
@@ -115,10 +115,10 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       setCheckingStatus(true);
       try {
         const status = await getKycStatus(api, selectedAccount.address);
-        console.log('Current KYC Status:', status);
+        if (import.meta.env.DEV) console.log('Current KYC Status:', status);
 
         if (status === 'Approved') {
-          console.log('KYC already approved! Redirecting to dashboard...');
+          if (import.meta.env.DEV) console.log('KYC already approved! Redirecting to dashboard...');
           setKycApproved(true);
 
           // Redirect to dashboard after 2 seconds
@@ -131,7 +131,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
           setWaitingForApproval(true);
         }
       } catch (err) {
-        console.error('Error checking KYC status:', err);
+        if (import.meta.env.DEV) console.error('Error checking KYC status:', err);
       } finally {
         setCheckingStatus(false);
       }
@@ -146,13 +146,13 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       return;
     }
 
-    console.log('Setting up KYC approval listener for:', selectedAccount.address);
+    if (import.meta.env.DEV) console.log('Setting up KYC approval listener for:', selectedAccount.address);
 
     const unsubscribe = subscribeToKycApproval(
       api,
       selectedAccount.address,
       () => {
-        console.log('KYC Approved! Redirecting to dashboard...');
+        if (import.meta.env.DEV) console.log('KYC Approved! Redirecting to dashboard...');
         setKycApproved(true);
         setWaitingForApproval(false);
 
@@ -163,7 +163,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
         }, 2000);
       },
       (error) => {
-        console.error('KYC approval subscription error:', error);
+        if (import.meta.env.DEV) console.error('KYC approval subscription error:', error);
         setError(`Failed to monitor approval status: ${error}`);
       }
     );
@@ -213,7 +213,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       // The referrer calls api.tx.referral.initiateReferral(refereeAddress) from InviteUserModal
       // Here we just use the referrerAddress in the citizenship data if provided
       if (referrerAddress) {
-        console.log(`KYC application with referrer: ${referrerAddress}`);
+        if (import.meta.env.DEV) console.log(`KYC application with referrer: ${referrerAddress}`);
       }
 
       // Prepare complete citizenship data
@@ -228,8 +228,8 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       const commitmentHash = await generateCommitmentHash(citizenshipData);
       const nullifierHash = await generateNullifierHash(selectedAccount.address, citizenshipData.timestamp);
 
-      console.log('Commitment Hash:', commitmentHash);
-      console.log('Nullifier Hash:', nullifierHash);
+      if (import.meta.env.DEV) console.log('Commitment Hash:', commitmentHash);
+      if (import.meta.env.DEV) console.log('Nullifier Hash:', nullifierHash);
 
       // Encrypt data
       const encryptedData = await encryptData(citizenshipData, selectedAccount.address);
@@ -240,9 +240,9 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       // Upload to IPFS
       const ipfsCid = await uploadToIPFS(encryptedData);
 
-      console.log('IPFS CID:', ipfsCid);
-      console.log('IPFS CID type:', typeof ipfsCid);
-      console.log('IPFS CID value:', JSON.stringify(ipfsCid));
+      if (import.meta.env.DEV) console.log('IPFS CID:', ipfsCid);
+      if (import.meta.env.DEV) console.log('IPFS CID type:', typeof ipfsCid);
+      if (import.meta.env.DEV) console.log('IPFS CID value:', JSON.stringify(ipfsCid));
 
       // Ensure ipfsCid is a string
       const cidString = String(ipfsCid);
@@ -251,7 +251,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       }
 
       // Submit to blockchain
-      console.log('Submitting KYC application to blockchain...');
+      if (import.meta.env.DEV) console.log('Submitting KYC application to blockchain...');
       const result = await submitKycApplication(
         api,
         selectedAccount,
@@ -267,8 +267,8 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
         return;
       }
 
-      console.log('✅ KYC application submitted to blockchain');
-      console.log('Block hash:', result.blockHash);
+      if (import.meta.env.DEV) console.log('✅ KYC application submitted to blockchain');
+      if (import.meta.env.DEV) console.log('Block hash:', result.blockHash);
 
       // Save block hash for display
       if (result.blockHash) {
@@ -281,7 +281,7 @@ export const NewCitizenApplication: React.FC<NewCitizenApplicationProps> = ({ on
       setWaitingForApproval(true);
 
     } catch (err) {
-      console.error('Submission error:', err);
+      if (import.meta.env.DEV) console.error('Submission error:', err);
       setError('Failed to submit citizenship application');
       setSubmitting(false);
     }

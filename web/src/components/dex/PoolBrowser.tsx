@@ -39,7 +39,7 @@ export const PoolBrowser: React.FC<PoolBrowserProps> = ({
         const poolsData = await fetchPools(api);
         setPools(poolsData);
       } catch (error) {
-        console.error('Failed to load pools:', error);
+        if (import.meta.env.DEV) console.error('Failed to load pools:', error);
       } finally {
         setLoading(false);
       }

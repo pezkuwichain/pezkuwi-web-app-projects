@@ -51,7 +51,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
       setChallenge(authChallenge);
       setStep('signing');
     } catch {
-      console.error('Verification error:', err);
+      if (import.meta.env.DEV) console.error('Verification error:', err);
       setError('Failed to verify Citizen Number');
       setStep('error');
     }
@@ -97,7 +97,7 @@ export const ExistingCitizenAuth: React.FC<ExistingCitizenAuthProps> = ({ onClos
         window.location.href = '/citizens';
       }, 2000);
     } catch {
-      console.error('Signature error:', err);
+      if (import.meta.env.DEV) console.error('Signature error:', err);
       setError('Failed to sign authentication challenge');
       setStep('error');
     }

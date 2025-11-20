@@ -104,7 +104,7 @@ export function DiscussionThread({ proposalId }: { proposalId: string }) {
     const handleSentimentUpdate = (data: { proposalId: string; sentiment: Record<string, unknown> }) => {
       if (data.proposalId === proposalId) {
         // Update sentiment visualization in parent component
-        console.log('Sentiment updated:', data.sentiment);
+        if (import.meta.env.DEV) console.log('Sentiment updated:', data.sentiment);
       }
     };
 

@@ -48,7 +48,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     // If we've tried all endpoints, show error once and stop
     if (endpointIndex >= ENDPOINTS.length) {
       if (!hasShownFinalError.current) {
-        console.error('❌ All WebSocket endpoints failed');
+        if (import.meta.env.DEV) console.error('❌ All WebSocket endpoints failed');
         toast({
           title: "Real-time Connection Unavailable",
           description: "Could not connect to WebSocket server. Live updates will be disabled.",
@@ -63,7 +63,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       const wsUrl = ENDPOINTS[endpointIndex];
       currentEndpoint.current = wsUrl;
       
-      console.log(`🔌 Attempting WebSocket connection to: ${wsUrl}`);
+      if (import.meta.env.DEV) console.log(`🔌 Attempting WebSocket connection to: ${wsUrl}`);
       
       ws.current = new WebSocket(wsUrl);
 
@@ -71,7 +71,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsConnected(true);
         connectionAttempts.current = 0;
         hasShownFinalError.current = false;
-        console.log(`✅ WebSocket connected to: ${wsUrl}`);
+        if (import.meta.env.DEV) console.log(`✅ WebSocket connected to: ${wsUrl}`);
         
         // Only show success toast for production endpoint
         if (endpointIndex === 0) {
@@ -90,17 +90,17 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             listeners.forEach(callback => callback(message.data));
           }
         } catch (error) {
-          console.error('Failed to parse WebSocket message:', error);
+          if (import.meta.env.DEV) console.error('Failed to parse WebSocket message:', error);
         }
       };
 
       ws.current.onerror = (error) => {
-        console.warn(`⚠️ WebSocket error on ${wsUrl}:`, error);
+        if (import.meta.env.DEV) console.warn(`⚠️ WebSocket error on ${wsUrl}:`, error);
       };
 
       ws.current.onclose = () => {
         setIsConnected(false);
-        console.log(`🔌 WebSocket disconnected from: ${wsUrl}`);
+        if (import.meta.env.DEV) console.log(`🔌 WebSocket disconnected from: ${wsUrl}`);
         
         // Try next endpoint after 2 seconds
         reconnectTimeout.current = setTimeout(() => {
@@ -117,7 +117,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         }, 2000);
       };
     } catch (error) {
-      console.error(`❌ Failed to create WebSocket connection to ${ENDPOINTS[endpointIndex]}:`, error);
+      if (import.meta.env.DEV) console.error(`❌ Failed to create WebSocket connection to ${ENDPOINTS[endpointIndex]}:`, error);
       // Try next endpoint immediately
       setTimeout(() => connect(endpointIndex + 1), 1000);
     }
@@ -151,7 +151,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     if (ws.current?.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(message));
     } else {
-      console.warn('WebSocket is not connected - message queued');
+      if (import.meta.env.DEV) console.warn('WebSocket is not connected - message queued');
     }
   }, []);
 

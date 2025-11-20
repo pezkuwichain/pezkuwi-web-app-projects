@@ -73,7 +73,7 @@ export function TradeModal({ offer, onClose }: TradeModalProps) {
       // TODO: Navigate to trade page
       // navigate(`/p2p/trade/${tradeId}`);
     } catch (error) {
-      console.error('Accept offer error:', error);
+      if (import.meta.env.DEV) console.error('Accept offer error:', error);
       // Error toast already shown in acceptFiatOffer
     } finally {
       setLoading(false);

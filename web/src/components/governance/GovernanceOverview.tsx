@@ -39,22 +39,22 @@ const GovernanceOverview: React.FC = () => {
   useEffect(() => {
     const fetchGovernanceData = async () => {
       if (!api || !isApiReady) {
-        console.log('API not ready for governance data');
+        if (import.meta.env.DEV) console.log('API not ready for governance data');
         return;
       }
 
       try {
-        console.log('📊 Fetching governance data from blockchain...');
+        if (import.meta.env.DEV) console.log('📊 Fetching governance data from blockchain...');
         setLoading(true);
 
         // Fetch active referenda (proposals)
         let activeProposals = 0;
         try {
           const referendaCount = await api.query.referenda.referendumCount();
-          console.log('Referenda count:', referendaCount.toNumber());
+          if (import.meta.env.DEV) console.log('Referenda count:', referendaCount.toNumber());
           activeProposals = referendaCount.toNumber();
         } catch (err) {
-          console.warn('Failed to fetch referenda count:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch referenda count:', err);
         }
 
         // Fetch treasury balance
@@ -65,9 +65,9 @@ const GovernanceOverview: React.FC = () => {
           );
           const balance = treasuryAccount.data.free.toString();
           treasuryBalance = `${formatBalance(balance)} HEZ`;
-          console.log('Treasury balance:', treasuryBalance);
+          if (import.meta.env.DEV) console.log('Treasury balance:', treasuryBalance);
         } catch (err) {
-          console.warn('Failed to fetch treasury balance:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch treasury balance:', err);
         }
 
         // Fetch council members
@@ -75,9 +75,9 @@ const GovernanceOverview: React.FC = () => {
         try {
           const members = await api.query.council.members();
           parliamentMembers = members.length;
-          console.log('Council members:', parliamentMembers);
+          if (import.meta.env.DEV) console.log('Council members:', parliamentMembers);
         } catch (err) {
-          console.warn('Failed to fetch council members:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch council members:', err);
         }
 
         // Update stats
@@ -92,13 +92,13 @@ const GovernanceOverview: React.FC = () => {
           treasuryBalance
         });
 
-        console.log('✅ Governance data updated:', {
+        if (import.meta.env.DEV) console.log('✅ Governance data updated:', {
           activeProposals,
           parliamentMembers,
           treasuryBalance
         });
       } catch (error) {
-        console.error('Failed to fetch governance data:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch governance data:', error);
       } finally {
         setLoading(false);
       }

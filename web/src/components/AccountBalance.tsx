@@ -82,7 +82,7 @@ export const AccountBalance: React.FC = () => {
     if (!api || !isApiReady) return;
 
     try {
-      console.log('💰 Fetching token prices from pools...');
+      if (import.meta.env.DEV) console.log('💰 Fetching token prices from pools...');
 
       // Import utilities for pool account derivation
       const { stringToU8a } = await import('@polkadot/util');
@@ -108,10 +108,10 @@ export const AccountBalance: React.FC = () => {
 
         // Calculate price: 1 HEZ = ? USD
         const hezPrice = Number(reserve1 * BigInt(10 ** 12)) / Number(reserve0 * BigInt(10 ** 6));
-        console.log('✅ HEZ price:', hezPrice, 'USD');
+        if (import.meta.env.DEV) console.log('✅ HEZ price:', hezPrice, 'USD');
         setHezUsdPrice(hezPrice);
       } else {
-        console.warn('⚠️ wHEZ/wUSDT pool has no reserves');
+        if (import.meta.env.DEV) console.warn('⚠️ wHEZ/wUSDT pool has no reserves');
       }
 
       // Fetch PEZ/wUSDT pool reserves (Asset 1 / Asset 2)
@@ -133,13 +133,13 @@ export const AccountBalance: React.FC = () => {
 
         // Calculate price: 1 PEZ = ? USD
         const pezPrice = Number(reserve1 * BigInt(10 ** 12)) / Number(reserve0 * BigInt(10 ** 6));
-        console.log('✅ PEZ price:', pezPrice, 'USD');
+        if (import.meta.env.DEV) console.log('✅ PEZ price:', pezPrice, 'USD');
         setPezUsdPrice(pezPrice);
       } else {
-        console.warn('⚠️ PEZ/wUSDT pool has no reserves');
+        if (import.meta.env.DEV) console.warn('⚠️ PEZ/wUSDT pool has no reserves');
       }
     } catch (error) {
-      console.error('❌ Failed to fetch token prices:', error);
+      if (import.meta.env.DEV) console.error('❌ Failed to fetch token prices:', error);
     }
   };
 
@@ -210,13 +210,13 @@ export const AccountBalance: React.FC = () => {
             });
           }
         } catch (error) {
-          console.error(`Failed to fetch token ${assetId}:`, error);
+          if (import.meta.env.DEV) console.error(`Failed to fetch token ${assetId}:`, error);
         }
       }
 
       setOtherTokens(tokens);
     } catch (error) {
-      console.error('Failed to fetch other tokens:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch other tokens:', error);
     }
   };
 
@@ -258,7 +258,7 @@ export const AccountBalance: React.FC = () => {
           setPezBalance('0');
         }
       } catch (error) {
-        console.error('Failed to fetch PEZ balance:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch PEZ balance:', error);
         setPezBalance('0');
       }
 
@@ -277,7 +277,7 @@ export const AccountBalance: React.FC = () => {
           setUsdtBalance('0');
         }
       } catch (error) {
-        console.error('Failed to fetch USDT balance:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch USDT balance:', error);
         setUsdtBalance('0');
       }
 
@@ -287,7 +287,7 @@ export const AccountBalance: React.FC = () => {
       // Fetch other tokens
       await fetchOtherTokens();
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch balance:', error);
     } finally {
       setIsLoading(false);
     }
@@ -342,7 +342,7 @@ export const AccountBalance: React.FC = () => {
         const userScores = await getAllScores(api, selectedAccount.address);
         setScores(userScores);
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        if (import.meta.env.DEV) console.error('Failed to fetch scores:', err);
         setScores({
           trustScore: 0,
           referralScore: 0,
@@ -406,7 +406,7 @@ export const AccountBalance: React.FC = () => {
           }
         );
       } catch (error) {
-        console.error('Failed to subscribe to PEZ balance:', error);
+        if (import.meta.env.DEV) console.error('Failed to subscribe to PEZ balance:', error);
       }
 
       // Subscribe to USDT balance (wUSDT - Asset ID: 2)
@@ -428,7 +428,7 @@ export const AccountBalance: React.FC = () => {
           }
         );
       } catch (error) {
-        console.error('Failed to subscribe to USDT balance:', error);
+        if (import.meta.env.DEV) console.error('Failed to subscribe to USDT balance:', error);
       }
     };
 

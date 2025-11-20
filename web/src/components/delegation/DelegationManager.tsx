@@ -29,7 +29,7 @@ const DelegationManager: React.FC = () => {
   };
 
   const handleDelegate = () => {
-    console.log('Delegating:', {
+    if (import.meta.env.DEV) console.log('Delegating:', {
       delegate: selectedDelegate,
       amount: delegationAmount,
       period: delegationPeriod

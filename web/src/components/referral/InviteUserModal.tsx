@@ -46,7 +46,7 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-      console.error('Failed to copy:', error);
+      if (import.meta.env.DEV) console.error('Failed to copy:', error);
     }
   };
 
@@ -82,7 +82,7 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log(`Initiating referral from ${selectedAccount.address} to ${inviteeAddress}...`);
+      if (import.meta.env.DEV) console.log(`Initiating referral from ${selectedAccount.address} to ${inviteeAddress}...`);
 
       const tx = api.tx.referral.initiateReferral(inviteeAddress);
 
@@ -95,21 +95,21 @@ export const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClos
           } else {
             errorMessage = dispatchError.toString();
           }
-          console.error(errorMessage);
+          if (import.meta.env.DEV) console.error(errorMessage);
           setInitiateError(errorMessage);
           setInitiating(false);
           return;
         }
 
         if (status.isInBlock || status.isFinalized) {
-          console.log('Referral initiated successfully!');
+          if (import.meta.env.DEV) console.log('Referral initiated successfully!');
           setInitiateSuccess(true);
           setInitiating(false);
           setInviteeAddress('');
         }
       });
     } catch (err: unknown) {
-      console.error('Failed to initiate referral:', err);
+      if (import.meta.env.DEV) console.error('Failed to initiate referral:', err);
       setInitiateError(err.message || 'Failed to initiate referral');
       setInitiating(false);
     }

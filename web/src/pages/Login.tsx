@@ -108,7 +108,7 @@ const Login: React.FC = () => {
         setError('Please select an account from your Polkadot.js extension');
       }
     } catch (err) {
-      console.error('Wallet connection failed:', err);
+      if (import.meta.env.DEV) console.error('Wallet connection failed:', err);
       const errorMsg = err instanceof Error ? err.message : '';
       if (errorMsg?.includes('extension')) {
         setError('Polkadot.js extension not found. Please install it first.');

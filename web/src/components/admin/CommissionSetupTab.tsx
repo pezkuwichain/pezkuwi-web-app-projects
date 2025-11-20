@@ -38,10 +38,10 @@ export function CommissionSetupTab() {
       // Commission is initialized if there&apos;s at least one member
       setSetupComplete(memberList.length > 0);
 
-      console.log('Commission members:', memberList);
-      console.log('Setup complete:', memberList.length > 0);
+      if (import.meta.env.DEV) console.log('Commission members:', memberList);
+      if (import.meta.env.DEV) console.log('Setup complete:', memberList.length > 0);
     } catch (error) {
-      console.error('Error checking setup:', error);
+      if (import.meta.env.DEV) console.error('Error checking setup:', error);
     } finally {
       setLoading(false);
     }
@@ -107,8 +107,8 @@ export function CommissionSetupTab() {
       // Add new members
       const updatedList = [...memberList, ...newMembers];
 
-      console.log('Adding new members:', newMembers);
-      console.log('Updated member list:', updatedList);
+      if (import.meta.env.DEV) console.log('Adding new members:', newMembers);
+      if (import.meta.env.DEV) console.log('Updated member list:', updatedList);
 
       const tx = api.tx.sudo.sudo(
         api.tx.dynamicCommissionCollective.setMembers(
@@ -150,7 +150,7 @@ export function CommissionSetupTab() {
         );
       });
     } catch (error) {
-      console.error('Error adding member:', error);
+      if (import.meta.env.DEV) console.error('Error adding member:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to add member',
@@ -176,8 +176,8 @@ export function CommissionSetupTab() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Initializing KYC Commission...');
-      console.log('Proxy account:', COMMISSIONS.KYC.proxyAccount);
+      if (import.meta.env.DEV) console.log('Initializing KYC Commission...');
+      if (import.meta.env.DEV) console.log('Proxy account:', COMMISSIONS.KYC.proxyAccount);
 
       // Initialize DynamicCommissionCollective with Alice as first member
       // Other members can be added later
@@ -194,7 +194,7 @@ export function CommissionSetupTab() {
           selectedAccount.address,
           { signer: injector.signer },
           ({ status, dispatchError, events }) => {
-            console.log('Transaction status:', status.type);
+            if (import.meta.env.DEV) console.log('Transaction status:', status.type);
 
             if (status.isInBlock || status.isFinalized) {
               if (dispatchError) {
@@ -207,7 +207,7 @@ export function CommissionSetupTab() {
                   errorMessage = dispatchError.toString();
                 }
 
-                console.error('Setup error:', errorMessage);
+                if (import.meta.env.DEV) console.error('Setup error:', errorMessage);
                 toast({
                   title: 'Setup Failed',
                   description: errorMessage,
@@ -223,20 +223,20 @@ export function CommissionSetupTab() {
               );
 
               if (sudidEvent) {
-                console.log('✅ KYC Commission initialized');
+                if (import.meta.env.DEV) console.log('✅ KYC Commission initialized');
                 toast({
                   title: 'Success',
                   description: 'KYC Commission initialized successfully!',
                 });
                 resolve();
               } else {
-                console.warn('Transaction included but no Sudid event');
+                if (import.meta.env.DEV) console.warn('Transaction included but no Sudid event');
                 resolve();
               }
             }
           }
         ).catch((error) => {
-          console.error('Failed to sign and send:', error);
+          if (import.meta.env.DEV) console.error('Failed to sign and send:', error);
           toast({
             title: 'Transaction Error',
             description: error instanceof Error ? error.message : 'Failed to submit transaction',
@@ -250,7 +250,7 @@ export function CommissionSetupTab() {
       setTimeout(() => checkSetup(), 2000);
 
     } catch (error) {
-      console.error('Error initializing commission:', error);
+      if (import.meta.env.DEV) console.error('Error initializing commission:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to initialize commission',

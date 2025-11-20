@@ -87,7 +87,7 @@ export function KycApprovalTab() {
             });
           }
         } catch (err) {
-          console.error('Error fetching identity for', address, err);
+          if (import.meta.env.DEV) console.error('Error fetching identity for', address, err);
         }
 
         apps.push({
@@ -101,9 +101,9 @@ export function KycApprovalTab() {
       setPendingApps(apps);
       setIdentities(identityMap);
 
-      console.log(`Loaded ${apps.length} pending KYC applications`);
+      if (import.meta.env.DEV) console.log(`Loaded ${apps.length} pending KYC applications`);
     } catch (error) {
-      console.error('Error loading pending applications:', error);
+      if (import.meta.env.DEV) console.error('Error loading pending applications:', error);
       toast({
         title: 'Error',
         description: 'Failed to load pending applications',
@@ -129,8 +129,8 @@ export function KycApprovalTab() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Proposing KYC approval for:', application.address);
-      console.log('Commission member wallet:', selectedAccount.address);
+      if (import.meta.env.DEV) console.log('Proposing KYC approval for:', application.address);
+      if (import.meta.env.DEV) console.log('Commission member wallet:', selectedAccount.address);
 
       // Check if user is a member of DynamicCommissionCollective
       const members = await api.query.dynamicCommissionCollective.members();
@@ -147,16 +147,16 @@ export function KycApprovalTab() {
         return;
       }
 
-      console.log('✅ User is commission member');
+      if (import.meta.env.DEV) console.log('✅ User is commission member');
 
       // Create proposal for KYC approval
       const proposal = api.tx.identityKyc.approveKyc(application.address);
       const lengthBound = proposal.encodedLength;
 
       // Create proposal directly (no proxy needed)
-      console.log('Creating commission proposal for KYC approval');
-      console.log('Applicant:', application.address);
-      console.log('Threshold:', COMMISSIONS.KYC.threshold);
+      if (import.meta.env.DEV) console.log('Creating commission proposal for KYC approval');
+      if (import.meta.env.DEV) console.log('Applicant:', application.address);
+      if (import.meta.env.DEV) console.log('Threshold:', COMMISSIONS.KYC.threshold);
 
       const tx = api.tx.dynamicCommissionCollective.propose(
         COMMISSIONS.KYC.threshold,
@@ -164,14 +164,14 @@ export function KycApprovalTab() {
         lengthBound
       );
 
-      console.log('Transaction created:', tx.toHuman());
+      if (import.meta.env.DEV) console.log('Transaction created:', tx.toHuman());
 
       await new Promise<void>((resolve, reject) => {
         tx.signAndSend(
           selectedAccount.address,
           { signer: injector.signer },
           ({ status, dispatchError, events }) => {
-            console.log('Transaction status:', status.type);
+            if (import.meta.env.DEV) console.log('Transaction status:', status.type);
 
             if (status.isInBlock || status.isFinalized) {
               if (dispatchError) {
@@ -184,7 +184,7 @@ export function KycApprovalTab() {
                   errorMessage = dispatchError.toString();
                 }
 
-                console.error('Approval error:', errorMessage);
+                if (import.meta.env.DEV) console.error('Approval error:', errorMessage);
                 toast({
                   title: 'Approval Failed',
                   description: errorMessage,
@@ -195,26 +195,26 @@ export function KycApprovalTab() {
               }
 
               // Check for Proposed event
-              console.log('All events:', events.map(e => `${e.event.section}.${e.event.method}`));
+              if (import.meta.env.DEV) console.log('All events:', events.map(e => `${e.event.section}.${e.event.method}`));
               const proposedEvent = events.find(({ event }) =>
                 event.section === 'dynamicCommissionCollective' && event.method === 'Proposed'
               );
 
               if (proposedEvent) {
-                console.log('✅ KYC Approval proposal created');
+                if (import.meta.env.DEV) console.log('✅ KYC Approval proposal created');
                 toast({
                   title: 'Proposal Created',
                   description: `KYC approval proposed for ${application.address.slice(0, 8)}... Waiting for other commission members to vote.`,
                 });
                 resolve();
               } else {
-                console.warn('Transaction included but no Proposed event');
+                if (import.meta.env.DEV) console.warn('Transaction included but no Proposed event');
                 resolve();
               }
             }
           }
         ).catch((error) => {
-          console.error('Failed to sign and send:', error);
+          if (import.meta.env.DEV) console.error('Failed to sign and send:', error);
           toast({
             title: 'Transaction Error',
             description: error instanceof Error ? error.message : 'Failed to submit transaction',
@@ -232,7 +232,7 @@ export function KycApprovalTab() {
       }, 2000);
 
     } catch (error) {
-      console.error('Error approving KYC:', error);
+      if (import.meta.env.DEV) console.error('Error approving KYC:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to approve KYC',
@@ -264,7 +264,7 @@ export function KycApprovalTab() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Rejecting KYC for:', application.address);
+      if (import.meta.env.DEV) console.log('Rejecting KYC for:', application.address);
 
       const tx = api.tx.identityKyc.rejectKyc(application.address);
 
@@ -318,7 +318,7 @@ export function KycApprovalTab() {
       }, 2000);
 
     } catch (error) {
-      console.error('Error rejecting KYC:', error);
+      if (import.meta.env.DEV) console.error('Error rejecting KYC:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to reject KYC',

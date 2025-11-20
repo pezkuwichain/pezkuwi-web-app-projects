@@ -58,7 +58,7 @@ export default function AdminPanel() {
       setUsers(profiles || []);
       setAdminRoles(roles || []);
     } catch (error) {
-      console.error('Error loading admin data:', error);
+      if (import.meta.env.DEV) console.error('Error loading admin data:', error);
     } finally {
       setLoading(false);
     }
@@ -87,7 +87,7 @@ export default function AdminPanel() {
       });
       loadAdminData();
     } catch (error) {
-      console.error('Error updating role:', error);
+      if (import.meta.env.DEV) console.error('Error updating role:', error);
       toast({
         title: 'Error',
         description: 'Failed to update user role',
@@ -120,7 +120,7 @@ export default function AdminPanel() {
         description: 'Notification sent successfully',
       });
     } catch (error) {
-      console.error('Error sending notification:', error);
+      if (import.meta.env.DEV) console.error('Error sending notification:', error);
       toast({
         title: 'Error',
         description: 'Failed to send notification',

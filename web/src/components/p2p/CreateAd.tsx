@@ -139,7 +139,7 @@ export function CreateAd({ onAdCreated }: CreateAdProps) {
       toast.success('Ad created successfully!');
       onAdCreated();
     } catch (error) {
-      console.error('Create ad error:', error);
+      if (import.meta.env.DEV) console.error('Create ad error:', error);
       // Error toast already shown in createFiatOffer
     } finally {
       setLoading(false);

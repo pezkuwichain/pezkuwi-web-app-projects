@@ -117,7 +117,7 @@ export default function Citizens() {
 
       reader.readAsDataURL(file);
     } catch (error) {
-      console.error('Photo upload error:', error);
+      if (import.meta.env.DEV) console.error('Photo upload error:', error);
       setUploadingPhoto(false);
       toast({
         title: "Yükleme hatası (Upload error)",
@@ -252,7 +252,7 @@ export default function Citizens() {
     business: [],
     judicial: []
   };
-  console.log('Role categories:', roleCategories);
+  if (import.meta.env.DEV) console.log('Role categories:', roleCategories);
 
   const currentAnnouncement = announcements[currentAnnouncementIndex];
 

@@ -86,7 +86,7 @@ export function IdentityProvider({ children }: { children: React.ReactNode }) {
       setProfile(updatedProfile);
       localStorage.setItem(`identity_${profile.address}`, JSON.stringify(updatedProfile));
     } catch (error) {
-      console.error('KYC verification failed:', error);
+      if (import.meta.env.DEV) console.error('KYC verification failed:', error);
     } finally {
       setIsVerifying(false);
     }

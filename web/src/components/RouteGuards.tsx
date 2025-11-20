@@ -81,7 +81,7 @@ export const CitizenRoute: React.FC<RouteGuardProps> = ({
         const citizenStatus = await checkCitizenStatus(api, selectedAccount.address);
         setIsCitizen(citizenStatus);
       } catch (error) {
-        console.error('Citizen check failed:', error);
+        if (import.meta.env.DEV) console.error('Citizen check failed:', error);
         setIsCitizen(false);
       } finally {
         setLoading(false);
@@ -170,7 +170,7 @@ export const ValidatorRoute: React.FC<RouteGuardProps> = ({
         const validatorStatus = await checkValidatorStatus(api, selectedAccount.address);
         setIsValidator(validatorStatus);
       } catch (error) {
-        console.error('Validator check failed:', error);
+        if (import.meta.env.DEV) console.error('Validator check failed:', error);
         setIsValidator(false);
       } finally {
         setLoading(false);
@@ -261,7 +261,7 @@ export const EducatorRoute: React.FC<RouteGuardProps> = ({
         const educatorStatus = await checkEducatorRole(api, selectedAccount.address);
         setIsEducator(educatorStatus);
       } catch (error) {
-        console.error('Educator check failed:', error);
+        if (import.meta.env.DEV) console.error('Educator check failed:', error);
         setIsEducator(false);
       } finally {
         setLoading(false);
@@ -358,7 +358,7 @@ export const ModeratorRoute: React.FC<RouteGuardProps> = ({
         const moderatorStatus = await checkModeratorRole(api, selectedAccount.address);
         setIsModerator(moderatorStatus);
       } catch (error) {
-        console.error('Moderator check failed:', error);
+        if (import.meta.env.DEV) console.error('Moderator check failed:', error);
         setIsModerator(false);
       } finally {
         setLoading(false);

@@ -196,7 +196,7 @@ const WalletDashboard: React.FC = () => {
 
       setRecentTransactions(txList);
     } catch {
-      console.error('Failed to fetch recent transactions:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch recent transactions:', error);
     } finally {
       setIsLoadingRecent(false);
     }

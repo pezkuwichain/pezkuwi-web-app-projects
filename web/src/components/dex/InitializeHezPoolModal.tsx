@@ -58,7 +58,7 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
         const whezData = await api.query.assets.account(0, account);
         setWhezBalance(whezData.isSome ? whezData.unwrap().balance.toString() : '0');
       } catch (error) {
-        console.error('Failed to fetch balances:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch balances:', error);
       }
     };
 
@@ -91,7 +91,7 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
     setErrorMessage('');
 
     try {
-      console.log('🔄 Wrapping HEZ to wHEZ...', {
+      if (import.meta.env.DEV) console.log('🔄 Wrapping HEZ to wHEZ...', {
         hezAmount,
         hezAmountRaw: hezAmountRaw.toString(),
       });
@@ -104,10 +104,10 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
         account,
         { signer },
         ({ status, dispatchError, events }) => {
-          console.log('📦 Transaction status:', status.type);
+          if (import.meta.env.DEV) console.log('📦 Transaction status:', status.type);
 
           if (status.isInBlock) {
-            console.log('✅ In block:', status.asInBlock.toHex());
+            if (import.meta.env.DEV) console.log('✅ In block:', status.asInBlock.toHex());
 
             if (dispatchError) {
               let errorMsg = '';
@@ -115,10 +115,10 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
               if (dispatchError.isModule) {
                 const decoded = api.registry.findMetaError(dispatchError.asModule);
                 errorMsg = `${decoded.section}.${decoded.name}: ${decoded.docs.join(' ')}`;
-                console.error('❌ Module error:', errorMsg);
+                if (import.meta.env.DEV) console.error('❌ Module error:', errorMsg);
               } else {
                 errorMsg = dispatchError.toString();
-                console.error('❌ Dispatch error:', errorMsg);
+                if (import.meta.env.DEV) console.error('❌ Dispatch error:', errorMsg);
               }
 
               setErrorMessage(errorMsg);
@@ -129,8 +129,8 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
                 variant: 'destructive',
               });
             } else {
-              console.log('✅ Wrap successful!');
-              console.log('📋 Events:', events.map(e => e.event.method).join(', '));
+              if (import.meta.env.DEV) console.log('✅ Wrap successful!');
+              if (import.meta.env.DEV) console.log('📋 Events:', events.map(e => e.event.method).join(', '));
               setTxStatus('success');
               toast({
                 title: 'Success!',
@@ -145,7 +145,7 @@ export const InitializeHezPoolModal: React.FC<InitializeHezPoolModalProps> = ({
         }
       );
     } catch (error) {
-      console.error('Wrap failed:', error);
+      if (import.meta.env.DEV) console.error('Wrap failed:', error);
       setErrorMessage(error instanceof Error ? error.message : 'Transaction failed');
       setTxStatus('error');
       toast({

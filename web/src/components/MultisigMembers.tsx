@@ -52,7 +52,7 @@ export const MultisigMembers: React.FC<MultisigMembersProps> = ({
           setMultisigAddress(multisig);
         }
       } catch (error) {
-        console.error('Error fetching multisig members:', error);
+        if (import.meta.env.DEV) console.error('Error fetching multisig members:', error);
       } finally {
         setLoading(false);
       }

@@ -92,7 +92,7 @@ export function SecurityAudit() {
 
       setAuditLogs(logs || []);
     } catch (error) {
-      console.error('Error loading security data:', error);
+      if (import.meta.env.DEV) console.error('Error loading security data:', error);
     } finally {
       setLoading(false);
     }

@@ -96,7 +96,7 @@ export function useTreasury() {
         setProposals(proposalsList);
 
       } catch (err) {
-        console.error('Error fetching treasury data:', err);
+        if (import.meta.env.DEV) console.error('Error fetching treasury data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch treasury data');
       } finally {
         setLoading(false);

@@ -82,7 +82,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
           const freeBalance = balance.data.free.toString();
           setFromBalance(freeBalance);
         } catch (error) {
-          console.error('Failed to fetch HEZ balance:', error);
+          if (import.meta.env.DEV) console.error('Failed to fetch HEZ balance:', error);
           setFromBalance('0');
         }
       } else if (fromAssetId !== null) {
@@ -90,7 +90,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
           const balanceData = await api.query.assets.account(fromAssetId, account);
           setFromBalance(balanceData.isSome ? balanceData.unwrap().balance.toString() : '0');
         } catch (error) {
-          console.error('Failed to fetch from balance:', error);
+          if (import.meta.env.DEV) console.error('Failed to fetch from balance:', error);
           setFromBalance('0');
         }
       }
@@ -102,7 +102,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
           const freeBalance = balance.data.free.toString();
           setToBalance(freeBalance);
         } catch (error) {
-          console.error('Failed to fetch HEZ balance:', error);
+          if (import.meta.env.DEV) console.error('Failed to fetch HEZ balance:', error);
           setToBalance('0');
         }
       } else if (toAssetId !== null) {
@@ -110,7 +110,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
           const balanceData = await api.query.assets.account(toAssetId, account);
           setToBalance(balanceData.isSome ? balanceData.unwrap().balance.toString() : '0');
         } catch (error) {
-          console.error('Failed to fetch to balance:', error);
+          if (import.meta.env.DEV) console.error('Failed to fetch to balance:', error);
           setToBalance('0');
         }
       }
@@ -139,7 +139,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
 
       setToAmount(toAmountDisplay);
     } catch (error) {
-      console.error('Failed to calculate output:', error);
+      if (import.meta.env.DEV) console.error('Failed to calculate output:', error);
       setToAmount('');
     }
   }, [fromAmount, activePool, fromTokenInfo, toTokenInfo, fromAssetId, toAssetId]);
@@ -217,7 +217,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
         toTokenInfo.decimals
       );
 
-      console.log('💰 Swap transaction:', {
+      if (import.meta.env.DEV) console.log('💰 Swap transaction:', {
         from: fromToken,
         to: toToken,
         amount: fromAmount,
@@ -321,7 +321,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ pools }) => {
         }
       );
     } catch (error) {
-      console.error('Swap failed:', error);
+      if (import.meta.env.DEV) console.error('Swap failed:', error);
       setErrorMessage(error instanceof Error ? error.message : 'Transaction failed');
       setTxStatus('error');
       toast({

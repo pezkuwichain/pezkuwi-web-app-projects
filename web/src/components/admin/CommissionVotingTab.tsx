@@ -47,25 +47,25 @@ export function CommissionVotingTab() {
 
   const checkMembership = async () => {
     if (!api || !selectedAccount) {
-      console.log('No API or selected account');
+      if (import.meta.env.DEV) console.log('No API or selected account');
       setIsCommissionMember(false);
       return;
     }
 
     try {
-      console.log('Checking membership for:', selectedAccount.address);
+      if (import.meta.env.DEV) console.log('Checking membership for:', selectedAccount.address);
 
       // Check if user is directly a member of DynamicCommissionCollective
       const members = await api.query.dynamicCommissionCollective.members();
       const memberList = members.toJSON() as string[];
-      console.log('Commission members:', memberList);
+      if (import.meta.env.DEV) console.log('Commission members:', memberList);
 
       const isMember = memberList.includes(selectedAccount.address);
-      console.log('Is commission member:', isMember);
+      if (import.meta.env.DEV) console.log('Is commission member:', isMember);
 
       setIsCommissionMember(isMember);
     } catch (error) {
-      console.error('Error checking membership:', error);
+      if (import.meta.env.DEV) console.error('Error checking membership:', error);
       setIsCommissionMember(false);
     }
   };
@@ -116,9 +116,9 @@ export function CommissionVotingTab() {
       }
 
       setProposals(proposalList);
-      console.log(`Loaded ${proposalList.length} active proposals`);
+      if (import.meta.env.DEV) console.log(`Loaded ${proposalList.length} active proposals`);
     } catch (error) {
-      console.error('Error loading proposals:', error);
+      if (import.meta.env.DEV) console.error('Error loading proposals:', error);
       toast({
         title: 'Error',
         description: 'Failed to load proposals',
@@ -153,7 +153,7 @@ export function CommissionVotingTab() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log(`Voting ${approve ? 'AYE' : 'NAY'} on proposal:`, proposal.hash);
+      if (import.meta.env.DEV) console.log(`Voting ${approve ? 'AYE' : 'NAY'} on proposal:`, proposal.hash);
 
       // Vote directly (no proxy needed)
       const tx = api.tx.dynamicCommissionCollective.vote(
@@ -167,7 +167,7 @@ export function CommissionVotingTab() {
           selectedAccount.address,
           { signer: injector.signer },
           ({ status, dispatchError, events }) => {
-            console.log('Transaction status:', status.type);
+            if (import.meta.env.DEV) console.log('Transaction status:', status.type);
 
             if (status.isInBlock || status.isFinalized) {
               if (dispatchError) {
@@ -180,7 +180,7 @@ export function CommissionVotingTab() {
                   errorMessage = dispatchError.toString();
                 }
 
-                console.error('Vote error:', errorMessage);
+                if (import.meta.env.DEV) console.error('Vote error:', errorMessage);
                 toast({
                   title: 'Vote Failed',
                   description: errorMessage,
@@ -201,13 +201,13 @@ export function CommissionVotingTab() {
               );
 
               if (executedEvent) {
-                console.log('✅ Proposal executed (threshold reached)');
+                if (import.meta.env.DEV) console.log('✅ Proposal executed (threshold reached)');
                 toast({
                   title: 'Success',
                   description: 'Proposal passed and executed! KYC approved.',
                 });
               } else if (votedEvent) {
-                console.log('✅ Vote recorded');
+                if (import.meta.env.DEV) console.log('✅ Vote recorded');
                 toast({
                   title: 'Vote Recorded',
                   description: `Your ${approve ? 'AYE' : 'NAY'} vote has been recorded`,
@@ -218,7 +218,7 @@ export function CommissionVotingTab() {
             }
           }
         ).catch((error) => {
-          console.error('Failed to sign and send:', error);
+          if (import.meta.env.DEV) console.error('Failed to sign and send:', error);
           toast({
             title: 'Transaction Error',
             description: error instanceof Error ? error.message : 'Failed to submit transaction',
@@ -234,7 +234,7 @@ export function CommissionVotingTab() {
       }, 2000);
 
     } catch (error) {
-      console.error('Error voting:', error);
+      if (import.meta.env.DEV) console.error('Error voting:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to vote',
@@ -260,7 +260,7 @@ export function CommissionVotingTab() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Executing proposal:', proposal.hash);
+      if (import.meta.env.DEV) console.log('Executing proposal:', proposal.hash);
 
       // Get proposal length bound
       const proposalOption = await api.query.dynamicCommissionCollective.proposalOf(proposal.hash);
@@ -282,7 +282,7 @@ export function CommissionVotingTab() {
           selectedAccount.address,
           { signer: injector.signer },
           ({ status, dispatchError, events }) => {
-            console.log('Transaction status:', status.type);
+            if (import.meta.env.DEV) console.log('Transaction status:', status.type);
 
             if (status.isInBlock || status.isFinalized) {
               if (dispatchError) {
@@ -295,7 +295,7 @@ export function CommissionVotingTab() {
                   errorMessage = dispatchError.toString();
                 }
 
-                console.error('Execute error:', errorMessage);
+                if (import.meta.env.DEV) console.error('Execute error:', errorMessage);
                 toast({
                   title: 'Execute Failed',
                   description: errorMessage,
@@ -315,14 +315,14 @@ export function CommissionVotingTab() {
 
               if (executedEvent) {
                 const eventData = executedEvent.event.data.toHuman();
-                console.log('✅ Proposal executed');
-                console.log('Execute event data:', eventData);
-                console.log('Result:', eventData);
+                if (import.meta.env.DEV) console.log('✅ Proposal executed');
+                if (import.meta.env.DEV) console.log('Execute event data:', eventData);
+                if (import.meta.env.DEV) console.log('Result:', eventData);
 
                 // Check if execution was successful
                 const result = eventData[eventData.length - 1]; // Last parameter is usually the result
                 if (result && typeof result === 'object' && 'Err' in result) {
-                  console.error('Execution failed:', result.Err);
+                  if (import.meta.env.DEV) console.error('Execution failed:', result.Err);
                   toast({
                     title: 'Execution Failed',
                     description: `Proposal closed but execution failed: ${JSON.stringify(result.Err)}`,
@@ -335,7 +335,7 @@ export function CommissionVotingTab() {
                   });
                 }
               } else if (closedEvent) {
-                console.log('Proposal closed');
+                if (import.meta.env.DEV) console.log('Proposal closed');
                 toast({
                   title: 'Proposal Closed',
                   description: 'Proposal has been closed',
@@ -346,7 +346,7 @@ export function CommissionVotingTab() {
             }
           }
         ).catch((error) => {
-          console.error('Failed to sign and send:', error);
+          if (import.meta.env.DEV) console.error('Failed to sign and send:', error);
           toast({
             title: 'Transaction Error',
             description: error instanceof Error ? error.message : 'Failed to submit transaction',
@@ -361,7 +361,7 @@ export function CommissionVotingTab() {
       }, 2000);
 
     } catch (error) {
-      console.error('Error executing:', error);
+      if (import.meta.env.DEV) console.error('Error executing:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to execute proposal',
@@ -443,8 +443,8 @@ export function CommissionVotingTab() {
           memberList.push(selectedAccount.address);
         }
 
-        console.log('Adding member to commission:', selectedAccount.address);
-        console.log('New member list:', memberList);
+        if (import.meta.env.DEV) console.log('Adding member to commission:', selectedAccount.address);
+        if (import.meta.env.DEV) console.log('New member list:', memberList);
 
         // Use sudo to update members (requires sudo access)
         const tx = api.tx.sudo.sudo(

@@ -25,7 +25,7 @@ const HeroSection: React.FC = () => {
           const referendaCount = await api.query.referenda.referendumCount();
           activeProposals = referendaCount.toNumber();
         } catch (err) {
-          console.warn('Failed to fetch referenda:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch referenda:', err);
         }
 
         // Fetch total staked tokens
@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
             tokensStaked = `${formatted} HEZ`;
           }
         } catch (err) {
-          console.warn('Failed to fetch total stake:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch total stake:', err);
         }
 
         // Count total voters from conviction voting
@@ -52,7 +52,7 @@ const HeroSection: React.FC = () => {
           const uniqueAccounts = new Set(votingKeys.map(key => key.args[0].toString()));
           totalVoters = uniqueAccounts.size;
         } catch (err) {
-          console.warn('Failed to fetch voters:', err);
+          if (import.meta.env.DEV) console.warn('Failed to fetch voters:', err);
         }
 
         // Update stats
@@ -63,13 +63,13 @@ const HeroSection: React.FC = () => {
           trustScore: 0 // TODO: Calculate trust score
         });
 
-        console.log('✅ Hero stats updated:', {
+        if (import.meta.env.DEV) console.log('✅ Hero stats updated:', {
           activeProposals,
           totalVoters,
           tokensStaked
         });
       } catch (error) {
-        console.error('Failed to fetch hero stats:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch hero stats:', error);
       }
     };
 

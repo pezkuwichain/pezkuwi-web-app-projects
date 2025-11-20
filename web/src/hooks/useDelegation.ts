@@ -184,7 +184,7 @@ export function useDelegation(userAddress?: string) {
         });
 
       } catch (err) {
-        console.error('Error fetching delegation data:', err);
+        if (import.meta.env.DEV) console.error('Error fetching delegation data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch delegation data');
       } finally {
         setLoading(false);
@@ -216,7 +216,7 @@ export function useDelegation(userAddress?: string) {
 
       return tx;
     } catch (err) {
-      console.error('Error creating delegation transaction:', err);
+      if (import.meta.env.DEV) console.error('Error creating delegation transaction:', err);
       throw err;
     }
   };
@@ -230,7 +230,7 @@ export function useDelegation(userAddress?: string) {
       const tx = api.tx.democracy.undelegate();
       return tx;
     } catch (err) {
-      console.error('Error creating undelegate transaction:', err);
+      if (import.meta.env.DEV) console.error('Error creating undelegate transaction:', err);
       throw err;
     }
   };

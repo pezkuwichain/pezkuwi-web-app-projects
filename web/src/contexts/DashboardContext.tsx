@@ -49,13 +49,13 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
 
       if (error) {
-        console.warn('Profile fetch error (this is normal if Supabase is not configured):', error.message);
+        if (import.meta.env.DEV) console.warn('Profile fetch error (this is normal if Supabase is not configured):', error.message);
         return;
       }
 
       setProfile(data);
     } catch (error) {
-      console.warn('Error fetching profile (this is normal if Supabase is not configured):', error);
+      if (import.meta.env.DEV) console.warn('Error fetching profile (this is normal if Supabase is not configured):', error);
     } finally {
       setLoading(false);
     }
@@ -72,7 +72,7 @@ export function DashboardProvider({ children }: { children: ReactNode }) {
       const details = await getAllTikiNFTDetails(api, selectedAccount.address);
       setNftDetails(details);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      if (import.meta.env.DEV) console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }

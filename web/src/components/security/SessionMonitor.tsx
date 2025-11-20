@@ -45,7 +45,7 @@ export function SessionMonitor() {
       if (error) throw error;
       setSessions(data || []);
     } catch {
-      console.error('Error loading sessions:', error);
+      if (import.meta.env.DEV) console.error('Error loading sessions:', error);
     } finally {
       setLoading(false);
     }

@@ -37,7 +37,7 @@ const DelegateProfile: React.FC = () => {
 
   const handleBecomeDelegate = () => {
     setIsDelegate(true);
-    console.log('Becoming a delegate with:', profileData);
+    if (import.meta.env.DEV) console.log('Becoming a delegate with:', profileData);
   };
 
   if (!isDelegate) {

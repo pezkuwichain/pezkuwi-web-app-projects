@@ -42,11 +42,11 @@ const TokenSwap = () => {
   const [isLoadingRate, setIsLoadingRate] = useState(false);
 
   // Get balances from wallet context
-  console.log('🔍 TokenSwap balances from context:', balances);
-  console.log('🔍 fromToken:', fromToken, 'toToken:', toToken);
+  if (import.meta.env.DEV) console.log('🔍 TokenSwap balances from context:', balances);
+  if (import.meta.env.DEV) console.log('🔍 fromToken:', fromToken, 'toToken:', toToken);
   const fromBalance = balances[fromToken as keyof typeof balances];
   const toBalance = balances[toToken as keyof typeof balances];
-  console.log('🔍 Final balances:', { fromBalance, toBalance });
+  if (import.meta.env.DEV) console.log('🔍 Final balances:', { fromBalance, toBalance });
 
   // Liquidity pool data
   interface LiquidityPool {
@@ -123,7 +123,7 @@ const TokenSwap = () => {
     // Calculate minimum received with slippage
     const minReceived = (amountOut * (1 - parseFloat(slippage) / 100)).toFixed(4);
 
-    console.log('🔍 Uniswap V2 AMM:', {
+    if (import.meta.env.DEV) console.log('🔍 Uniswap V2 AMM:', {
       amountIn,
       amountInWithFee,
       reserveIn,
@@ -149,16 +149,16 @@ const TokenSwap = () => {
 
   // Check if AssetConversion pallet is available
   useEffect(() => {
-    console.log('🔍 Checking DEX availability...', { api: !!api, isApiReady });
+    if (import.meta.env.DEV) console.log('🔍 Checking DEX availability...', { api: !!api, isApiReady });
     if (api && isApiReady) {
       const hasAssetConversion = api.tx.assetConversion !== undefined;
-      console.log('🔍 AssetConversion pallet check:', hasAssetConversion);
+      if (import.meta.env.DEV) console.log('🔍 AssetConversion pallet check:', hasAssetConversion);
       setIsDexAvailable(hasAssetConversion);
 
       if (!hasAssetConversion) {
-        console.warn('⚠️ AssetConversion pallet not available in runtime');
+        if (import.meta.env.DEV) console.warn('⚠️ AssetConversion pallet not available in runtime');
       } else {
-        console.log('✅ AssetConversion pallet is available!');
+        if (import.meta.env.DEV) console.log('✅ AssetConversion pallet is available!');
       }
     }
   }, [api, isApiReady]);
@@ -167,14 +167,14 @@ const TokenSwap = () => {
   // Always use wHEZ/PEZ pool (the only valid pool)
   useEffect(() => {
     const fetchExchangeRate = async () => {
-      console.log('🔍 fetchExchangeRate check:', { api: !!api, isApiReady, isDexAvailable, fromToken, toToken });
+      if (import.meta.env.DEV) console.log('🔍 fetchExchangeRate check:', { api: !!api, isApiReady, isDexAvailable, fromToken, toToken });
 
       if (!api || !isApiReady || !isDexAvailable) {
-        console.log('⚠️ Skipping fetchExchangeRate:', { api: !!api, isApiReady, isDexAvailable });
+        if (import.meta.env.DEV) console.log('⚠️ Skipping fetchExchangeRate:', { api: !!api, isApiReady, isDexAvailable });
         return;
       }
 
-      console.log('✅ Starting fetchExchangeRate...');
+      if (import.meta.env.DEV) console.log('✅ Starting fetchExchangeRate...');
       setIsLoadingRate(true);
       try {
         // Map user-selected tokens to actual pool assets
@@ -189,14 +189,14 @@ const TokenSwap = () => {
         const fromAssetId = getPoolAssetId(fromToken);
         const toAssetId = getPoolAssetId(toToken);
 
-        console.log('🔍 Looking for pool:', { fromToken, toToken, fromAssetId, toAssetId });
+        if (import.meta.env.DEV) console.log('🔍 Looking for pool:', { fromToken, toToken, fromAssetId, toAssetId });
 
         // IMPORTANT: Pool ID must be sorted (smaller asset ID first)
         const [asset1, asset2] = fromAssetId < toAssetId
           ? [fromAssetId, toAssetId]
           : [toAssetId, fromAssetId];
 
-        console.log('🔍 Sorted pool assets:', { asset1, asset2 });
+        if (import.meta.env.DEV) console.log('🔍 Sorted pool assets:', { asset1, asset2 });
 
         // Create pool asset tuple [asset1, asset2] - must be sorted!
         const poolAssets = [
@@ -204,23 +204,23 @@ const TokenSwap = () => {
           { NativeOrAsset: { Asset: asset2 } }
         ];
 
-        console.log('🔍 Pool query with:', poolAssets);
+        if (import.meta.env.DEV) console.log('🔍 Pool query with:', poolAssets);
 
         // Query pool from AssetConversion pallet
         const poolInfo = await api.query.assetConversion.pools(poolAssets);
-        console.log('🔍 Pool query result:', poolInfo.toHuman());
+        if (import.meta.env.DEV) console.log('🔍 Pool query result:', poolInfo.toHuman());
 
-        console.log('🔍 Pool isEmpty?', poolInfo.isEmpty, 'exists?', !poolInfo.isEmpty);
+        if (import.meta.env.DEV) console.log('🔍 Pool isEmpty?', poolInfo.isEmpty, 'exists?', !poolInfo.isEmpty);
 
         if (poolInfo && !poolInfo.isEmpty) {
           const pool = poolInfo.toJSON() as Record<string, unknown>;
-          console.log('🔍 Pool data:', pool);
+          if (import.meta.env.DEV) console.log('🔍 Pool data:', pool);
 
           try {
             // New pallet version: reserves are stored in pool account balances
             // AccountIdConverter implementation in substrate:
             // blake2_256(&Encode::encode(&(PalletId, PoolId))[..])
-            console.log('🔍 Deriving pool account using AccountIdConverter...');
+            if (import.meta.env.DEV) console.log('🔍 Deriving pool account using AccountIdConverter...');
             const { stringToU8a } = await import('@polkadot/util');
             const { blake2AsU8a } = await import('@polkadot/util-crypto');
 
@@ -229,44 +229,44 @@ const TokenSwap = () => {
 
             // Create PoolId tuple (u32, u32)
             const poolId = api.createType('(u32, u32)', [asset1, asset2]);
-            console.log('🔍 Pool ID:', poolId.toHuman());
+            if (import.meta.env.DEV) console.log('🔍 Pool ID:', poolId.toHuman());
 
             // Create (PalletId, PoolId) tuple: ([u8; 8], (u32, u32))
             const palletIdType = api.createType('[u8; 8]', PALLET_ID);
             const fullTuple = api.createType('([u8; 8], (u32, u32))', [palletIdType, poolId]);
 
-            console.log('🔍 Full tuple encoded length:', fullTuple.toU8a().length);
-            console.log('🔍 Full tuple bytes:', Array.from(fullTuple.toU8a()));
+            if (import.meta.env.DEV) console.log('🔍 Full tuple encoded length:', fullTuple.toU8a().length);
+            if (import.meta.env.DEV) console.log('🔍 Full tuple bytes:', Array.from(fullTuple.toU8a()));
 
             // Hash the SCALE-encoded tuple
             const accountHash = blake2AsU8a(fullTuple.toU8a(), 256);
-            console.log('🔍 Account hash:', Array.from(accountHash).slice(0, 8));
+            if (import.meta.env.DEV) console.log('🔍 Account hash:', Array.from(accountHash).slice(0, 8));
 
             const poolAccountId = api.createType('AccountId32', accountHash);
-            console.log('🔍 Pool AccountId (NEW METHOD):', poolAccountId.toString());
+            if (import.meta.env.DEV) console.log('🔍 Pool AccountId (NEW METHOD):', poolAccountId.toString());
 
             // Query pool account's asset balances
-            console.log('🔍 Querying reserves for asset', asset1, 'and', asset2);
+            if (import.meta.env.DEV) console.log('🔍 Querying reserves for asset', asset1, 'and', asset2);
             const reserve0Query = await api.query.assets.account(asset1, poolAccountId);
             const reserve1Query = await api.query.assets.account(asset2, poolAccountId);
 
-            console.log('🔍 Reserve0 query result:', reserve0Query.toHuman());
-            console.log('🔍 Reserve1 query result:', reserve1Query.toHuman());
-            console.log('🔍 Reserve0 isEmpty?', reserve0Query.isEmpty);
-            console.log('🔍 Reserve1 isEmpty?', reserve1Query.isEmpty);
+            if (import.meta.env.DEV) console.log('🔍 Reserve0 query result:', reserve0Query.toHuman());
+            if (import.meta.env.DEV) console.log('🔍 Reserve1 query result:', reserve1Query.toHuman());
+            if (import.meta.env.DEV) console.log('🔍 Reserve0 isEmpty?', reserve0Query.isEmpty);
+            if (import.meta.env.DEV) console.log('🔍 Reserve1 isEmpty?', reserve1Query.isEmpty);
 
             const reserve0Data = reserve0Query.toJSON() as Record<string, unknown>;
             const reserve1Data = reserve1Query.toJSON() as Record<string, unknown>;
 
-            console.log('🔍 Reserve0 JSON:', reserve0Data);
-            console.log('🔍 Reserve1 JSON:', reserve1Data);
+            if (import.meta.env.DEV) console.log('🔍 Reserve0 JSON:', reserve0Data);
+            if (import.meta.env.DEV) console.log('🔍 Reserve1 JSON:', reserve1Data);
 
             if (reserve0Data && reserve1Data && reserve0Data.balance && reserve1Data.balance) {
               // Parse hex string balances to BigInt, then to number
               const balance0Hex = reserve0Data.balance.toString();
               const balance1Hex = reserve1Data.balance.toString();
 
-              console.log('🔍 Raw hex balances:', { balance0Hex, balance1Hex });
+              if (import.meta.env.DEV) console.log('🔍 Raw hex balances:', { balance0Hex, balance1Hex });
 
               // Use correct decimals for each asset
               // asset1=0 (wHEZ): 12 decimals
@@ -278,7 +278,7 @@ const TokenSwap = () => {
               const reserve0 = Number(BigInt(balance0Hex)) / (10 ** decimals0);
               const reserve1 = Number(BigInt(balance1Hex)) / (10 ** decimals1);
 
-              console.log('✅ Reserves found:', { reserve0, reserve1, decimals0, decimals1 });
+              if (import.meta.env.DEV) console.log('✅ Reserves found:', { reserve0, reserve1, decimals0, decimals1 });
 
               // Store pool reserves for AMM calculation
               setPoolReserves({
@@ -293,22 +293,22 @@ const TokenSwap = () => {
                 ? reserve1 / reserve0  // from asset1 to asset2
                 : reserve0 / reserve1; // from asset2 to asset1
 
-              console.log('✅ Exchange rate:', rate, 'direction:', fromAssetId === asset1 ? 'asset1→asset2' : 'asset2→asset1');
+              if (import.meta.env.DEV) console.log('✅ Exchange rate:', rate, 'direction:', fromAssetId === asset1 ? 'asset1→asset2' : 'asset2→asset1');
               setExchangeRate(rate);
             } else {
-              console.warn('⚠️ Pool has no reserves - reserve0Data:', reserve0Data, 'reserve1Data:', reserve1Data);
+              if (import.meta.env.DEV) console.warn('⚠️ Pool has no reserves - reserve0Data:', reserve0Data, 'reserve1Data:', reserve1Data);
               setExchangeRate(0);
             }
           } catch (err) {
-            console.error('❌ Error deriving pool account:', err);
+            if (import.meta.env.DEV) console.error('❌ Error deriving pool account:', err);
             setExchangeRate(0);
           }
         } else {
-          console.warn('No liquidity pool found for this pair');
+          if (import.meta.env.DEV) console.warn('No liquidity pool found for this pair');
           setExchangeRate(0);
         }
       } catch (error) {
-        console.error('Failed to fetch exchange rate:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch exchange rate:', error);
         setExchangeRate(0);
       } finally {
         setIsLoadingRate(false);
@@ -358,7 +358,7 @@ const TokenSwap = () => {
           setLiquidityPools([]);
         }
       } catch (error) {
-        console.error('Failed to fetch liquidity pools:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch liquidity pools:', error);
         setLiquidityPools([]);
       } finally {
         setIsLoadingPools(false);
@@ -384,7 +384,7 @@ const TokenSwap = () => {
 
         const startBlock = Math.max(0, currentBlockNumber - 100);
 
-        console.log('🔍 Fetching swap history from block', startBlock, 'to', currentBlockNumber);
+        if (import.meta.env.DEV) console.log('🔍 Fetching swap history from block', startBlock, 'to', currentBlockNumber);
 
         const transactions: SwapTransaction[] = [];
 
@@ -427,7 +427,7 @@ const TokenSwap = () => {
                     }
                   }
                 } catch (err) {
-                  console.warn('Failed to parse swap path:', err);
+                  if (import.meta.env.DEV) console.warn('Failed to parse swap path:', err);
                 }
 
                 const fromTokenSymbol = fromAssetId === 0 ? 'wHEZ' : fromAssetId === 1 ? 'PEZ' : fromAssetId === 2 ? 'USDT' : `Asset${fromAssetId}`;
@@ -449,14 +449,14 @@ const TokenSwap = () => {
               }
             });
           } catch (err) {
-            console.warn(`Failed to fetch block ${blockNum}:`, err);
+            if (import.meta.env.DEV) console.warn(`Failed to fetch block ${blockNum}:`, err);
           }
         }
 
-        console.log('✅ Swap history fetched:', transactions.length, 'transactions');
+        if (import.meta.env.DEV) console.log('✅ Swap history fetched:', transactions.length, 'transactions');
         setSwapHistory(transactions.slice(0, 10)); // Show max 10
       } catch (error) {
-        console.error('Failed to fetch swap history:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch swap history:', error);
         setSwapHistory([]);
       } finally {
         setIsLoadingHistory(false);
@@ -531,7 +531,7 @@ const TokenSwap = () => {
         toDecimals
       );
 
-      console.log('💰 Swap amounts:', {
+      if (import.meta.env.DEV) console.log('💰 Swap amounts:', {
         fromToken,
         toToken,
         fromAmount,
@@ -628,10 +628,10 @@ const TokenSwap = () => {
         selectedAccount.address,
         { signer: injector.signer },
         async ({ status, events, dispatchError }) => {
-          console.log('🔍 Transaction status:', status.toHuman());
+          if (import.meta.env.DEV) console.log('🔍 Transaction status:', status.toHuman());
 
           if (status.isInBlock) {
-            console.log('✅ Transaction in block:', status.asInBlock.toHex());
+            if (import.meta.env.DEV) console.log('✅ Transaction in block:', status.asInBlock.toHex());
 
             toast({
               title: 'Transaction Submitted',
@@ -640,9 +640,9 @@ const TokenSwap = () => {
           }
 
           if (status.isFinalized) {
-            console.log('✅ Transaction finalized:', status.asFinalized.toHex());
-            console.log('🔍 All events:', events.map(({ event }) => event.toHuman()));
-            console.log('🔍 dispatchError:', dispatchError?.toHuman());
+            if (import.meta.env.DEV) console.log('✅ Transaction finalized:', status.asFinalized.toHex());
+            if (import.meta.env.DEV) console.log('🔍 All events:', events.map(({ event }) => event.toHuman()));
+            if (import.meta.env.DEV) console.log('🔍 dispatchError:', dispatchError?.toHuman());
 
             // Check for errors
             if (dispatchError) {
@@ -677,11 +677,11 @@ const TokenSwap = () => {
 
               // Refresh balances and history without page reload
               await refreshBalances();
-              console.log('✅ Balances refreshed after swap');
+              if (import.meta.env.DEV) console.log('✅ Balances refreshed after swap');
 
               // Refresh swap history after 3 seconds (wait for block finalization)
               setTimeout(async () => {
-                console.log('🔄 Refreshing swap history...');
+                if (import.meta.env.DEV) console.log('🔄 Refreshing swap history...');
                 const fetchSwapHistory = async () => {
                   if (!api || !isApiReady || !isDexAvailable || !selectedAccount) return;
                   setIsLoadingHistory(true);
@@ -723,7 +723,7 @@ const TokenSwap = () => {
                                 }
                               }
                             } catch (err) {
-                              console.warn('Failed to parse swap path in refresh:', err);
+                              if (import.meta.env.DEV) console.warn('Failed to parse swap path in refresh:', err);
                             }
 
                             const fromTokenSymbol = fromAssetId === 0 ? 'wHEZ' : fromAssetId === 1 ? 'PEZ' : fromAssetId === 2 ? 'USDT' : `Asset${fromAssetId}`;
@@ -744,12 +744,12 @@ const TokenSwap = () => {
                           }
                         });
                       } catch (err) {
-                        console.warn(`Failed to fetch block ${blockNum}:`, err);
+                        if (import.meta.env.DEV) console.warn(`Failed to fetch block ${blockNum}:`, err);
                       }
                     }
                     setSwapHistory(transactions.slice(0, 10));
                   } catch (error) {
-                    console.error('Failed to refresh swap history:', error);
+                    if (import.meta.env.DEV) console.error('Failed to refresh swap history:', error);
                   } finally {
                     setIsLoadingHistory(false);
                   }
@@ -769,7 +769,7 @@ const TokenSwap = () => {
         }
       );
     } catch (error) {
-      console.error('Swap failed:', error);
+      if (import.meta.env.DEV) console.error('Swap failed:', error);
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Swap transaction failed',

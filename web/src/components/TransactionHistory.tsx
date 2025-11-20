@@ -40,11 +40,11 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ isOpen, 
 
     setIsLoading(true);
     try {
-      console.log('Fetching transactions...');
+      if (import.meta.env.DEV) console.log('Fetching transactions...');
       const currentBlock = await api.rpc.chain.getBlock();
       const currentBlockNumber = currentBlock.block.header.number.toNumber();
 
-      console.log('Current block number:', currentBlockNumber);
+      if (import.meta.env.DEV) console.log('Current block number:', currentBlockNumber);
       
       const txList: Transaction[] = [];
       const blocksToCheck = Math.min(200, currentBlockNumber);
@@ -66,7 +66,7 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ isOpen, 
             timestamp = Date.now();
           }
           
-          console.log(`Block #${blockNumber}: ${block.block.extrinsics.length} extrinsics`);
+          if (import.meta.env.DEV) console.log(`Block #${blockNumber}: ${block.block.extrinsics.length} extrinsics`);
           
           // Check each extrinsic in the block
           block.block.extrinsics.forEach((extrinsic, index) => {
@@ -77,7 +77,7 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ isOpen, 
 
             const { method, signer } = extrinsic;
             
-            console.log(`  Extrinsic #${index}: ${method.section}.${method.method}, signer: ${signer.toString()}`);
+            if (import.meta.env.DEV) console.log(`  Extrinsic #${index}: ${method.section}.${method.method}, signer: ${signer.toString()}`);
             
             // Check if transaction involves our account
             const fromAddress = signer.toString();
@@ -223,16 +223,16 @@ export const TransactionHistory: React.FC<TransactionHistoryProps> = ({ isOpen, 
             }
           });
         } catch (blockError) {
-          console.warn(`Error processing block #${blockNumber}:`, blockError);
+          if (import.meta.env.DEV) console.warn(`Error processing block #${blockNumber}:`, blockError);
           // Continue to next block
         }
       }
       
-      console.log('Found transactions:', txList.length);
+      if (import.meta.env.DEV) console.log('Found transactions:', txList.length);
       
       setTransactions(txList);
     } catch {
-      console.error('Failed to fetch transactions:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch transactions:', error);
       toast({
         title: "Error",
         description: "Failed to fetch transaction history",

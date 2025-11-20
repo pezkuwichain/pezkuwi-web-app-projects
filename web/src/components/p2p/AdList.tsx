@@ -70,7 +70,7 @@ export function AdList({ type }: AdListProps) {
 
       setOffers(enrichedOffers);
     } catch (error) {
-      console.error('Fetch offers error:', error);
+      if (import.meta.env.DEV) console.error('Fetch offers error:', error);
     } finally {
       setLoading(false);
     }

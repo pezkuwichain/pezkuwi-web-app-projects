@@ -49,7 +49,7 @@ export function ReferralProvider({ children }: { children: ReactNode }) {
       setStats(fetchedStats);
       setMyReferrals(fetchedReferrals);
     } catch (error) {
-      console.error('Error fetching referral stats:', error);
+      if (import.meta.env.DEV) console.error('Error fetching referral stats:', error);
       toast({
         title: 'Error',
         description: 'Failed to load referral statistics',
@@ -135,7 +135,7 @@ export function ReferralProvider({ children }: { children: ReactNode }) {
       await fetchStats();
       return true;
     } catch (error) {
-      console.error('Error inviting user:', error);
+      if (import.meta.env.DEV) console.error('Error inviting user:', error);
 
       let errorMessage = 'Failed to send referral invitation';
       if (error.message) {

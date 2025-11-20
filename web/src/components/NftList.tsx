@@ -58,7 +58,7 @@ export const NftList: React.FC = () => {
         const userTikis = await getUserTikis(api, selectedAccount.address);
         setTikis(userTikis);
       } catch (err) {
-        console.error('Error fetching Tikis:', err);
+        if (import.meta.env.DEV) console.error('Error fetching Tikis:', err);
         setError('Failed to load NFTs');
       } finally {
         setLoading(false);

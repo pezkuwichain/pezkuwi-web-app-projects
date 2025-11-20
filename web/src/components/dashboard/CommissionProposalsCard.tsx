@@ -43,7 +43,7 @@ export function CommissionProposalsCard() {
       const memberList = members.toJSON() as string[];
       setIsCommissionMember(memberList.includes(selectedAccount.address));
     } catch (error) {
-      console.error('Error checking membership:', error);
+      if (import.meta.env.DEV) console.error('Error checking membership:', error);
       setIsCommissionMember(false);
     }
   };
@@ -89,7 +89,7 @@ export function CommissionProposalsCard() {
 
       setProposals(proposalList);
     } catch (error) {
-      console.error('Error loading proposals:', error);
+      if (import.meta.env.DEV) console.error('Error loading proposals:', error);
     } finally {
       setLoading(false);
     }
@@ -249,14 +249,14 @@ export function CommissionProposalsCard() {
 
               if (executedEvent) {
                 const eventData = executedEvent.event.data.toHuman();
-                console.log('✅ Proposal executed');
-                console.log('Execute event data:', eventData);
-                console.log('Result:', eventData);
+                if (import.meta.env.DEV) console.log('✅ Proposal executed');
+                if (import.meta.env.DEV) console.log('Execute event data:', eventData);
+                if (import.meta.env.DEV) console.log('Result:', eventData);
 
                 // Check if execution was successful
                 const result = eventData[eventData.length - 1]; // Last parameter is usually the result
                 if (result && typeof result === 'object' && 'Err' in result) {
-                  console.error('Execution failed:', result.Err);
+                  if (import.meta.env.DEV) console.error('Execution failed:', result.Err);
                   toast({
                     title: 'Execution Failed',
                     description: `Proposal closed but execution failed: ${JSON.stringify(result.Err)}`,

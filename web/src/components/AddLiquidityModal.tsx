@@ -95,13 +95,13 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
         const assetDetails0 = await api.query.assets.asset(asset0);
         const assetDetails1 = await api.query.assets.asset(asset1);
 
-        console.log('🔍 Querying minimum balances for assets:', { asset0, asset1 });
+        if (import.meta.env.DEV) console.log('🔍 Querying minimum balances for assets:', { asset0, asset1 });
 
         if (assetDetails0.isSome && assetDetails1.isSome) {
           const details0 = assetDetails0.unwrap().toJSON() as AssetDetails;
           const details1 = assetDetails1.unwrap().toJSON() as AssetDetails;
 
-          console.log('📦 Asset details:', {
+          if (import.meta.env.DEV) console.log('📦 Asset details:', {
             asset0: details0,
             asset1: details1
           });
@@ -112,7 +112,7 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
           const minBalance0 = Number(minBalance0Raw) / Math.pow(10, asset0Decimals);
           const minBalance1 = Number(minBalance1Raw) / Math.pow(10, asset1Decimals);
 
-          console.log('📊 Minimum deposit requirements from assets:', {
+          if (import.meta.env.DEV) console.log('📊 Minimum deposit requirements from assets:', {
             asset0: asset0Name,
             minBalance0Raw,
             minBalance0,
@@ -124,26 +124,26 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
           setMinDeposit0(minBalance0);
           setMinDeposit1(minBalance1);
         } else {
-          console.warn('⚠️ Asset details not found, using defaults');
+          if (import.meta.env.DEV) console.warn('⚠️ Asset details not found, using defaults');
         }
 
         // Also check if there&apos;s a MintMinLiquidity constant in assetConversion pallet
         if (api.consts.assetConversion) {
           const mintMinLiq = api.consts.assetConversion.mintMinLiquidity;
           if (mintMinLiq) {
-            console.log('🔧 AssetConversion MintMinLiquidity constant:', mintMinLiq.toString());
+            if (import.meta.env.DEV) console.log('🔧 AssetConversion MintMinLiquidity constant:', mintMinLiq.toString());
           }
 
           const liquidityWithdrawalFee = api.consts.assetConversion.liquidityWithdrawalFee;
           if (liquidityWithdrawalFee) {
-            console.log('🔧 AssetConversion LiquidityWithdrawalFee:', liquidityWithdrawalFee.toHuman());
+            if (import.meta.env.DEV) console.log('🔧 AssetConversion LiquidityWithdrawalFee:', liquidityWithdrawalFee.toHuman());
           }
 
           // Log all assetConversion constants
-          console.log('🔧 All assetConversion constants:', Object.keys(api.consts.assetConversion));
+          if (import.meta.env.DEV) console.log('🔧 All assetConversion constants:', Object.keys(api.consts.assetConversion));
         }
       } catch (err) {
-        console.error('❌ Error fetching minimum balances:', err);
+        if (import.meta.env.DEV) console.error('❌ Error fetching minimum balances:', err);
         // Keep default 0.01 if query fails
       }
     };
@@ -189,26 +189,26 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
             if (reserve0 >= MINIMUM_LIQUIDITY && reserve1 >= MINIMUM_LIQUIDITY) {
               setCurrentPrice(reserve1 / reserve0);
               setIsPoolEmpty(false);
-              console.log('Pool has liquidity - auto-calculating ratio:', reserve1 / reserve0);
+              if (import.meta.env.DEV) console.log('Pool has liquidity - auto-calculating ratio:', reserve1 / reserve0);
             } else {
               setCurrentPrice(null);
               setIsPoolEmpty(true);
-              console.log('Pool is empty or has dust only - manual input allowed');
+              if (import.meta.env.DEV) console.log('Pool is empty or has dust only - manual input allowed');
             }
           } else {
             // No reserves found - pool is empty
             setCurrentPrice(null);
             setIsPoolEmpty(true);
-            console.log('Pool is empty - manual input allowed');
+            if (import.meta.env.DEV) console.log('Pool is empty - manual input allowed');
           }
         } else {
           // Pool doesn&apos;t exist yet - completely empty
           setCurrentPrice(null);
           setIsPoolEmpty(true);
-          console.log('Pool does not exist yet - manual input allowed');
+          if (import.meta.env.DEV) console.log('Pool does not exist yet - manual input allowed');
         }
       } catch (err) {
-        console.error('Error fetching pool price:', err);
+        if (import.meta.env.DEV) console.error('Error fetching pool price:', err);
         // On error, assume pool is empty to allow manual input
         setCurrentPrice(null);
         setIsPoolEmpty(true);
@@ -319,9 +319,9 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
         { signer: injector.signer },
         ({ status, events, dispatchError }) => {
           if (status.isInBlock) {
-            console.log('Transaction in block:', status.asInBlock.toHex());
+            if (import.meta.env.DEV) console.log('Transaction in block:', status.asInBlock.toHex());
           } else if (status.isFinalized) {
-            console.log('Transaction finalized:', status.asFinalized.toHex());
+            if (import.meta.env.DEV) console.log('Transaction finalized:', status.asFinalized.toHex());
 
             // Check for errors
             const hasError = events.some(({ event }) =>
@@ -336,23 +336,23 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
                   const decoded = api.registry.findMetaError(dispatchError.asModule);
                   const { docs, name, section } = decoded;
                   errorMessage = `${section}.${name}: ${docs.join(' ')}`;
-                  console.error('Dispatch error:', errorMessage);
+                  if (import.meta.env.DEV) console.error('Dispatch error:', errorMessage);
                 } else {
                   errorMessage = dispatchError.toString();
-                  console.error('Dispatch error:', errorMessage);
+                  if (import.meta.env.DEV) console.error('Dispatch error:', errorMessage);
                 }
               }
 
               events.forEach(({ event }) => {
                 if (api.events.system.ExtrinsicFailed.is(event)) {
-                  console.error('ExtrinsicFailed event:', event.toHuman());
+                  if (import.meta.env.DEV) console.error('ExtrinsicFailed event:', event.toHuman());
                 }
               });
 
               setError(errorMessage);
               setIsLoading(false);
             } else {
-              console.log('Transaction successful');
+              if (import.meta.env.DEV) console.log('Transaction successful');
               setSuccess(true);
               setIsLoading(false);
               setAmount0('');
@@ -368,7 +368,7 @@ export const AddLiquidityModal: React.FC<AddLiquidityModalProps> = ({
         }
       );
     } catch (err) {
-      console.error('Error adding liquidity:', err);
+      if (import.meta.env.DEV) console.error('Error adding liquidity:', err);
       setError(err instanceof Error ? err.message : 'Failed to add liquidity');
       setIsLoading(false);
     }

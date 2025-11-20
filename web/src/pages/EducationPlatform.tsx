@@ -32,7 +32,7 @@ export default function EducationPlatform() {
       const studentEnrollments = await getStudentEnrollments(selectedAccount.address);
       setEnrollments(studentEnrollments);
     } catch (error) {
-      console.error('Failed to fetch enrollments:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch enrollments:', error);
       toast({
         title: 'Error',
         description: 'Failed to fetch your enrollments.',

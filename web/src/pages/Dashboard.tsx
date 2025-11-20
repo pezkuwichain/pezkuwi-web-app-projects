@@ -61,7 +61,7 @@ export default function Dashboard() {
         .maybeSingle();
 
       if (error) {
-        console.error('Profile fetch error:', error);
+        if (import.meta.env.DEV) console.error('Profile fetch error:', error);
         return;
       }
 
@@ -103,7 +103,7 @@ export default function Dashboard() {
 
       setProfile(data);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      if (import.meta.env.DEV) console.error('Error fetching profile:', error);
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,7 @@ export default function Dashboard() {
       const status = await getKycStatus(api, selectedAccount.address);
       setKycStatus(status);
     } catch (error) {
-      console.error('Error fetching scores and tikis:', error);
+      if (import.meta.env.DEV) console.error('Error fetching scores and tikis:', error);
     } finally {
       setLoadingScores(false);
     }
@@ -147,26 +147,26 @@ export default function Dashboard() {
       return;
     }
 
-    console.log('🔄 Attempting to send verification email to:', user.email);
-    console.log('🔐 User object:', user);
+    if (import.meta.env.DEV) console.log('🔄 Attempting to send verification email to:', user.email);
+    if (import.meta.env.DEV) console.log('🔐 User object:', user);
 
     try {
       // Method 1: Try resend API
-      console.log('📧 Trying Supabase auth.resend()...');
+      if (import.meta.env.DEV) console.log('📧 Trying Supabase auth.resend()...');
       const { error: resendError } = await supabase.auth.resend({
         type: 'signup',
         email: user.email,
       });
 
       if (resendError) {
-        console.error('❌ Resend error:', resendError);
+        if (import.meta.env.DEV) console.error('❌ Resend error:', resendError);
       } else {
-        console.log('✅ Resend successful');
+        if (import.meta.env.DEV) console.log('✅ Resend successful');
       }
 
       // If resend fails, try alternative method
       if (resendError) {
-        console.warn('Resend failed, trying alternative method:', resendError);
+        if (import.meta.env.DEV) console.warn('Resend failed, trying alternative method:', resendError);
 
         // Method 2: Request password reset as verification alternative
         // This will send an email if the account exists
@@ -182,7 +182,7 @@ export default function Dashboard() {
         description: "Please check your email inbox and spam folder",
       });
     } catch (error) {
-      console.error('Error sending verification email:', error);
+      if (import.meta.env.DEV) console.error('Error sending verification email:', error);
 
       // Provide more detailed error message
       let errorMessage = "Failed to send verification email";
@@ -238,7 +238,7 @@ export default function Dashboard() {
       const { web3FromAddress } = await import('@polkadot/extension-dapp');
       const injector = await web3FromAddress(selectedAccount.address);
 
-      console.log('Renouncing citizenship...');
+      if (import.meta.env.DEV) console.log('Renouncing citizenship...');
 
       const tx = api.tx.identityKyc.renounceCitizenship();
 
@@ -251,7 +251,7 @@ export default function Dashboard() {
           } else {
             errorMessage = dispatchError.toString();
           }
-          console.error(errorMessage);
+          if (import.meta.env.DEV) console.error(errorMessage);
           toast({
             title: "Renunciation Failed",
             description: errorMessage,
@@ -262,12 +262,12 @@ export default function Dashboard() {
         }
 
         if (status.isInBlock || status.isFinalized) {
-          console.log('✅ Citizenship renounced successfully');
+          if (import.meta.env.DEV) console.log('✅ Citizenship renounced successfully');
 
           // Check for CitizenshipRenounced event
           events.forEach(({ event }) => {
             if (event.section === 'identityKyc' && event.method === 'CitizenshipRenounced') {
-              console.log('📢 CitizenshipRenounced event detected');
+              if (import.meta.env.DEV) console.log('📢 CitizenshipRenounced event detected');
               toast({
                 title: "Citizenship Renounced",
                 description: "Your citizenship has been successfully renounced. You can reapply anytime."
@@ -287,7 +287,7 @@ export default function Dashboard() {
       });
 
     } catch (err) {
-      console.error('Renunciation error:', err);
+      if (import.meta.env.DEV) console.error('Renunciation error:', err);
       const errorMsg = err instanceof Error ? err.message : 'Failed to renounce citizenship';
       toast({
         title: "Error",

@@ -55,18 +55,18 @@ export const CreatePoolModal: React.FC<CreatePoolModalProps> = ({
       if (!api || !isApiReady || !account || asset1Id === null) return;
 
       try {
-        console.log('🔍 Fetching balance for asset', asset1Id, 'account', account);
+        if (import.meta.env.DEV) console.log('🔍 Fetching balance for asset', asset1Id, 'account', account);
         const balance1Data = await api.query.assets.account(asset1Id, account);
         if (balance1Data.isSome) {
           const balance = balance1Data.unwrap().balance.toString();
-          console.log('✅ Balance found for asset', asset1Id, ':', balance);
+          if (import.meta.env.DEV) console.log('✅ Balance found for asset', asset1Id, ':', balance);
           setBalance1(balance);
         } else {
-          console.warn('⚠️ No balance found for asset', asset1Id);
+          if (import.meta.env.DEV) console.warn('⚠️ No balance found for asset', asset1Id);
           setBalance1('0');
         }
       } catch (error) {
-        console.error('❌ Failed to fetch balance 1:', error);
+        if (import.meta.env.DEV) console.error('❌ Failed to fetch balance 1:', error);
         setBalance1('0');
       }
     };
@@ -79,18 +79,18 @@ export const CreatePoolModal: React.FC<CreatePoolModalProps> = ({
       if (!api || !isApiReady || !account || asset2Id === null) return;
 
       try {
-        console.log('🔍 Fetching balance for asset', asset2Id, 'account', account);
+        if (import.meta.env.DEV) console.log('🔍 Fetching balance for asset', asset2Id, 'account', account);
         const balance2Data = await api.query.assets.account(asset2Id, account);
         if (balance2Data.isSome) {
           const balance = balance2Data.unwrap().balance.toString();
-          console.log('✅ Balance found for asset', asset2Id, ':', balance);
+          if (import.meta.env.DEV) console.log('✅ Balance found for asset', asset2Id, ':', balance);
           setBalance2(balance);
         } else {
-          console.warn('⚠️ No balance found for asset', asset2Id);
+          if (import.meta.env.DEV) console.warn('⚠️ No balance found for asset', asset2Id);
           setBalance2('0');
         }
       } catch (error) {
-        console.error('❌ Failed to fetch balance 2:', error);
+        if (import.meta.env.DEV) console.error('❌ Failed to fetch balance 2:', error);
         setBalance2('0');
       }
     };
@@ -121,7 +121,7 @@ export const CreatePoolModal: React.FC<CreatePoolModalProps> = ({
     const amount1Raw = parseTokenInput(amount1Input, token1.decimals);
     const amount2Raw = parseTokenInput(amount2Input, token2.decimals);
 
-    console.log('💰 Validation check:', {
+    if (import.meta.env.DEV) console.log('💰 Validation check:', {
       token1: token1.symbol,
       amount1Input,
       amount1Raw,
@@ -213,7 +213,7 @@ export const CreatePoolModal: React.FC<CreatePoolModalProps> = ({
         }
       );
     } catch (error) {
-      console.error('Pool creation failed:', error);
+      if (import.meta.env.DEV) console.error('Pool creation failed:', error);
       setErrorMessage(error instanceof Error ? error.message : 'Transaction failed');
       setTxStatus('error');
     }

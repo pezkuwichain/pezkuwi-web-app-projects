@@ -12,7 +12,7 @@ const TokenomicsSection: React.FC = () => {
     const baseAmount = selectedToken === 'PEZ' ? 74218750 : 37109375;
     // Calculate release amount for future use
     const releaseAmount = baseAmount / Math.pow(2, halvingPeriod);
-    console.log('Release amount:', releaseAmount);
+    if (import.meta.env.DEV) console.log('Release amount:', releaseAmount);
   }, [monthsPassed, halvingPeriod, selectedToken]);
 
   const pezDistribution = [

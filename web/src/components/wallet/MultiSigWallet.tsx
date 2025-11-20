@@ -50,11 +50,11 @@ export const MultiSigWallet: React.FC = () => {
   ];
 
   const handleCreateTransaction = () => {
-    console.log('Creating multi-sig transaction:', { amount, recipient, description });
+    if (import.meta.env.DEV) console.log('Creating multi-sig transaction:', { amount, recipient, description });
   };
 
   const handleSign = (txId: string) => {
-    console.log('Signing transaction:', txId);
+    if (import.meta.env.DEV) console.log('Signing transaction:', txId);
   };
 
   return (

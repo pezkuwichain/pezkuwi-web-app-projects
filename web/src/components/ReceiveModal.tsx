@@ -33,7 +33,9 @@ export const ReceiveModal: React.FC<ReceiveModalProps> = ({ isOpen, onClose }) =
           dark: '#ffffff',
           light: '#0f172a'
         }
-      }).then(setQrCodeDataUrl).catch(console.error);
+      }).then(setQrCodeDataUrl).catch((err) => {
+        if (import.meta.env.DEV) console.error('QR code generation failed:', err);
+      });
     }
   }, [selectedAccount, isOpen]);
 

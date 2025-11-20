@@ -38,7 +38,9 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
     setSelectedAccount(account);
     if (account) {
       localStorage.setItem('selectedWallet', account.address);
-      console.log('💾 Wallet saved:', account.address);
+      if (import.meta.env.DEV) {
+        if (import.meta.env.DEV) console.log('💾 Wallet saved:', account.address);
+      }
       window.dispatchEvent(new Event('walletChanged'));
     } else {
       localStorage.removeItem('selectedWallet');
@@ -46,38 +48,61 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
     }
   };
 
-  // Initialize Polkadot API
+  // Initialize Polkadot API with fallback endpoints
   useEffect(() => {
+    const FALLBACK_ENDPOINTS = [
+      endpoint,
+      import.meta.env.VITE_WS_ENDPOINT_FALLBACK_1,
+      import.meta.env.VITE_WS_ENDPOINT_FALLBACK_2,
+    ].filter(Boolean);
+
     const initApi = async () => {
-      try {
-        console.log('🔗 Connecting to Pezkuwi node:', endpoint);
-        
-        const provider = new WsProvider(endpoint);
-        const apiInstance = await ApiPromise.create({ provider });
-        
-        await apiInstance.isReady;
-        
-        setApi(apiInstance);
-        setIsApiReady(true);
-        setError(null);
-        
-        console.log('✅ Connected to Pezkuwi node');
-        
-        // Get chain info
-        const [chain, nodeName, nodeVersion] = await Promise.all([
-          apiInstance.rpc.system.chain(),
-          apiInstance.rpc.system.name(),
-          apiInstance.rpc.system.version(),
-        ]);
-        
-        console.log(`📡 Chain: ${chain}`);
-        console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
-        
-      } catch (err) {
-        console.error('❌ Failed to connect to node:', err);
-        setError(`Failed to connect to node: ${endpoint}`);
-        setIsApiReady(false);
+      let lastError: unknown = null;
+
+      for (const currentEndpoint of FALLBACK_ENDPOINTS) {
+        try {
+          if (import.meta.env.DEV) {
+            if (import.meta.env.DEV) console.log('🔗 Connecting to Pezkuwi node:', currentEndpoint);
+          }
+
+          const provider = new WsProvider(currentEndpoint);
+          const apiInstance = await ApiPromise.create({ provider });
+
+          await apiInstance.isReady;
+
+          setApi(apiInstance);
+          setIsApiReady(true);
+          setError(null);
+
+          if (import.meta.env.DEV) {
+            if (import.meta.env.DEV) console.log('✅ Connected to Pezkuwi node');
+
+            // Get chain info
+            const [chain, nodeName, nodeVersion] = await Promise.all([
+              apiInstance.rpc.system.chain(),
+              apiInstance.rpc.system.name(),
+              apiInstance.rpc.system.version(),
+            ]);
+
+            if (import.meta.env.DEV) console.log(`📡 Chain: ${chain}`);
+            if (import.meta.env.DEV) console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
+          }
+
+          return;
+        } catch (err) {
+          lastError = err;
+          if (import.meta.env.DEV) {
+            if (import.meta.env.DEV) console.warn(`⚠️ Failed to connect to ${currentEndpoint}, trying next...`);
+          }
+          continue;
+        }
       }
+
+      if (import.meta.env.DEV) {
+        if (import.meta.env.DEV) console.error('❌ Failed to connect to all endpoints:', lastError);
+      }
+      setError('Failed to connect to blockchain network. Please try again later.');
+      setIsApiReady(false);
     };
 
     initApi();
@@ -109,10 +134,14 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         if (savedAccount) {
           setAccounts(allAccounts);
           handleSetSelectedAccount(savedAccount);
-          console.log('✅ Wallet restored:', savedAddress.slice(0, 8) + '...');
+          if (import.meta.env.DEV) {
+            if (import.meta.env.DEV) console.log('✅ Wallet restored:', savedAddress.slice(0, 8) + '...');
+          }
         }
       } catch (err) {
-        console.error('Failed to restore wallet:', err);
+        if (import.meta.env.DEV) {
+          if (import.meta.env.DEV) console.error('Failed to restore wallet:', err);
+        }
       }
     };
 
@@ -133,7 +162,9 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         return;
       }
 
-      console.log('✅ Polkadot.js extension enabled');
+      if (import.meta.env.DEV) {
+        if (import.meta.env.DEV) console.log('✅ Polkadot.js extension enabled');
+      }
 
       // Get accounts
       const allAccounts = await web3Accounts();
@@ -154,10 +185,14 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
       // Use wrapper to trigger events
       handleSetSelectedAccount(accountToSelect);
 
-      console.log(`✅ Found ${allAccounts.length} account(s)`);
+      if (import.meta.env.DEV) {
+        if (import.meta.env.DEV) console.log(`✅ Found ${allAccounts.length} account(s)`);
+      }
 
     } catch (err) {
-      console.error('❌ Wallet connection failed:', err);
+      if (import.meta.env.DEV) {
+        if (import.meta.env.DEV) console.error('❌ Wallet connection failed:', err);
+      }
       setError('Failed to connect wallet');
     }
   };
@@ -166,7 +201,9 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   const disconnectWallet = () => {
     setAccounts([]);
     handleSetSelectedAccount(null);
-    console.log('🔌 Wallet disconnected');
+    if (import.meta.env.DEV) {
+      if (import.meta.env.DEV) console.log('🔌 Wallet disconnected');
+    }
   };
 
   const value: PolkadotContextType = {

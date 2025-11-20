@@ -78,7 +78,7 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
       );
       setDepositAmount('');
     } catch (err) {
-      console.error('Deposit error:', err);
+      if (import.meta.env.DEV) console.error('Deposit error:', err);
       setError(err instanceof Error ? err.message : 'Deposit failed');
     } finally {
       setIsLoading(false);
@@ -130,7 +130,7 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
         }
       });
     } catch (err) {
-      console.error('Withdrawal error:', err);
+      if (import.meta.env.DEV) console.error('Withdrawal error:', err);
       setError(err instanceof Error ? err.message : 'Withdrawal failed');
       setIsLoading(false);
     }

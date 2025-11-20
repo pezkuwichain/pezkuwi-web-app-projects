@@ -77,7 +77,7 @@ export default function Elections() {
         setOfficials(officialsData);
         setMinisters(ministersData);
       } catch (error) {
-        console.error('Failed to load elections data:', error);
+        if (import.meta.env.DEV) console.error('Failed to load elections data:', error);
         toast({
           title: 'Error',
           description: 'Failed to load elections data',

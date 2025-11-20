@@ -41,7 +41,7 @@ export const ReservesDashboard: React.FC<ReservesDashboardProps> = ({
       setIsHealthy(health.isHealthy);
       setLastUpdate(new Date());
     } catch (error) {
-      console.error('Error fetching reserve data:', error);
+      if (import.meta.env.DEV) console.error('Error fetching reserve data:', error);
     } finally {
       setLoading(false);
     }

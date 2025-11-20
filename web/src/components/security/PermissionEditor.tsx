@@ -79,7 +79,7 @@ export function PermissionEditor() {
         setSelectedRole(data[0]);
       }
     } catch {
-      console.error('Error loading roles:', error);
+      if (import.meta.env.DEV) console.error('Error loading roles:', error);
       toast({
         title: 'Error',
         description: 'Failed to load roles',

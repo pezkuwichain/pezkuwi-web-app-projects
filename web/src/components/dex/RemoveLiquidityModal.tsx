@@ -67,7 +67,7 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
         // This is a simplified version - you'd need to track LP tokens properly
         setLpTokenBalance('0'); // Placeholder
       } catch (error) {
-        console.error('Failed to fetch LP balance:', error);
+        if (import.meta.env.DEV) console.error('Failed to fetch LP balance:', error);
         setLpTokenBalance('0');
       }
     };
@@ -154,7 +154,7 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
         }
       );
     } catch (error) {
-      console.error('Remove liquidity failed:', error);
+      if (import.meta.env.DEV) console.error('Remove liquidity failed:', error);
       setErrorMessage(error instanceof Error ? error.message : 'Transaction failed');
       setTxStatus('error');
     }

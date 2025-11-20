@@ -56,7 +56,7 @@ export function CourseCreator({ onCourseCreated }: CourseCreatorProps) {
       setDescription('');
       setContent('');
     } catch (error) {
-      console.error('Failed to create course:', error);
+      if (import.meta.env.DEV) console.error('Failed to create course:', error);
       // toast already shown in createCourse()
     } finally {
       setLoading(false);

@@ -39,7 +39,7 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const polkadot = usePolkadot();
 
-  console.log('🎯 WalletProvider render:', {
+  if (import.meta.env.DEV) console.log('🎯 WalletProvider render:', {
     hasApi: !!polkadot.api,
     isApiReady: polkadot.isApiReady,
     selectedAccount: polkadot.selectedAccount?.address,
@@ -54,12 +54,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Fetch all token balances when account changes
   const updateBalance = useCallback(async (address: string) => {
     if (!polkadot.api || !polkadot.isApiReady) {
-      console.warn('API not ready, cannot fetch balance');
+      if (import.meta.env.DEV) console.warn('API not ready, cannot fetch balance');
       return;
     }
 
     try {
-      console.log('💰 Fetching all token balances for:', address);
+      if (import.meta.env.DEV) console.log('💰 Fetching all token balances for:', address);
 
       // Fetch HEZ (native token)
       const { data: nativeBalance } = await polkadot.api.query.system.account(address);
@@ -70,54 +70,54 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       let pezBalance = '0';
       try {
         const pezData = await polkadot.api.query.assets.account(ASSET_IDS.PEZ, address);
-        console.log('📊 Raw PEZ data:', pezData.toHuman());
+        if (import.meta.env.DEV) console.log('📊 Raw PEZ data:', pezData.toHuman());
 
         if (pezData.isSome) {
           const assetData = pezData.unwrap();
           const pezAmount = assetData.balance.toString();
           pezBalance = formatBalance(pezAmount);
-          console.log('✅ PEZ balance found:', pezBalance);
+          if (import.meta.env.DEV) console.log('✅ PEZ balance found:', pezBalance);
         } else {
-          console.warn('⚠️ PEZ asset not found for this account');
+          if (import.meta.env.DEV) console.warn('⚠️ PEZ asset not found for this account');
         }
       } catch (err) {
-        console.error('❌ Failed to fetch PEZ balance:', err);
+        if (import.meta.env.DEV) console.error('❌ Failed to fetch PEZ balance:', err);
       }
 
       // Fetch wHEZ (Asset ID: 0)
       let whezBalance = '0';
       try {
         const whezData = await polkadot.api.query.assets.account(ASSET_IDS.WHEZ, address);
-        console.log('📊 Raw wHEZ data:', whezData.toHuman());
+        if (import.meta.env.DEV) console.log('📊 Raw wHEZ data:', whezData.toHuman());
 
         if (whezData.isSome) {
           const assetData = whezData.unwrap();
           const whezAmount = assetData.balance.toString();
           whezBalance = formatBalance(whezAmount);
-          console.log('✅ wHEZ balance found:', whezBalance);
+          if (import.meta.env.DEV) console.log('✅ wHEZ balance found:', whezBalance);
         } else {
-          console.warn('⚠️ wHEZ asset not found for this account');
+          if (import.meta.env.DEV) console.warn('⚠️ wHEZ asset not found for this account');
         }
       } catch (err) {
-        console.error('❌ Failed to fetch wHEZ balance:', err);
+        if (import.meta.env.DEV) console.error('❌ Failed to fetch wHEZ balance:', err);
       }
 
       // Fetch wUSDT (Asset ID: 2) - IMPORTANT: wUSDT has 6 decimals, not 12!
       let wusdtBalance = '0';
       try {
         const wusdtData = await polkadot.api.query.assets.account(ASSET_IDS.WUSDT, address);
-        console.log('📊 Raw wUSDT data:', wusdtData.toHuman());
+        if (import.meta.env.DEV) console.log('📊 Raw wUSDT data:', wusdtData.toHuman());
 
         if (wusdtData.isSome) {
           const assetData = wusdtData.unwrap();
           const wusdtAmount = assetData.balance.toString();
           wusdtBalance = formatBalance(wusdtAmount, 6); // wUSDT uses 6 decimals!
-          console.log('✅ wUSDT balance found:', wusdtBalance);
+          if (import.meta.env.DEV) console.log('✅ wUSDT balance found:', wusdtBalance);
         } else {
-          console.warn('⚠️ wUSDT asset not found for this account');
+          if (import.meta.env.DEV) console.warn('⚠️ wUSDT asset not found for this account');
         }
       } catch (err) {
-        console.error('❌ Failed to fetch wUSDT balance:', err);
+        if (import.meta.env.DEV) console.error('❌ Failed to fetch wUSDT balance:', err);
       }
 
       setBalances({
@@ -127,9 +127,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         USDT: wusdtBalance,
       });
 
-      console.log('✅ Balances updated:', { HEZ: hezBalance, PEZ: pezBalance, wHEZ: whezBalance, wUSDT: wusdtBalance });
+      if (import.meta.env.DEV) console.log('✅ Balances updated:', { HEZ: hezBalance, PEZ: pezBalance, wHEZ: whezBalance, wUSDT: wusdtBalance });
     } catch (err) {
-      console.error('Failed to fetch balances:', err);
+      if (import.meta.env.DEV) console.error('Failed to fetch balances:', err);
       setError('Failed to fetch balances');
     }
   }, [polkadot.api, polkadot.isApiReady]);
@@ -140,7 +140,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setError(null);
       await polkadot.connectWallet();
     } catch (err) {
-      console.error('Wallet connection failed:', err);
+      if (import.meta.env.DEV) console.error('Wallet connection failed:', err);
       const errorMessage = err instanceof Error ? err.message : WALLET_ERRORS.CONNECTION_FAILED;
       setError(errorMessage);
     }
@@ -176,7 +176,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       return hash.toHex();
     } catch (error) {
-      console.error('Transaction failed:', error);
+      if (import.meta.env.DEV) console.error('Transaction failed:', error);
       throw new Error(error instanceof Error ? error.message : WALLET_ERRORS.TRANSACTION_FAILED);
     }
   }, [polkadot.api, polkadot.selectedAccount]);
@@ -203,7 +203,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       return signature;
     } catch (error) {
-      console.error('Message signing failed:', error);
+      if (import.meta.env.DEV) console.error('Message signing failed:', error);
       throw new Error(error instanceof Error ? error.message : 'Failed to sign message');
     }
   }, [polkadot.selectedAccount]);
@@ -215,9 +215,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         try {
           const injector = await web3FromAddress(polkadot.selectedAccount.address);
           setSigner(injector.signer);
-          console.log('✅ Signer obtained for', polkadot.selectedAccount.address);
+          if (import.meta.env.DEV) console.log('✅ Signer obtained for', polkadot.selectedAccount.address);
         } catch (error) {
-          console.error('Failed to get signer:', error);
+          if (import.meta.env.DEV) console.error('Failed to get signer:', error);
           setSigner(null);
         }
       } else {
@@ -230,7 +230,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   // Update balance when selected account changes
   useEffect(() => {
-    console.log('🔄 WalletContext useEffect triggered!', {
+    if (import.meta.env.DEV) console.log('🔄 WalletContext useEffect triggered!', {
       hasAccount: !!polkadot.selectedAccount,
       isApiReady: polkadot.isApiReady,
       address: polkadot.selectedAccount?.address

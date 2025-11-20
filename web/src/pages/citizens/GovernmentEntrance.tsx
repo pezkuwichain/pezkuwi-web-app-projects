@@ -213,7 +213,7 @@ export default function GovernmentEntrance() {
       setShowAccessModal(false);
       setIsVerifying(false);
     } catch (error) {
-      console.error('Error verifying access:', error);
+      if (import.meta.env.DEV) console.error('Error verifying access:', error);
       toast({
         title: "Xeletî (Error)",
         description: "Pirsgirêk di kontrolkirina mafê de (Error verifying access)",
@@ -248,7 +248,7 @@ export default function GovernmentEntrance() {
 
       setProposals(fetchedProposals.reverse());
     } catch (error) {
-      console.error('Error fetching legislation proposals:', error);
+      if (import.meta.env.DEV) console.error('Error fetching legislation proposals:', error);
     }
   };
 
@@ -276,7 +276,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error proposing legislation:', error);
+      if (import.meta.env.DEV) console.error('Error proposing legislation:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina pêşniyarê de (Error submitting proposal)',
@@ -306,7 +306,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error voting on legislation:', error);
+      if (import.meta.env.DEV) console.error('Error voting on legislation:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -335,7 +335,7 @@ export default function GovernmentEntrance() {
 
       setParliamentCandidates(fetchedCandidates.sort((a, b) => b.voteCount - a.voteCount));
     } catch (error) {
-      console.error('Error fetching parliament candidates:', error);
+      if (import.meta.env.DEV) console.error('Error fetching parliament candidates:', error);
     }
   };
 
@@ -362,7 +362,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error nominating for parliament:', error);
+      if (import.meta.env.DEV) console.error('Error nominating for parliament:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina berjewendiyê de (Error submitting nomination)',
@@ -390,7 +390,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error voting for parliament:', error);
+      if (import.meta.env.DEV) console.error('Error voting for parliament:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -419,7 +419,7 @@ export default function GovernmentEntrance() {
 
       setPresidentialCandidates(fetchedCandidates.sort((a, b) => b.voteCount - a.voteCount));
     } catch (error) {
-      console.error('Error fetching presidential candidates:', error);
+      if (import.meta.env.DEV) console.error('Error fetching presidential candidates:', error);
     }
   };
 
@@ -446,7 +446,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error nominating president:', error);
+      if (import.meta.env.DEV) console.error('Error nominating president:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina berjewendiyê de (Error submitting nomination)',
@@ -474,7 +474,7 @@ export default function GovernmentEntrance() {
         }
       });
     } catch (error) {
-      console.error('Error voting for president:', error);
+      if (import.meta.env.DEV) console.error('Error voting for president:', error);
       toast({
         title: 'Xeletî (Error)',
         description: 'Pirsgirêk di şandina dengê de (Error submitting vote)',
@@ -509,7 +509,7 @@ export default function GovernmentEntrance() {
         setUserPresidentialVote(presidentialVote.toString());
       }
     } catch (error) {
-      console.error('Error fetching user votes:', error);
+      if (import.meta.env.DEV) console.error('Error fetching user votes:', error);
     }
   };
 

@@ -50,7 +50,7 @@ export default function ProfileSettings() {
         .maybeSingle();
 
       if (error) {
-        console.error('Error loading profile:', error);
+        if (import.meta.env.DEV) console.error('Error loading profile:', error);
         return;
       }
 
@@ -71,7 +71,7 @@ export default function ProfileSettings() {
         });
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
+      if (import.meta.env.DEV) console.error('Error loading profile:', error);
     }
   };
 
@@ -104,7 +104,7 @@ export default function ProfileSettings() {
       await loadProfile();
      
     } catch (error) {
-      console.error('Profile update failed:', error);
+      if (import.meta.env.DEV) console.error('Profile update failed:', error);
       toast({
         title: 'Error',
         description: error?.message || 'Failed to update profile',
@@ -170,7 +170,7 @@ export default function ProfileSettings() {
         description: 'Security settings updated',
       });
     } catch (err) {
-      console.error('Security settings error:', err);
+      if (import.meta.env.DEV) console.error('Security settings error:', err);
       toast({
         title: 'Error',
         description: 'Failed to update security settings',
@@ -198,7 +198,7 @@ export default function ProfileSettings() {
         description: 'Password changed successfully',
       });
     } catch (err) {
-      console.error('Password change error:', err);
+      if (import.meta.env.DEV) console.error('Password change error:', err);
       toast({
         title: 'Error',
         description: 'Failed to change password',

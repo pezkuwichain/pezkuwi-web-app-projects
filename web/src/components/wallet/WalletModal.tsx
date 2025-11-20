@@ -80,7 +80,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
         const userScores = await getAllScores(api, selectedAccount.address);
         setScores(userScores);
       } catch (err) {
-        console.error('Failed to fetch scores:', err);
+        if (import.meta.env.DEV) console.error('Failed to fetch scores:', err);
         setScores({
           trustScore: 0,
           referralScore: 0,

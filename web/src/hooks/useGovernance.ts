@@ -98,7 +98,7 @@ export function useGovernance() {
         }
 
       } catch (err) {
-        console.error('Error fetching governance data:', err);
+        if (import.meta.env.DEV) console.error('Error fetching governance data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch governance data');
       } finally {
         setLoading(false);

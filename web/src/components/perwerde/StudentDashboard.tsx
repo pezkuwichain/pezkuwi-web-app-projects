@@ -29,7 +29,7 @@ export function StudentDashboard({ enrollments, loading, onCourseCompleted }: St
       await completeCourse(api, selectedAccount, courseId, points);
       onCourseCompleted();
     } catch (error) {
-      console.error('Failed to complete course:', error);
+      if (import.meta.env.DEV) console.error('Failed to complete course:', error);
     }
   };
 
