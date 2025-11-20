@@ -31,14 +31,45 @@ export const CHAIN_CONFIG = {
 // ========================================
 // ⚠️ IMPORTANT: HEZ is the native token and does NOT have an Asset ID
 // Only wrapped/asset tokens are listed here
+//
+// Asset ID Allocation:
+// - 0-999: Reserved for protocol tokens (wHEZ, PEZ, etc.)
+// - 1000+: Bridged/wrapped external assets (wUSDT, etc.)
 export const ASSET_IDS = {
   WHEZ: parseInt(import.meta.env.VITE_ASSET_WHEZ || '0'),  // Wrapped HEZ
   PEZ: parseInt(import.meta.env.VITE_ASSET_PEZ || '1'),    // PEZ utility token
-  WUSDT: parseInt(import.meta.env.VITE_ASSET_WUSDT || '2'), // Wrapped USDT (multisig backed)
+  WUSDT: parseInt(import.meta.env.VITE_ASSET_WUSDT || '1000'), // Wrapped USDT (6 decimals, matches SDK)
   USDT: parseInt(import.meta.env.VITE_ASSET_USDT || '3'),
   BTC: parseInt(import.meta.env.VITE_ASSET_BTC || '4'),
   ETH: parseInt(import.meta.env.VITE_ASSET_ETH || '5'),
   DOT: parseInt(import.meta.env.VITE_ASSET_DOT || '6'),
+} as const;
+
+// ========================================
+// ASSET CONFIGURATIONS
+// ========================================
+export const ASSET_CONFIGS = {
+  WHEZ: {
+    id: ASSET_IDS.WHEZ,
+    symbol: 'wHEZ',
+    name: 'Wrapped HEZ',
+    decimals: 12,
+    minBalance: 1_000_000_000, // 0.001 HEZ
+  },
+  PEZ: {
+    id: ASSET_IDS.PEZ,
+    symbol: 'PEZ',
+    name: 'PEZ Utility Token',
+    decimals: 12,
+    minBalance: 1_000_000_000, // 0.001 PEZ
+  },
+  WUSDT: {
+    id: ASSET_IDS.WUSDT,
+    symbol: 'wUSDT',
+    name: 'Wrapped USDT',
+    decimals: 6, // ⚠️ CRITICAL: wUSDT uses 6 decimals (USDT standard), not 12!
+    minBalance: 1_000, // 0.001 USDT
+  },
 } as const;
 
 // ========================================

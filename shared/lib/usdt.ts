@@ -4,15 +4,15 @@
 // Handles wUSDT minting, burning, and reserve management
 
 import type { ApiPromise } from '@polkadot/api';
-import { ASSET_IDS } from './wallet';
+import { ASSET_IDS, ASSET_CONFIGS } from './wallet';
 import { getMultisigMembers, createMultisigTx } from './multisig';
 
 // ========================================
 // CONSTANTS
 // ========================================
 
-export const WUSDT_ASSET_ID = ASSET_IDS.WUSDT;
-export const WUSDT_DECIMALS = 6; // USDT has 6 decimals
+export const WUSDT_ASSET_ID = ASSET_CONFIGS.WUSDT.id;
+export const WUSDT_DECIMALS = ASSET_CONFIGS.WUSDT.decimals;
 
 // Withdrawal limits and timeouts
 export const WITHDRAWAL_LIMITS = {

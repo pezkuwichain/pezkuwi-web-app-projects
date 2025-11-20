@@ -15,6 +15,7 @@ import {
   formatWUSDT,
 } from '@pezkuwi/lib/usdt';
 import { isMultisigMember } from '@pezkuwi/lib/multisig';
+import { ASSET_IDS } from '@pezkuwi/lib/wallet';
 
 interface USDTBridgeProps {
   isOpen: boolean;
@@ -115,7 +116,7 @@ export const USDTBridge: React.FC<USDTBridgeProps> = ({
 
       // Burn wUSDT
       const amountBN = BigInt(Math.floor(amount * 1e6)); // 6 decimals
-      const burnTx = api.tx.assets.burn(2, selectedAccount.address, amountBN.toString());
+      const burnTx = api.tx.assets.burn(ASSET_IDS.WUSDT, selectedAccount.address, amountBN.toString());
 
       await burnTx.signAndSend(selectedAccount.address, { signer: injector.signer }, ({ status }) => {
         if (status.isFinalized) {

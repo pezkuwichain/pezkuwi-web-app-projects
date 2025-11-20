@@ -89,15 +89,15 @@ export const AccountBalance: React.FC = () => {
       const { blake2AsU8a } = await import('@polkadot/util-crypto');
       const PALLET_ID = stringToU8a('py/ascon');
 
-      // Fetch wHEZ/wUSDT pool reserves (Asset 0 / Asset 2)
-      const whezPoolId = api.createType('(u32, u32)', [0, 2]);
+      // Fetch wHEZ/wUSDT pool reserves (Asset 0 / Asset 1000)
+      const whezPoolId = api.createType('(u32, u32)', [0, ASSET_IDS.WUSDT]);
       const whezPalletIdType = api.createType('[u8; 8]', PALLET_ID);
       const whezFullTuple = api.createType('([u8; 8], (u32, u32))', [whezPalletIdType, whezPoolId]);
       const whezAccountHash = blake2AsU8a(whezFullTuple.toU8a(), 256);
       const whezPoolAccountId = api.createType('AccountId32', whezAccountHash);
 
       const whezReserve0Query = await api.query.assets.account(0, whezPoolAccountId);
-      const whezReserve1Query = await api.query.assets.account(2, whezPoolAccountId);
+      const whezReserve1Query = await api.query.assets.account(ASSET_IDS.WUSDT, whezPoolAccountId);
 
       if (whezReserve0Query.isSome && whezReserve1Query.isSome) {
         const reserve0Data = whezReserve0Query.unwrap();
@@ -114,15 +114,15 @@ export const AccountBalance: React.FC = () => {
         if (import.meta.env.DEV) console.warn('⚠️ wHEZ/wUSDT pool has no reserves');
       }
 
-      // Fetch PEZ/wUSDT pool reserves (Asset 1 / Asset 2)
-      const pezPoolId = api.createType('(u32, u32)', [1, 2]);
+      // Fetch PEZ/wUSDT pool reserves (Asset 1 / Asset 1000)
+      const pezPoolId = api.createType('(u32, u32)', [1, ASSET_IDS.WUSDT]);
       const pezPalletIdType = api.createType('[u8; 8]', PALLET_ID);
       const pezFullTuple = api.createType('([u8; 8], (u32, u32))', [pezPalletIdType, pezPoolId]);
       const pezAccountHash = blake2AsU8a(pezFullTuple.toU8a(), 256);
       const pezPoolAccountId = api.createType('AccountId32', pezAccountHash);
 
       const pezReserve0Query = await api.query.assets.account(1, pezPoolAccountId);
-      const pezReserve1Query = await api.query.assets.account(2, pezPoolAccountId);
+      const pezReserve1Query = await api.query.assets.account(ASSET_IDS.WUSDT, pezPoolAccountId);
 
       if (pezReserve0Query.isSome && pezReserve1Query.isSome) {
         const reserve0Data = pezReserve0Query.unwrap();
@@ -262,9 +262,9 @@ export const AccountBalance: React.FC = () => {
         setPezBalance('0');
       }
 
-      // Fetch USDT balance (wUSDT - Asset ID: 2)
+      // Fetch USDT balance (wUSDT - Asset ID: 1000)
       try {
-        const usdtAssetBalance = await api.query.assets.account(2, selectedAccount.address);
+        const usdtAssetBalance = await api.query.assets.account(ASSET_IDS.WUSDT, selectedAccount.address);
 
         if (usdtAssetBalance.isSome) {
           const assetData = usdtAssetBalance.unwrap();
