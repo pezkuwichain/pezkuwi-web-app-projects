@@ -12,8 +12,12 @@ import { ReferralProvider } from '@/contexts/ReferralContext';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Toaster } from '@/components/ui/toaster';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { initSentry } from '@/lib/sentry';
 import './App.css';
 import './i18n/config';
+
+// Initialize Sentry error monitoring
+initSentry();
 
 // Lazy load pages for code splitting
 const Index = lazy(() => import('@/pages/Index'));

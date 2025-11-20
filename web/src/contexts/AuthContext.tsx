@@ -42,6 +42,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem(LAST_ACTIVITY_KEY, Date.now().toString());
   }, []);
 
+  const signOut = useCallback(async () => {
+    setIsAdmin(false);
+    setUser(null);
+    localStorage.removeItem(LAST_ACTIVITY_KEY);
+    await supabase.auth.signOut();
+  }, []);
+
   // Check if session has timed out
   const checkSessionTimeout = useCallback(async () => {
     if (!user) return;
@@ -49,8 +56,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const lastActivity = localStorage.getItem(LAST_ACTIVITY_KEY);
     if (!lastActivity) {
       updateLastActivity();
-     
-     
       return;
     }
 
@@ -62,7 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (import.meta.env.DEV) console.log('⏱️ Session timeout - logging out due to inactivity');
       await signOut();
     }
-  }, [user]);
+  }, [user, updateLastActivity, signOut]);
 
   // Setup activity listeners
   useEffect(() => {
@@ -129,9 +134,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       subscription.unsubscribe();
       window.removeEventListener('walletChanged', handleWalletChange);
     };
-  }, []);
+  }, [checkAdminStatus]);
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatus = useCallback(async () => {
     // Admin wallet whitelist (blockchain-based auth)
     const ADMIN_WALLETS = [
       '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY', // Founder (original)
@@ -170,12 +175,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (import.meta.env.DEV) console.log('❌ Admin access denied');
       setIsAdmin(false);
       return false;
-    } catch {
+    } catch (err) {
       if (import.meta.env.DEV) console.error('Admin check error:', err);
       setIsAdmin(false);
       return false;
     }
-  };
+  }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -238,22 +243,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signOut = async () => {
-    setIsAdmin(false);
-    setUser(null);
-    localStorage.removeItem(LAST_ACTIVITY_KEY);
-    await supabase.auth.signOut();
-  };
-
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
+    <AuthContext.Provider value={{
+      user,
+      loading,
       isAdmin,
-      signIn, 
-      signUp, 
+      signIn,
+      signUp,
       signOut,
-      checkAdminStatus 
+      checkAdminStatus
     }}>
       {children}
     </AuthContext.Provider>
