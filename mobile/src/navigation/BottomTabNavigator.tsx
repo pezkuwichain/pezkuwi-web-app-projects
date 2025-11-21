@@ -6,6 +6,7 @@ import { KurdistanColors } from '../theme/colors';
 // Screens
 import DashboardScreen from '../screens/DashboardScreen';
 import WalletScreen from '../screens/WalletScreen';
+import SwapScreen from '../screens/SwapScreen';
 import BeCitizenScreen from '../screens/BeCitizenScreen';
 import ReferralScreen from '../screens/ReferralScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -13,6 +14,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 export type BottomTabParamList = {
   Home: undefined;
   Wallet: undefined;
+  Swap: undefined;
   BeCitizen: undefined;
   Referral: undefined;
   Profile: undefined;
@@ -65,6 +67,18 @@ const BottomTabNavigator: React.FC = () => {
           tabBarIcon: ({ color, focused }) => (
             <Text style={[styles.icon, { color }]}>
               {focused ? '💰' : '👛'}
+            </Text>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Swap"
+        component={SwapScreen}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <Text style={[styles.icon, { color }]}>
+              {focused ? '🔄' : '↔️'}
             </Text>
           ),
         }}
