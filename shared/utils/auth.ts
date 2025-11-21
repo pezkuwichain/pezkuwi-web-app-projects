@@ -9,9 +9,10 @@ export const FOUNDER_ADDRESS_FALLBACK = '5GgTgG9sRmPQAYU1RsTejZYnZRjwzKZKWD3awtu
 
 /**
  * Check if given address is the sudo account (admin/founder)
+ * SECURITY: Only allows admin access when connected to blockchain with valid sudo key
  * @param address - Substrate address to check
- * @param sudoKey - Sudo key fetched from blockchain (if available)
- * @returns true if address matches sudo key or fallback founder address
+ * @param sudoKey - Sudo key fetched from blockchain (REQUIRED for admin access)
+ * @returns true if address matches sudo key from blockchain
  */
 export const isFounderWallet = (
   address: string | null | undefined,
@@ -19,13 +20,13 @@ export const isFounderWallet = (
 ): boolean => {
   if (!address) return false;
 
-  // Priority 1: Use dynamic sudo key from blockchain if available
-  if (sudoKey && sudoKey !== '') {
-    return address === sudoKey;
+  // SECURITY FIX: ONLY use dynamic sudo key from blockchain
+  // No fallback to hardcoded address - admin access requires active blockchain connection
+  if (!sudoKey || sudoKey === '') {
+    return false; // No blockchain connection = no admin access
   }
 
-  // Priority 2: Fallback to hardcoded founder address (for compatibility)
-  return address === FOUNDER_ADDRESS_FALLBACK;
+  return address === sudoKey;
 };
 
 /**

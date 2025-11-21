@@ -22,13 +22,13 @@ export const PoolBrowser: React.FC<PoolBrowserProps> = ({
   onSwap,
   onCreatePool,
 }) => {
-  const { api, isApiReady } = usePolkadot();
+  const { api, isApiReady, sudoKey } = usePolkadot();
   const { account } = useWallet();
   const [pools, setPools] = useState<PoolInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const isFounder = account ? isFounderWallet(account.address) : false;
+  const isFounder = account ? isFounderWallet(account.address, sudoKey) : false;
 
   useEffect(() => {
     const loadPools = async () => {
