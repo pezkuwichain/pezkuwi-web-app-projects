@@ -220,16 +220,70 @@ export default function GovernanceScreen() {
       return;
     }
 
+    if (!api || !selectedAccount || !selectedElection) {
+      Alert.alert('Error', 'Wallet not connected');
+      return;
+    }
+
     try {
       setVoting(true);
-      // TODO: Submit votes to blockchain via pallet-tiki
-      // await api.tx.tiki.voteInElection(electionId, candidateIds).signAndSend(...)
 
-      Alert.alert('Success', 'Your vote has been recorded!');
-      setElectionSheetVisible(false);
-      setSelectedElection(null);
-      setVotedCandidates([]);
-      fetchElections();
+      // Submit vote to blockchain via pallet-welati
+      // For single vote (Presidential): api.tx.welati.voteInElection(electionId, candidateId)
+      // For multiple votes (Parliamentary): submit each vote separately
+      const electionId = selectedElection.id;
+
+      if (selectedElection.type === 'Parliamentary') {
+        // Submit multiple votes for parliamentary elections
+        const txs = votedCandidates.map(candidateId =>
+          api.tx.welati.voteInElection(electionId, candidateId)
+        );
+
+        // Batch all votes together
+        const batchTx = api.tx.utility.batch(txs);
+
+        await batchTx.signAndSend(selectedAccount.address, ({ status, dispatchError }) => {
+          if (dispatchError) {
+            if (dispatchError.isModule) {
+              const decoded = api.registry.findMetaError(dispatchError.asModule);
+              throw new Error(`${decoded.section}.${decoded.name}: ${decoded.docs}`);
+            } else {
+              throw new Error(dispatchError.toString());
+            }
+          }
+
+          if (status.isInBlock) {
+            Alert.alert('Success', `Your ${votedCandidates.length} votes have been recorded!`);
+            setElectionSheetVisible(false);
+            setSelectedElection(null);
+            setVotedCandidates([]);
+            fetchElections();
+          }
+        });
+      } else {
+        // Single vote for presidential/other elections
+        const candidateId = votedCandidates[0];
+        const tx = api.tx.welati.voteInElection(electionId, candidateId);
+
+        await tx.signAndSend(selectedAccount.address, ({ status, dispatchError }) => {
+          if (dispatchError) {
+            if (dispatchError.isModule) {
+              const decoded = api.registry.findMetaError(dispatchError.asModule);
+              throw new Error(`${decoded.section}.${decoded.name}: ${decoded.docs}`);
+            } else {
+              throw new Error(dispatchError.toString());
+            }
+          }
+
+          if (status.isInBlock) {
+            Alert.alert('Success', 'Your vote has been recorded!');
+            setElectionSheetVisible(false);
+            setSelectedElection(null);
+            setVotedCandidates([]);
+            fetchElections();
+          }
+        });
+      }
     } catch (error: any) {
       if (__DEV__) console.error('Election voting error:', error);
       Alert.alert('Error', error.message || 'Failed to submit vote');
