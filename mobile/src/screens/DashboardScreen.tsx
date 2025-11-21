@@ -7,9 +7,14 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Image,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
+import type { NavigationProp } from '@react-navigation/native';
+import type { BottomTabParamList } from '../navigation/BottomTabNavigator';
 import AppColors, { KurdistanColors } from '../theme/colors';
 
 interface DashboardScreenProps {
@@ -22,49 +27,86 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
   onNavigateToSettings,
 }) => {
   const { t } = useTranslation();
+  const navigation = useNavigation<NavigationProp<BottomTabParamList>>();
 
-  const menuItems = [
+  const showComingSoon = (featureName: string) => {
+    Alert.alert(
+      'Coming Soon',
+      `${featureName} feature is under development and will be available soon!`,
+      [{ text: 'OK' }]
+    );
+  };
+
+  const quickActions = [
     {
-      key: 'wallet',
-      title: t('dashboard.wallet'),
-      icon: '💼',
-      color: KurdistanColors.kesk,
-      onPress: onNavigateToWallet,
+      key: 'education',
+      title: 'Education',
+      image: require('../../../shared/images/quick-actions/qa_education.png'),
+      available: true,
+      onPress: () => navigation.navigate('Education'),
     },
     {
-      key: 'staking',
-      title: t('dashboard.staking'),
-      icon: '🔒',
-      color: KurdistanColors.zer,
-      onPress: () => console.log('Navigate to Staking'),
+      key: 'exchange',
+      title: 'Exchange',
+      image: require('../../../shared/images/quick-actions/qa_exchange.png'),
+      available: true,
+      onPress: () => navigation.navigate('Swap'),
+    },
+    {
+      key: 'forum',
+      title: 'Forum',
+      image: require('../../../shared/images/quick-actions/qa_forum.jpg'),
+      available: true,
+      onPress: () => navigation.navigate('Forum'),
     },
     {
       key: 'governance',
-      title: t('dashboard.governance'),
-      icon: '🗳️',
-      color: KurdistanColors.sor,
-      onPress: () => console.log('Navigate to Governance'),
+      title: 'Governance',
+      image: require('../../../shared/images/quick-actions/qa_governance.jpg'),
+      available: true,
+      onPress: () => navigation.navigate('Home'), // TODO: Navigate to Governance screen
     },
     {
-      key: 'dex',
-      title: t('dashboard.dex'),
-      icon: '💱',
-      color: '#2196F3',
-      onPress: () => console.log('Navigate to DEX'),
+      key: 'trading',
+      title: 'Trading',
+      image: require('../../../shared/images/quick-actions/qa_trading.jpg'),
+      available: true,
+      onPress: () => navigation.navigate('P2P'),
     },
     {
-      key: 'history',
-      title: t('dashboard.history'),
-      icon: '📜',
-      color: '#9C27B0',
-      onPress: () => console.log('Navigate to History'),
+      key: 'b2b',
+      title: 'B2B Trading',
+      image: require('../../../shared/images/quick-actions/qa_b2b.png'),
+      available: false,
+      onPress: () => showComingSoon('B2B Trading'),
     },
     {
-      key: 'settings',
-      title: t('dashboard.settings'),
-      icon: '⚙️',
-      color: '#607D8B',
-      onPress: onNavigateToSettings,
+      key: 'bank',
+      title: 'Banking',
+      image: require('../../../shared/images/quick-actions/qa_bank.png'),
+      available: false,
+      onPress: () => showComingSoon('Banking'),
+    },
+    {
+      key: 'games',
+      title: 'Games',
+      image: require('../../../shared/images/quick-actions/qa_games.png'),
+      available: false,
+      onPress: () => showComingSoon('Games'),
+    },
+    {
+      key: 'kurdmedia',
+      title: 'Kurd Media',
+      image: require('../../../shared/images/quick-actions/qa_kurdmedia.jpg'),
+      available: false,
+      onPress: () => showComingSoon('Kurd Media'),
+    },
+    {
+      key: 'university',
+      title: 'University',
+      image: require('../../../shared/images/quick-actions/qa_university.png'),
+      available: false,
+      onPress: () => showComingSoon('University'),
     },
   ];
 
@@ -110,20 +152,32 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
         {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <View style={styles.menuGrid}>
-            {menuItems.map((item) => (
+          <View style={styles.quickActionsGrid}>
+            {quickActions.map((action) => (
               <TouchableOpacity
-                key={item.key}
-                style={styles.menuItem}
-                onPress={item.onPress}
+                key={action.key}
+                style={[
+                  styles.quickActionItem,
+                  !action.available && styles.quickActionDisabled
+                ]}
+                onPress={action.onPress}
                 activeOpacity={0.7}
               >
-                <View
-                  style={[styles.menuIconContainer, { backgroundColor: item.color }]}
-                >
-                  <Text style={styles.menuIcon}>{item.icon}</Text>
+                <View style={styles.quickActionImageContainer}>
+                  <Image
+                    source={action.image}
+                    style={styles.quickActionImage}
+                    resizeMode="cover"
+                  />
+                  {!action.available && (
+                    <View style={styles.comingSoonBadge}>
+                      <Text style={styles.comingSoonText}>Soon</Text>
+                    </View>
+                  )}
                 </View>
-                <Text style={styles.menuTitle}>{item.title}</Text>
+                <Text style={styles.quickActionTitle} numberOfLines={2}>
+                  {action.title}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -239,39 +293,56 @@ const styles = StyleSheet.create({
     color: KurdistanColors.reş,
     marginBottom: 16,
   },
-  menuGrid: {
+  quickActionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
   },
-  menuItem: {
-    width: '47%',
-    backgroundColor: KurdistanColors.spi,
-    borderRadius: 16,
-    padding: 20,
+  quickActionItem: {
+    width: '30%',
+    marginBottom: 16,
     alignItems: 'center',
+  },
+  quickActionDisabled: {
+    opacity: 0.6,
+  },
+  quickActionImageContainer: {
+    width: '100%',
+    aspectRatio: 1,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 3,
+    position: 'relative',
   },
-  menuIconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
+  quickActionImage: {
+    width: '100%',
+    height: '100%',
   },
-  menuIcon: {
-    fontSize: 28,
+  comingSoonBadge: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    backgroundColor: KurdistanColors.zer,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
-  menuTitle: {
-    fontSize: 14,
+  comingSoonText: {
+    fontSize: 9,
+    fontWeight: '700',
+    color: KurdistanColors.reş,
+  },
+  quickActionTitle: {
+    fontSize: 12,
     fontWeight: '600',
     color: KurdistanColors.reş,
     textAlign: 'center',
+    lineHeight: 16,
   },
   proposalsCard: {
     backgroundColor: KurdistanColors.spi,
