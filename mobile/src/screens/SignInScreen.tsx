@@ -10,9 +10,12 @@ import {
   Platform,
   ScrollView,
   StatusBar,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/AuthContext';
 import AppColors, { KurdistanColors } from '../theme/colors';
 
 interface SignInScreenProps {
@@ -22,13 +25,35 @@ interface SignInScreenProps {
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onNavigateToSignUp }) => {
   const { t } = useTranslation();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignIn = () => {
-    // TODO: Implement actual authentication
-    console.log('Sign in:', { email, password });
-    onSignIn();
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await signIn(email, password);
+
+      if (error) {
+        Alert.alert('Sign In Failed', error.message);
+        return;
+      }
+
+      // Success - navigate to app
+      onSignIn();
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred');
+      if (__DEV__) console.error('Sign in error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,11 +116,16 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ onSignIn, onNavigateToSignU
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.signInButton}
+                style={[styles.signInButton, isLoading && styles.buttonDisabled]}
                 onPress={handleSignIn}
                 activeOpacity={0.8}
+                disabled={isLoading}
               >
-                <Text style={styles.signInButtonText}>{t('auth.signIn')}</Text>
+                {isLoading ? (
+                  <ActivityIndicator color={KurdistanColors.spi} />
+                ) : (
+                  <Text style={styles.signInButtonText}>{t('auth.signIn')}</Text>
+                )}
               </TouchableOpacity>
 
               <View style={styles.divider}>
@@ -222,6 +252,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: KurdistanColors.spi,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   divider: {
     flexDirection: 'row',

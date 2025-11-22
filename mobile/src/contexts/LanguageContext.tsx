@@ -29,7 +29,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
       const saved = await AsyncStorage.getItem(LANGUAGE_KEY);
       setHasSelectedLanguage(!!saved);
     } catch (error) {
-      console.error('Failed to check language selection:', error);
+      if (__DEV__) console.error('Failed to check language selection:', error);
     }
   };
 
@@ -49,7 +49,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
         // You may want to show a message to restart the app
       }
     } catch (error) {
-      console.error('Failed to change language:', error);
+      if (__DEV__) console.error('Failed to change language:', error);
     }
   };
 

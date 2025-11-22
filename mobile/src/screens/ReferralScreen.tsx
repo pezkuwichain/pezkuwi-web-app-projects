@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { usePolkadot } from '../contexts/PolkadotContext';
 import AppColors, { KurdistanColors } from '../theme/colors';
 
 interface ReferralStats {
@@ -32,12 +33,21 @@ interface Referral {
 
 const ReferralScreen: React.FC = () => {
   const { t } = useTranslation();
+  const { selectedAccount, api, connectWallet } = usePolkadot();
   const [isConnected, setIsConnected] = useState(false);
 
-  // Mock referral code - will be generated from blockchain
-  const referralCode = 'PZK-XYZABC123';
+  // Check connection status
+  useEffect(() => {
+    setIsConnected(!!selectedAccount);
+  }, [selectedAccount]);
+
+  // Generate referral code from wallet address
+  const referralCode = selectedAccount
+    ? `PZK-${selectedAccount.address.slice(0, 8).toUpperCase()}`
+    : 'PZK-CONNECT-WALLET';
 
   // Mock stats - will be fetched from pallet_referral
+  // TODO: Fetch real stats from blockchain
   const stats: ReferralStats = {
     totalReferrals: 0,
     activeReferrals: 0,
@@ -46,12 +56,20 @@ const ReferralScreen: React.FC = () => {
   };
 
   // Mock referrals - will be fetched from blockchain
+  // TODO: Query pallet-trust or referral pallet for actual referrals
   const referrals: Referral[] = [];
 
-  const handleConnectWallet = () => {
-    // TODO: Implement Polkadot.js wallet connection
-    setIsConnected(true);
-    Alert.alert('Connected', 'Your wallet has been connected to the referral system!');
+  const handleConnectWallet = async () => {
+    try {
+      await connectWallet();
+      if (selectedAccount) {
+        setIsConnected(true);
+        Alert.alert('Connected', 'Your wallet has been connected to the referral system!');
+      }
+    } catch (error) {
+      if (__DEV__) console.error('Wallet connection error:', error);
+      Alert.alert('Error', 'Failed to connect wallet. Please try again.');
+    }
   };
 
   const handleCopyCode = () => {
@@ -67,10 +85,10 @@ const ReferralScreen: React.FC = () => {
       });
 
       if (result.action === Share.sharedAction) {
-        console.log('Shared successfully');
+        if (__DEV__) console.log('Shared successfully');
       }
     } catch (error) {
-      console.error('Error sharing:', error);
+      if (__DEV__) console.error('Error sharing:', error);
     }
   };
 

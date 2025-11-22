@@ -85,7 +85,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     } catch (error) {
-      console.error('Biometric init error:', error);
+      if (__DEV__) console.error('Biometric init error:', error);
     }
   };
 
@@ -108,7 +108,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Check if app should be locked
       await checkAutoLock();
     } catch (error) {
-      console.error('Error loading settings:', error);
+      if (__DEV__) console.error('Error loading settings:', error);
     }
   };
 
@@ -136,7 +136,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return false;
     } catch (error) {
-      console.error('Authentication error:', error);
+      if (__DEV__) console.error('Authentication error:', error);
       return false;
     }
   };
@@ -159,7 +159,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return false;
     } catch (error) {
-      console.error('Enable biometric error:', error);
+      if (__DEV__) console.error('Enable biometric error:', error);
       return false;
     }
   };
@@ -173,7 +173,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await AsyncStorage.setItem(BIOMETRIC_ENABLED_KEY, 'false');
       setIsBiometricEnabled(false);
     } catch (error) {
-      console.error('Disable biometric error:', error);
+      if (__DEV__) console.error('Disable biometric error:', error);
     }
   };
 
@@ -191,7 +191,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
       // Store in SecureStore (encrypted on device)
       await SecureStore.setItemAsync(PIN_CODE_KEY, hashedPin);
     } catch (error) {
-      console.error('Set PIN error:', error);
+      if (__DEV__) console.error('Set PIN error:', error);
       throw error;
     }
   };
@@ -220,7 +220,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return false;
     } catch (error) {
-      console.error('Verify PIN error:', error);
+      if (__DEV__) console.error('Verify PIN error:', error);
       return false;
     }
   };
@@ -250,7 +250,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await AsyncStorage.setItem(AUTO_LOCK_TIMER_KEY, minutes.toString());
       setAutoLockTimerState(minutes);
     } catch (error) {
-      console.error('Set auto-lock timer error:', error);
+      if (__DEV__) console.error('Set auto-lock timer error:', error);
     }
   };
 
@@ -273,7 +273,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await AsyncStorage.setItem(LAST_UNLOCK_TIME_KEY, Date.now().toString());
     } catch (error) {
-      console.error('Save unlock time error:', error);
+      if (__DEV__) console.error('Save unlock time error:', error);
     }
   };
 
@@ -303,7 +303,7 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsLocked(false);
       }
     } catch (error) {
-      console.error('Check auto-lock error:', error);
+      if (__DEV__) console.error('Check auto-lock error:', error);
       // On error, lock for safety
       setIsLocked(true);
     }

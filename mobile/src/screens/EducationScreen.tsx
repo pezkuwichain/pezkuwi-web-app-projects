@@ -47,7 +47,7 @@ const EducationScreen: React.FC = () => {
       const allCourses = await getAllCourses(api);
       setCourses(allCourses);
     } catch (error) {
-      console.error('Failed to fetch courses:', error);
+      if (__DEV__) console.error('Failed to fetch courses:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -64,7 +64,7 @@ const EducationScreen: React.FC = () => {
       const studentEnrollments = await getStudentEnrollments(selectedAccount.address);
       setEnrollments(studentEnrollments);
     } catch (error) {
-      console.error('Failed to fetch enrollments:', error);
+      if (__DEV__) console.error('Failed to fetch enrollments:', error);
     }
   }, [selectedAccount]);
 
@@ -102,7 +102,7 @@ const EducationScreen: React.FC = () => {
       Alert.alert('Success', 'Successfully enrolled in course!');
       fetchEnrollments();
     } catch (error: any) {
-      console.error('Enrollment failed:', error);
+      if (__DEV__) console.error('Enrollment failed:', error);
       Alert.alert('Enrollment Failed', error.message || 'Failed to enroll in course');
     } finally {
       setEnrolling(null);
@@ -138,7 +138,7 @@ const EducationScreen: React.FC = () => {
               Alert.alert('Success', 'Course completed! Certificate issued.');
               fetchEnrollments();
             } catch (error: any) {
-              console.error('Completion failed:', error);
+              if (__DEV__) console.error('Completion failed:', error);
               Alert.alert('Error', error.message || 'Failed to complete course');
             }
           },

@@ -110,7 +110,7 @@ export default function NFTGalleryScreen() {
 
       setNfts(nftList);
     } catch (error) {
-      console.error('Error fetching NFTs:', error);
+      if (__DEV__) console.error('Error fetching NFTs:', error);
     } finally {
       setLoading(false);
       setRefreshing(false);

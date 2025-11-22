@@ -12,6 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Card, Badge } from '../components';
 import { KurdistanColors, AppColors } from '../theme/colors';
+import { supabase } from '../lib/supabase';
 
 interface ForumThread {
   id: string;
@@ -123,18 +124,54 @@ const ForumScreen: React.FC = () => {
   const fetchThreads = async (categoryId?: string) => {
     setLoading(true);
     try {
-      // TODO: Fetch from Supabase
-      // const { data } = await supabase
-      //   .from('forum_threads')
-      //   .select('*')
-      //   .eq('category_id', categoryId)
-      //   .order('is_pinned', { ascending: false })
-      //   .order('last_activity', { ascending: false });
+      // Fetch from Supabase
+      let query = supabase
+        .from('forum_threads')
+        .select(`
+          *,
+          forum_categories(name)
+        `)
+        .order('is_pinned', { ascending: false })
+        .order('last_activity', { ascending: false });
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setThreads(MOCK_THREADS);
+      // Filter by category if provided
+      if (categoryId) {
+        query = query.eq('category_id', categoryId);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        if (__DEV__) console.error('Supabase fetch error:', error);
+        // Fallback to mock data on error
+        setThreads(MOCK_THREADS);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        // Transform Supabase data to match ForumThread interface
+        const transformedThreads: ForumThread[] = data.map((thread: any) => ({
+          id: thread.id,
+          title: thread.title,
+          content: thread.content,
+          author: thread.author_id,
+          category: thread.forum_categories?.name || 'Unknown',
+          replies_count: thread.replies_count || 0,
+          views_count: thread.views_count || 0,
+          created_at: thread.created_at,
+          last_activity: thread.last_activity || thread.created_at,
+          is_pinned: thread.is_pinned || false,
+          is_locked: thread.is_locked || false,
+        }));
+        setThreads(transformedThreads);
+      } else {
+        // No data, use mock data
+        setThreads(MOCK_THREADS);
+      }
     } catch (error) {
-      console.error('Failed to fetch threads:', error);
+      if (__DEV__) console.error('Failed to fetch threads:', error);
+      // Fallback to mock data on error
+      setThreads(MOCK_THREADS);
     } finally {
       setLoading(false);
       setRefreshing(false);

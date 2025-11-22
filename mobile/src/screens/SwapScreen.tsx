@@ -98,7 +98,7 @@ const SwapScreen: React.FC = () => {
               newBalances[token.symbol] = '0.0000';
             }
           } catch (error) {
-            console.log(`No balance for ${token.symbol}`);
+            if (__DEV__) console.log(`No balance for ${token.symbol}`);
             newBalances[token.symbol] = '0.0000';
           }
         }
@@ -106,7 +106,7 @@ const SwapScreen: React.FC = () => {
 
       setBalances(newBalances);
     } catch (error) {
-      console.error('Failed to fetch balances:', error);
+      if (__DEV__) console.error('Failed to fetch balances:', error);
     }
   }, [api, isApiReady, selectedAccount]);
 
@@ -159,7 +159,7 @@ const SwapScreen: React.FC = () => {
       setPoolReserves({ reserve1, reserve2 });
       setState((prev) => ({ ...prev, loading: false }));
     } catch (error) {
-      console.error('Failed to fetch pool reserves:', error);
+      if (__DEV__) console.error('Failed to fetch pool reserves:', error);
       Alert.alert('Error', 'Failed to fetch pool information.');
       setState((prev) => ({ ...prev, loading: false }));
     }
@@ -214,7 +214,7 @@ const SwapScreen: React.FC = () => {
       setState((prev) => ({ ...prev, toAmount: toAmountFormatted }));
       setPriceImpact(impact);
     } catch (error) {
-      console.error('Calculation error:', error);
+      if (__DEV__) console.error('Calculation error:', error);
       setState((prev) => ({ ...prev, toAmount: '' }));
     }
   }, [state.fromAmount, state.fromToken, state.toToken, poolReserves]);
@@ -326,12 +326,14 @@ const SwapScreen: React.FC = () => {
       // Create swap path
       const path = [state.fromToken.assetId, state.toToken.assetId];
 
-      console.log('Swap params:', {
-        path,
-        amountIn,
-        amountOutMin,
-        slippage: state.slippage,
-      });
+      if (__DEV__) {
+        console.log('Swap params:', {
+          path,
+          amountIn,
+          amountOutMin,
+          slippage: state.slippage,
+        });
+      }
 
       // Create transaction
       const tx = api.tx.assetConversion.swapTokensForExactTokens(
@@ -347,7 +349,7 @@ const SwapScreen: React.FC = () => {
         let unsub: (() => void) | undefined;
 
         tx.signAndSend(keyPair, ({ status, events, dispatchError }) => {
-          console.log('Transaction status:', status.type);
+          if (__DEV__) console.log('Transaction status:', status.type);
 
           if (dispatchError) {
             if (dispatchError.isModule) {
@@ -365,7 +367,7 @@ const SwapScreen: React.FC = () => {
           }
 
           if (status.isInBlock || status.isFinalized) {
-            console.log('Transaction included in block');
+            if (__DEV__) console.log('Transaction included in block');
             resolve();
             if (unsub) unsub();
           }
@@ -398,7 +400,7 @@ const SwapScreen: React.FC = () => {
         ]
       );
     } catch (error: any) {
-      console.error('Swap failed:', error);
+      if (__DEV__) console.error('Swap failed:', error);
       Alert.alert('Swap Failed', error.message || 'An error occurred.');
       setState((prev) => ({ ...prev, swapping: false }));
     }

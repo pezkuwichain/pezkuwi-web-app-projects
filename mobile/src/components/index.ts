@@ -3,6 +3,7 @@
  * Inspired by Material Design 3, iOS HIG, and Kurdistan aesthetics
  */
 
+export { ErrorBoundary } from './ErrorBoundary';
 export { Card } from './Card';
 export { Button } from './Button';
 export { Input } from './Input';

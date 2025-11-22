@@ -10,9 +10,12 @@ import {
   Platform,
   ScrollView,
   StatusBar,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../contexts/AuthContext';
 import AppColors, { KurdistanColors } from '../theme/colors';
 
 interface SignUpScreenProps {
@@ -22,18 +25,42 @@ interface SignUpScreenProps {
 
 const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onNavigateToSignIn }) => {
   const { t } = useTranslation();
+  const { signUp } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignUp = () => {
-    // TODO: Implement actual registration
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+  const handleSignUp = async () => {
+    if (!email || !password || !username) {
+      Alert.alert('Error', 'Please fill all required fields');
       return;
     }
-    console.log('Sign up:', { email, password });
-    onSignUp();
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await signUp(email, password, username);
+
+      if (error) {
+        Alert.alert('Sign Up Failed', error.message);
+        return;
+      }
+
+      // Success - navigate to app
+      onSignUp();
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred');
+      if (__DEV__) console.error('Sign up error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -78,6 +105,18 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onNavigateToSignI
               </View>
 
               <View style={styles.inputGroup}>
+                <Text style={styles.label}>{t('auth.username')}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder={t('auth.username')}
+                  value={username}
+                  onChangeText={setUsername}
+                  autoCapitalize="none"
+                  placeholderTextColor="rgba(0, 0, 0, 0.4)"
+                />
+              </View>
+
+              <View style={styles.inputGroup}>
                 <Text style={styles.label}>{t('auth.password')}</Text>
                 <TextInput
                   style={styles.input}
@@ -102,11 +141,16 @@ const SignUpScreen: React.FC<SignUpScreenProps> = ({ onSignUp, onNavigateToSignI
               </View>
 
               <TouchableOpacity
-                style={styles.signUpButton}
+                style={[styles.signUpButton, isLoading && styles.buttonDisabled]}
                 onPress={handleSignUp}
                 activeOpacity={0.8}
+                disabled={isLoading}
               >
-                <Text style={styles.signUpButtonText}>{t('auth.signUp')}</Text>
+                {isLoading ? (
+                  <ActivityIndicator color={KurdistanColors.spi} />
+                ) : (
+                  <Text style={styles.signUpButtonText}>{t('auth.signUp')}</Text>
+                )}
               </TouchableOpacity>
 
               <View style={styles.divider}>
@@ -225,6 +269,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: KurdistanColors.spi,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
   divider: {
     flexDirection: 'row',

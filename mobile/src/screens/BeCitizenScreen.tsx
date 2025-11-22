@@ -9,15 +9,20 @@ import {
   StatusBar,
   TextInput,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { usePolkadot } from '../contexts/PolkadotContext';
+import { submitKycApplication, uploadToIPFS } from '@pezkuwi/lib/citizenship-workflow';
 import AppColors, { KurdistanColors } from '../theme/colors';
 
 const BeCitizenScreen: React.FC = () => {
   const { t } = useTranslation();
+  const { api, selectedAccount } = usePolkadot();
   const [isExistingCitizen, setIsExistingCitizen] = useState(false);
   const [currentStep, setCurrentStep] = useState<'choice' | 'new' | 'existing'>('choice');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // New Citizen Form State
   const [fullName, setFullName] = useState('');
@@ -33,34 +38,82 @@ const BeCitizenScreen: React.FC = () => {
   const [citizenId, setCitizenId] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleNewCitizenApplication = () => {
+  const handleNewCitizenApplication = async () => {
     if (!fullName || !fatherName || !motherName || !email) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
 
-    // TODO: Implement actual citizenship registration on blockchain
-    Alert.alert(
-      'Application Submitted',
-      'Your citizenship application has been submitted for review. You will receive a confirmation soon.',
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            // Reset form
-            setFullName('');
-            setFatherName('');
-            setMotherName('');
-            setTribe('');
-            setRegion('');
-            setEmail('');
-            setProfession('');
-            setReferralCode('');
-            setCurrentStep('choice');
-          },
-        },
-      ]
-    );
+    if (!api || !selectedAccount) {
+      Alert.alert('Error', 'Please connect your wallet first');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Prepare citizenship data
+      const citizenshipData = {
+        fullName,
+        fatherName,
+        motherName,
+        tribe,
+        region,
+        email,
+        profession,
+        referralCode,
+        walletAddress: selectedAccount.address,
+        timestamp: Date.now(),
+      };
+
+      // Step 1: Upload encrypted data to IPFS
+      const ipfsCid = await uploadToIPFS(citizenshipData);
+
+      if (!ipfsCid) {
+        throw new Error('Failed to upload data to IPFS');
+      }
+
+      // Step 2: Submit KYC application to blockchain
+      const result = await submitKycApplication(
+        api,
+        selectedAccount,
+        fullName,
+        email,
+        ipfsCid,
+        'Citizenship application via mobile app'
+      );
+
+      if (result.success) {
+        Alert.alert(
+          'Application Submitted!',
+          'Your citizenship application has been submitted for review. You will receive a confirmation once approved.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                // Reset form
+                setFullName('');
+                setFatherName('');
+                setMotherName('');
+                setTribe('');
+                setRegion('');
+                setEmail('');
+                setProfession('');
+                setReferralCode('');
+                setCurrentStep('choice');
+              },
+            },
+          ]
+        );
+      } else {
+        Alert.alert('Application Failed', result.error || 'Failed to submit application');
+      }
+    } catch (error: any) {
+      if (__DEV__) console.error('Citizenship application error:', error);
+      Alert.alert('Error', error.message || 'An unexpected error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleExistingCitizenLogin = () => {
@@ -265,11 +318,16 @@ const BeCitizenScreen: React.FC = () => {
           </View>
 
           <TouchableOpacity
-            style={styles.submitButton}
+            style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
             onPress={handleNewCitizenApplication}
             activeOpacity={0.8}
+            disabled={isSubmitting}
           >
-            <Text style={styles.submitButtonText}>Submit Application</Text>
+            {isSubmitting ? (
+              <ActivityIndicator color={KurdistanColors.spi} />
+            ) : (
+              <Text style={styles.submitButtonText}>Submit Application</Text>
+            )}
           </TouchableOpacity>
 
           <View style={styles.spacer} />
@@ -484,6 +542,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 6,
+  },
+  submitButtonDisabled: {
+    opacity: 0.6,
   },
   submitButtonText: {
     fontSize: 18,

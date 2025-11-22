@@ -27,7 +27,7 @@ const initializeI18n = async () => {
       savedLanguage = stored;
     }
   } catch (error) {
-    console.warn('Failed to load saved language:', error);
+    if (__DEV__) console.warn('Failed to load saved language:', error);
   }
 
   i18n
@@ -58,7 +58,7 @@ export const saveLanguage = async (languageCode: string) => {
     await AsyncStorage.setItem(LANGUAGE_KEY, languageCode);
     await i18n.changeLanguage(languageCode);
   } catch (error) {
-    console.error('Failed to save language:', error);
+    if (__DEV__) console.error('Failed to save language:', error);
   }
 };
 

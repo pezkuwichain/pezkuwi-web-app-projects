@@ -122,7 +122,7 @@ export default function StakingScreen() {
         estimatedAPY,
       });
     } catch (error) {
-      console.error('Error fetching staking data:', error);
+      if (__DEV__) console.error('Error fetching staking data:', error);
       Alert.alert('Error', 'Failed to load staking data');
     } finally {
       setLoading(false);
@@ -155,7 +155,7 @@ export default function StakingScreen() {
         }
       });
     } catch (error: any) {
-      console.error('Staking error:', error);
+      if (__DEV__) console.error('Staking error:', error);
       Alert.alert('Error', error.message || 'Failed to stake tokens');
     } finally {
       setProcessing(false);
@@ -189,7 +189,7 @@ export default function StakingScreen() {
         }
       });
     } catch (error: any) {
-      console.error('Unstaking error:', error);
+      if (__DEV__) console.error('Unstaking error:', error);
       Alert.alert('Error', error.message || 'Failed to unstake tokens');
     } finally {
       setProcessing(false);

@@ -3,6 +3,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Keyring } from '@polkadot/keyring';
 import { KeyringPair } from '@polkadot/keyring/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { DEFAULT_ENDPOINT } from '../../../shared/blockchain/polkadot';
 
@@ -56,9 +57,9 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         await cryptoWaitReady();
         const kr = new Keyring({ type: 'sr25519' });
         setKeyring(kr);
-        console.log('✅ Crypto libraries initialized');
+        if (__DEV__) console.log('✅ Crypto libraries initialized');
       } catch (err) {
-        console.error('❌ Failed to initialize crypto:', err);
+        if (__DEV__) console.error('❌ Failed to initialize crypto:', err);
         setError('Failed to initialize crypto libraries');
       }
     };
@@ -70,7 +71,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   useEffect(() => {
     const initApi = async () => {
       try {
-        console.log('🔗 Connecting to Pezkuwi node:', endpoint);
+        if (__DEV__) console.log('🔗 Connecting to Pezkuwi node:', endpoint);
 
         const provider = new WsProvider(endpoint);
         const apiInstance = await ApiPromise.create({ provider });
@@ -81,7 +82,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         setIsApiReady(true);
         setError(null);
 
-        console.log('✅ Connected to Pezkuwi node');
+        if (__DEV__) console.log('✅ Connected to Pezkuwi node');
 
         // Get chain info
         const [chain, nodeName, nodeVersion] = await Promise.all([
@@ -90,10 +91,12 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
           apiInstance.rpc.system.version(),
         ]);
 
-        console.log(`📡 Chain: ${chain}`);
-        console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
+        if (__DEV__) {
+          console.log(`📡 Chain: ${chain}`);
+          console.log(`🖥️  Node: ${nodeName} v${nodeVersion}`);
+        }
       } catch (err) {
-        console.error('❌ Failed to connect to node:', err);
+        if (__DEV__) console.error('❌ Failed to connect to node:', err);
         setError(`Failed to connect to node: ${endpoint}`);
         setIsApiReady(false);
       }
@@ -127,7 +130,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
           }
         }
       } catch (err) {
-        console.error('Failed to load accounts:', err);
+        if (__DEV__) console.error('Failed to load accounts:', err);
       }
     };
 
@@ -161,18 +164,18 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
       setAccounts(updatedAccounts);
       await AsyncStorage.setItem(WALLET_STORAGE_KEY, JSON.stringify(updatedAccounts));
 
-      // Store encrypted seed separately
-      const seedKey = `@pezkuwi_seed_${pair.address}`;
-      await AsyncStorage.setItem(seedKey, mnemonicPhrase);
+      // SECURITY: Store encrypted seed in SecureStore (encrypted hardware-backed storage)
+      const seedKey = `pezkuwi_seed_${pair.address}`;
+      await SecureStore.setItemAsync(seedKey, mnemonicPhrase);
 
-      console.log('✅ Wallet created:', pair.address);
+      if (__DEV__) console.log('✅ Wallet created:', pair.address);
 
       return {
         address: pair.address,
         mnemonic: mnemonicPhrase,
       };
     } catch (err) {
-      console.error('❌ Failed to create wallet:', err);
+      if (__DEV__) console.error('❌ Failed to create wallet:', err);
       throw new Error('Failed to create wallet');
     }
   };
@@ -184,12 +187,12 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
     }
 
     try {
-      // Load seed from storage
-      const seedKey = `@pezkuwi_seed_${address}`;
-      const mnemonic = await AsyncStorage.getItem(seedKey);
+      // SECURITY: Load seed from SecureStore (encrypted storage)
+      const seedKey = `pezkuwi_seed_${address}`;
+      const mnemonic = await SecureStore.getItemAsync(seedKey);
 
       if (!mnemonic) {
-        console.error('No seed found for address:', address);
+        if (__DEV__) console.error('No seed found for address:', address);
         return null;
       }
 
@@ -197,7 +200,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
       const pair = keyring.addFromMnemonic(mnemonic);
       return pair;
     } catch (err) {
-      console.error('Failed to get keypair:', err);
+      if (__DEV__) console.error('Failed to get keypair:', err);
       return null;
     }
   };
@@ -218,9 +221,9 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
         await AsyncStorage.setItem(SELECTED_ACCOUNT_KEY, accounts[0].address);
       }
 
-      console.log(`✅ Connected with ${accounts.length} account(s)`);
+      if (__DEV__) console.log(`✅ Connected with ${accounts.length} account(s)`);
     } catch (err) {
-      console.error('❌ Wallet connection failed:', err);
+      if (__DEV__) console.error('❌ Wallet connection failed:', err);
       setError('Failed to connect wallet');
     }
   };
@@ -229,7 +232,7 @@ export const PolkadotProvider: React.FC<PolkadotProviderProps> = ({
   const disconnectWallet = () => {
     setSelectedAccount(null);
     AsyncStorage.removeItem(SELECTED_ACCOUNT_KEY);
-    console.log('🔌 Wallet disconnected');
+    if (__DEV__) console.log('🔌 Wallet disconnected');
   };
 
   // Update selected account storage when it changes

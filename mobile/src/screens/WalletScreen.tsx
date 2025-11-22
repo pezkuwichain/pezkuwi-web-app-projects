@@ -149,7 +149,7 @@ const WalletScreen: React.FC = () => {
             }
           }
         } catch (err) {
-          console.log('PEZ asset not found or not accessible');
+          if (__DEV__) console.log('PEZ asset not found or not accessible');
         }
 
         // Fetch USDT balance (wUSDT - asset ID 2)
@@ -163,7 +163,7 @@ const WalletScreen: React.FC = () => {
             }
           }
         } catch (err) {
-          console.log('USDT asset not found or not accessible');
+          if (__DEV__) console.log('USDT asset not found or not accessible');
         }
 
         setBalances({
@@ -172,7 +172,7 @@ const WalletScreen: React.FC = () => {
           USDT: usdtBalance,
         });
       } catch (err) {
-        console.error('Failed to fetch balances:', err);
+        if (__DEV__) console.error('Failed to fetch balances:', err);
         Alert.alert('Error', 'Failed to fetch token balances');
       } finally {
         setIsLoadingBalances(false);
@@ -198,7 +198,7 @@ const WalletScreen: React.FC = () => {
       await connectWallet();
       Alert.alert('Connected', 'Wallet connected successfully!');
     } catch (err) {
-      console.error('Failed to connect wallet:', err);
+      if (__DEV__) console.error('Failed to connect wallet:', err);
       Alert.alert('Error', 'Failed to connect wallet');
     }
   };
@@ -220,7 +220,7 @@ const WalletScreen: React.FC = () => {
         [{ text: 'OK', onPress: () => connectWallet() }]
       );
     } catch (err) {
-      console.error('Failed to create wallet:', err);
+      if (__DEV__) console.error('Failed to create wallet:', err);
       Alert.alert('Error', 'Failed to create wallet');
     }
   };
