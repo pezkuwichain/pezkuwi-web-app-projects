@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
 import { AppColors } from '../theme/colors';
 
@@ -19,29 +19,31 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   borderRadius = 8,
   style,
 }) => {
-  const animatedValueRef = useRef(new Animated.Value(0));
+  const animatedValue = React.useState(() => new Animated.Value(0))[0];
 
   useEffect(() => {
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.sequence([
-        Animated.timing(animatedValueRef.current, {
+        Animated.timing(animatedValue, {
           toValue: 1,
           duration: 1000,
           useNativeDriver: true,
         }),
-        Animated.timing(animatedValueRef.current, {
+        Animated.timing(animatedValue, {
           toValue: 0,
           duration: 1000,
           useNativeDriver: true,
         }),
       ])
-    ).start();
-  }, []);
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [animatedValue]);
 
-  const opacity = React.useMemo(() => animatedValueRef.current.interpolate({
+  const opacity = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0.3, 0.7],
-  }), []);
+  });
 
   return (
     <Animated.View

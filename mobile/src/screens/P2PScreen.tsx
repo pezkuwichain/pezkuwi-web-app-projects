@@ -45,11 +45,7 @@ const P2PScreen: React.FC = () => {
   const [selectedOffer, setSelectedOffer] = useState<OfferWithReputation | null>(null);
   const [tradeAmount, setTradeAmount] = useState('');
 
-  useEffect(() => {
-    fetchOffers();
-  }, [activeTab, selectedAccount]);
-
-  const fetchOffers = async () => {
+  const fetchOffers = React.useCallback(async () => {
     setLoading(true);
     try {
       let offersData: P2PFiatOffer[] = [];
@@ -74,7 +70,11 @@ const P2PScreen: React.FC = () => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [activeTab, selectedAccount]);
+
+  useEffect(() => {
+    fetchOffers();
+  }, [fetchOffers]);
 
   const handleRefresh = () => {
     setRefreshing(true);

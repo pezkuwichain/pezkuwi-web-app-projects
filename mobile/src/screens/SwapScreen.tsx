@@ -97,7 +97,7 @@ const SwapScreen: React.FC = () => {
             } else {
               newBalances[token.symbol] = '0.0000';
             }
-          } catch (_error) {
+          } catch {
             if (__DEV__) console.warn(`No balance for ${token.symbol}`);
             newBalances[token.symbol] = '0.0000';
           }
@@ -105,8 +105,8 @@ const SwapScreen: React.FC = () => {
       }
 
       setBalances(newBalances);
-    } catch (_error) {
-      if (__DEV__) console.error('Failed to fetch balances:', _error);
+    } catch (error) {
+      if (__DEV__) console.error('Failed to fetch balances:', error);
     }
   }, [api, isApiReady, selectedAccount]);
 
@@ -158,8 +158,8 @@ const SwapScreen: React.FC = () => {
 
       setPoolReserves({ reserve1, reserve2 });
       setState((prev) => ({ ...prev, loading: false }));
-    } catch (_error) {
-      if (__DEV__) console.error('Failed to fetch pool reserves:', _error);
+    } catch (error) {
+      if (__DEV__) console.error('Failed to fetch pool reserves:', error);
       Alert.alert('Error', 'Failed to fetch pool information.');
       setState((prev) => ({ ...prev, loading: false }));
     }
@@ -213,8 +213,8 @@ const SwapScreen: React.FC = () => {
 
       setState((prev) => ({ ...prev, toAmount: toAmountFormatted }));
       setPriceImpact(impact);
-    } catch (_error) {
-      if (__DEV__) console.error('Calculation error:', _error);
+    } catch (error) {
+      if (__DEV__) console.error('Calculation error:', error);
       setState((prev) => ({ ...prev, toAmount: '' }));
     }
   }, [state.fromAmount, state.fromToken, state.toToken, poolReserves]);
@@ -399,9 +399,9 @@ const SwapScreen: React.FC = () => {
           },
         ]
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Swap failed:', error);
-      Alert.alert('Swap Failed', error.message || 'An error occurred.');
+      Alert.alert('Swap Failed', error instanceof Error ? error.message : 'An error occurred.');
       setState((prev) => ({ ...prev, swapping: false }));
     }
   };

@@ -15,7 +15,6 @@ import {
   Input,
   BottomSheet,
   Badge,
-  Skeleton,
   CardSkeleton,
 } from '../components';
 import {
@@ -53,13 +52,7 @@ export default function StakingScreen() {
   const [unstakeAmount, setUnstakeAmount] = useState('');
   const [processing, setProcessing] = useState(false);
 
-  useEffect(() => {
-    if (isApiReady && selectedAccount) {
-      fetchStakingData();
-    }
-  }, [isApiReady, selectedAccount]);
-
-  const fetchStakingData = async () => {
+  const fetchStakingData = React.useCallback(async () => {
     try {
       setLoading(true);
 
@@ -78,7 +71,7 @@ export default function StakingScreen() {
         // Calculate unbonding
         if (ledger.unlocking && ledger.unlocking.length > 0) {
           unbondingAmount = ledger.unlocking
-            .reduce((sum: bigint, unlock: any) => sum + BigInt(unlock.value.toString()), BigInt(0))
+            .reduce((sum: bigint, unlock: { value: { toString: () => string } }) => sum + BigInt(unlock.value.toString()), BigInt(0))
             .toString();
         }
       }
@@ -128,7 +121,13 @@ export default function StakingScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [api, selectedAccount]);
+
+  useEffect(() => {
+    if (isApiReady && selectedAccount) {
+      void fetchStakingData();
+    }
+  }, [isApiReady, selectedAccount, fetchStakingData]);
 
   const handleStake = async () => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
@@ -154,9 +153,9 @@ export default function StakingScreen() {
           fetchStakingData();
         }
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Staking error:', error);
-      Alert.alert('Error', error.message || 'Failed to stake tokens');
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to stake tokens');
     } finally {
       setProcessing(false);
     }
@@ -188,9 +187,9 @@ export default function StakingScreen() {
           fetchStakingData();
         }
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Unstaking error:', error);
-      Alert.alert('Error', error.message || 'Failed to unstake tokens');
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to unstake tokens');
     } finally {
       setProcessing(false);
     }

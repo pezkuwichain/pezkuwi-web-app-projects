@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -59,10 +59,7 @@ const ReferralScreen: React.FC = () => {
   const handleConnectWallet = async () => {
     try {
       await connectWallet();
-      if (selectedAccount) {
-        setIsConnected(true);
-        Alert.alert('Connected', 'Your wallet has been connected to the referral system!');
-      }
+      Alert.alert('Connected', 'Your wallet has been connected to the referral system!');
     } catch (error) {
       if (__DEV__) console.error('Wallet connection error:', error);
       Alert.alert('Error', 'Failed to connect wallet. Please try again.');

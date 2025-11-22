@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   RefreshControl,
-  Image,
   Dimensions,
   Pressable,
 } from 'react-native';
@@ -48,13 +47,7 @@ export default function NFTGalleryScreen() {
   const [detailsVisible, setDetailsVisible] = useState(false);
   const [filter, setFilter] = useState<'all' | 'citizenship' | 'tiki' | 'achievement'>('all');
 
-  useEffect(() => {
-    if (isApiReady && selectedAccount) {
-      fetchNFTs();
-    }
-  }, [isApiReady, selectedAccount]);
-
-  const fetchNFTs = async () => {
+  const fetchNFTs = React.useCallback(async () => {
     try {
       setLoading(true);
 
@@ -66,7 +59,7 @@ export default function NFTGalleryScreen() {
       const citizenNft = await api.query.tiki?.citizenNft?.(selectedAccount.address);
 
       if (citizenNft && !citizenNft.isEmpty) {
-        const nftData = citizenNft.toJSON() as any;
+        const nftData = citizenNft.toJSON() as Record<string, unknown>;
 
         nftList.push({
           id: 'citizenship-001',
@@ -115,7 +108,13 @@ export default function NFTGalleryScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [api, selectedAccount]);
+
+  useEffect(() => {
+    if (isApiReady && selectedAccount) {
+      fetchNFTs();
+    }
+  }, [isApiReady, selectedAccount, fetchNFTs]);
 
   const getRarityByTiki = (tiki: string): NFT['rarity'] => {
     const highRank = ['Serok', 'SerokiMeclise', 'SerokWeziran', 'Axa'];

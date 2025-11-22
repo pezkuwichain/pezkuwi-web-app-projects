@@ -28,6 +28,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   useEffect(() => {
     // Check if user has already selected a language
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     checkLanguageSelection();
   }, [checkLanguageSelection]);
 

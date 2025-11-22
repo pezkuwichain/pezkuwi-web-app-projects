@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,9 +6,7 @@ import {
   ScrollView,
   RefreshControl,
   Alert,
-  Pressable,
   TouchableOpacity,
-  FlatList,
 } from 'react-native';
 import { usePolkadot } from '../contexts/PolkadotContext';
 import { AppColors, KurdistanColors } from '../theme/colors';
@@ -73,14 +71,7 @@ export default function GovernanceScreen() {
   const [voting, setVoting] = useState(false);
   const [votedCandidates, setVotedCandidates] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (isApiReady && selectedAccount) {
-      fetchProposals();
-      fetchElections();
-    }
-  }, [isApiReady, selectedAccount]);
-
-  const fetchProposals = async () => {
+  const fetchProposals = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -97,12 +88,9 @@ export default function GovernanceScreen() {
       const proposalsList: Proposal[] = [];
 
       // Parse proposals
-      const publicProps = proposalEntries.toJSON() as any[];
+      const publicProps = proposalEntries.toJSON() as unknown[];
 
-      for (const [index, proposal, proposer] of publicProps) {
-        // Get proposal hash and details
-        const proposalHash = proposal;
-
+      for (const [index, _proposal, proposer] of publicProps as Array<[unknown, unknown, unknown]>) {
         // For demo, create sample proposals
         // In production, decode actual proposal data
         proposalsList.push({
@@ -127,9 +115,9 @@ export default function GovernanceScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [api]);
 
-  const fetchElections = async () => {
+  const fetchElections = useCallback(async () => {
     try {
       // Mock elections data
       // In production, this would fetch from pallet-tiki or election pallet
@@ -164,7 +152,14 @@ export default function GovernanceScreen() {
     } catch (error) {
       if (__DEV__) console.error('Error fetching elections:', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isApiReady && selectedAccount) {
+      void fetchProposals();
+      void fetchElections();
+    }
+  }, [isApiReady, selectedAccount, fetchProposals, fetchElections]);
 
   const handleVote = async (approve: boolean) => {
     if (!selectedProposal) return;
@@ -190,9 +185,9 @@ export default function GovernanceScreen() {
           fetchProposals();
         }
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Voting error:', error);
-      Alert.alert('Error', error.message || 'Failed to submit vote');
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to submit vote');
     } finally {
       setVoting(false);
     }
@@ -284,9 +279,9 @@ export default function GovernanceScreen() {
           }
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Election voting error:', error);
-      Alert.alert('Error', error.message || 'Failed to submit vote');
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to submit vote');
     } finally {
       setVoting(false);
     }

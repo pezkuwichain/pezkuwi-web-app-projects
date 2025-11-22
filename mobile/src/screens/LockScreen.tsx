@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Pressable,
   Alert,
 } from 'react-native';
@@ -25,27 +24,26 @@ export default function LockScreen() {
     biometricType,
     authenticate,
     verifyPinCode,
-    unlock,
   } = useBiometricAuth();
 
   const [showPinInput, setShowPinInput] = useState(false);
   const [pin, setPin] = useState('');
   const [verifying, setVerifying] = useState(false);
 
-  useEffect(() => {
-    // Auto-trigger biometric on mount if enabled
-    if (isBiometricEnabled && isBiometricSupported && isBiometricEnrolled) {
-      handleBiometricAuth();
-    }
-  }, []);
-
-  const handleBiometricAuth = async () => {
+  const handleBiometricAuth = React.useCallback(async () => {
     const success = await authenticate();
     if (!success) {
       // Biometric failed, show PIN option
       setShowPinInput(true);
     }
-  };
+  }, [authenticate]);
+
+  useEffect(() => {
+    // Auto-trigger biometric on mount if enabled
+    if (isBiometricEnabled && isBiometricSupported && isBiometricEnrolled) {
+      handleBiometricAuth();
+    }
+  }, [isBiometricEnabled, isBiometricSupported, isBiometricEnrolled, handleBiometricAuth]);
 
   const handlePinSubmit = async () => {
     if (!pin || pin.length < 4) {
@@ -61,7 +59,7 @@ export default function LockScreen() {
         Alert.alert('Error', 'Incorrect PIN. Please try again.');
         setPin('');
       }
-    } catch (_error) {
+    } catch {
       Alert.alert('Error', 'Failed to verify PIN');
     } finally {
       setVerifying(false);

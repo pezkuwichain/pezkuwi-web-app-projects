@@ -140,9 +140,9 @@ export const BiometricAuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [checkAutoLock]);
 
   useEffect(() => {
+    // Initialize biometric and load settings on mount
     // eslint-disable-next-line react-hooks/set-state-in-effect
     initBiometric();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadSettings();
   }, [initBiometric, loadSettings]);
 

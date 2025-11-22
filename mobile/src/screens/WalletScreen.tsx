@@ -134,7 +134,7 @@ const WalletScreen: React.FC = () => {
       setIsLoadingBalances(true);
       try {
         // Fetch HEZ balance (native token)
-        const accountInfo: any = await api.query.system.account(selectedAccount.address);
+        const accountInfo = await api.query.system.account(selectedAccount.address);
         const freeBalance = accountInfo.data.free.toString();
         const hezBalance = (Number(freeBalance) / 1e12).toFixed(2);
 
@@ -142,13 +142,13 @@ const WalletScreen: React.FC = () => {
         let pezBalance = '0.00';
         try {
           if (api.query.assets?.account) {
-            const pezAsset: any = await api.query.assets.account(1, selectedAccount.address);
+            const pezAsset = await api.query.assets.account(1, selectedAccount.address);
             if (pezAsset.isSome) {
               const pezData = pezAsset.unwrap();
               pezBalance = (Number(pezData.balance.toString()) / 1e12).toFixed(2);
             }
           }
-        } catch (_err) {
+        } catch {
           if (__DEV__) console.warn('PEZ asset not found or not accessible');
         }
 
@@ -156,13 +156,13 @@ const WalletScreen: React.FC = () => {
         let usdtBalance = '0.00';
         try {
           if (api.query.assets?.account) {
-            const usdtAsset: any = await api.query.assets.account(2, selectedAccount.address);
+            const usdtAsset = await api.query.assets.account(2, selectedAccount.address);
             if (usdtAsset.isSome) {
               const usdtData = usdtAsset.unwrap();
               usdtBalance = (Number(usdtData.balance.toString()) / 1e12).toFixed(2);
             }
           }
-        } catch (_err) {
+        } catch {
           if (__DEV__) console.warn('USDT asset not found or not accessible');
         }
 
@@ -197,8 +197,8 @@ const WalletScreen: React.FC = () => {
       // Connect existing wallet
       await connectWallet();
       Alert.alert('Connected', 'Wallet connected successfully!');
-    } catch (_err) {
-      if (__DEV__) console.error('Failed to connect wallet:', _err);
+    } catch (err) {
+      if (__DEV__) console.error('Failed to connect wallet:', err);
       Alert.alert('Error', 'Failed to connect wallet');
     }
   };
@@ -219,8 +219,8 @@ const WalletScreen: React.FC = () => {
         `Your wallet has been created!\n\nAddress: ${address.substring(0, 10)}...\n\nIMPORTANT: Save your recovery phrase:\n${mnemonic}\n\nStore it securely - you'll need it to recover your wallet!`,
         [{ text: 'OK', onPress: () => connectWallet() }]
       );
-    } catch (_err) {
-      if (__DEV__) console.error('Failed to create wallet:', _err);
+    } catch (err) {
+      if (__DEV__) console.error('Failed to create wallet:', err);
       Alert.alert('Error', 'Failed to create wallet');
     }
   };
@@ -291,7 +291,7 @@ const WalletScreen: React.FC = () => {
               }
 
               // Sign and send transaction
-              await tx.signAndSend(keypair, ({ status, events: _events }: any) => {
+              await tx.signAndSend(keypair, ({ status }) => {
                 if (status.isInBlock) {
                   if (__DEV__) console.warn(`Transaction included in block: ${status.asInBlock}`);
                 } else if (status.isFinalized) {
