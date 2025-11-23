@@ -45,7 +45,7 @@ const AVAILABLE_TOKENS: Token[] = [
 ];
 
 const SwapScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const { api, isApiReady, selectedAccount, getKeyPair } = usePolkadot();
 
   const [state, setState] = useState<SwapState>({
@@ -97,8 +97,8 @@ const SwapScreen: React.FC = () => {
             } else {
               newBalances[token.symbol] = '0.0000';
             }
-          } catch (error) {
-            if (__DEV__) console.log(`No balance for ${token.symbol}`);
+          } catch {
+            if (__DEV__) console.warn(`No balance for ${token.symbol}`);
             newBalances[token.symbol] = '0.0000';
           }
         }
@@ -327,7 +327,7 @@ const SwapScreen: React.FC = () => {
       const path = [state.fromToken.assetId, state.toToken.assetId];
 
       if (__DEV__) {
-        console.log('Swap params:', {
+        if (__DEV__) console.warn('Swap params:', {
           path,
           amountIn,
           amountOutMin,
@@ -348,8 +348,8 @@ const SwapScreen: React.FC = () => {
       await new Promise<void>((resolve, reject) => {
         let unsub: (() => void) | undefined;
 
-        tx.signAndSend(keyPair, ({ status, events, dispatchError }) => {
-          if (__DEV__) console.log('Transaction status:', status.type);
+        tx.signAndSend(keyPair, ({ status, events: _events, dispatchError }) => {
+          if (__DEV__) console.warn('Transaction status:', status.type);
 
           if (dispatchError) {
             if (dispatchError.isModule) {
@@ -367,7 +367,7 @@ const SwapScreen: React.FC = () => {
           }
 
           if (status.isInBlock || status.isFinalized) {
-            if (__DEV__) console.log('Transaction included in block');
+            if (__DEV__) console.warn('Transaction included in block');
             resolve();
             if (unsub) unsub();
           }
@@ -399,9 +399,9 @@ const SwapScreen: React.FC = () => {
           },
         ]
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Swap failed:', error);
-      Alert.alert('Swap Failed', error.message || 'An error occurred.');
+      Alert.alert('Swap Failed', error instanceof Error ? error.message : 'An error occurred.');
       setState((prev) => ({ ...prev, swapping: false }));
     }
   };

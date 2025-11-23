@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, Pressable } from 'react-native';
+import { View, StyleSheet, ViewStyle, Pressable, Text } from 'react-native';
 import { AppColors } from '../theme/colors';
 
 interface CardProps {
   children: React.ReactNode;
+  title?: string;
   style?: ViewStyle;
   onPress?: () => void;
   variant?: 'elevated' | 'outlined' | 'filled';
+  testID?: string;
+  elevation?: number;
 }
 
 /**
@@ -15,33 +18,45 @@ interface CardProps {
  */
 export const Card: React.FC<CardProps> = ({
   children,
+  title,
   style,
   onPress,
-  variant = 'elevated'
+  variant = 'elevated',
+  testID,
+  elevation,
 }) => {
   const cardStyle = [
     styles.card,
     variant === 'elevated' && styles.elevated,
     variant === 'outlined' && styles.outlined,
     variant === 'filled' && styles.filled,
+    elevation && { elevation },
     style,
   ];
+
+  const content = (
+    <>
+      {title && <Text style={styles.title}>{title}</Text>}
+      {children}
+    </>
+  );
 
   if (onPress) {
     return (
       <Pressable
+        testID={testID}
         onPress={onPress}
         style={({ pressed }) => [
           ...cardStyle,
           pressed && styles.pressed,
         ]}
       >
-        {children}
+        {content}
       </Pressable>
     );
   }
 
-  return <View style={cardStyle}>{children}</View>;
+  return <View testID={testID} style={cardStyle}>{content}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -49,6 +64,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     backgroundColor: AppColors.surface,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: AppColors.text,
+    marginBottom: 12,
   },
   elevated: {
     shadowColor: '#000',

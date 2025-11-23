@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { View, Animated, StyleSheet, ViewStyle } from 'react-native';
 import { AppColors } from '../theme/colors';
 
@@ -19,10 +19,10 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   borderRadius = 8,
   style,
 }) => {
-  const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedValue = React.useState(() => new Animated.Value(0))[0];
 
   useEffect(() => {
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.sequence([
         Animated.timing(animatedValue, {
           toValue: 1,
@@ -35,8 +35,10 @@ export const Skeleton: React.FC<SkeletonProps> = ({
           useNativeDriver: true,
         }),
       ])
-    ).start();
-  }, []);
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [animatedValue]);
 
   const opacity = animatedValue.interpolate({
     inputRange: [0, 1],
@@ -81,6 +83,9 @@ export const ListItemSkeleton: React.FC = () => (
     </View>
   </View>
 );
+
+// Export LoadingSkeleton as an alias for compatibility
+export const LoadingSkeleton = Skeleton;
 
 const styles = StyleSheet.create({
   skeleton: {

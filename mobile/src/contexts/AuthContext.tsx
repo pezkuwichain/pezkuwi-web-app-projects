@@ -66,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const inactiveTime = now - lastActivityTime;
 
       if (inactiveTime >= SESSION_TIMEOUT_MS) {
-        if (__DEV__) console.log('⏱️ Session timeout - logging out due to inactivity');
+        if (__DEV__) console.warn('⏱️ Session timeout - logging out due to inactivity');
         await signOut();
       }
     } catch (error) {

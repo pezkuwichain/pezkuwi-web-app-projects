@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useBiometricAuth } from '../contexts/BiometricAuthContext';
 import { AppColors, KurdistanColors } from '../theme/colors';
-import { Card, Button, Input, BottomSheet, Badge } from '../components';
+import { Card, Button, Input, BottomSheet } from '../components';
 
 /**
  * Security Settings Screen
@@ -129,8 +129,8 @@ export default function SecurityScreen() {
           },
         ]
       );
-    } catch (error: any) {
-      Alert.alert('Error', error.message || 'Failed to set PIN');
+    } catch (error: unknown) {
+      Alert.alert('Error', error instanceof Error ? error.message : 'Failed to set PIN');
     } finally {
       setSettingPin(false);
     }
@@ -160,7 +160,7 @@ export default function SecurityScreen() {
         <Card variant="outlined" style={styles.privacyCard}>
           <Text style={styles.privacyTitle}>🔐 Privacy Guarantee</Text>
           <Text style={styles.privacyText}>
-            All security settings are stored locally on your device only. Your biometric data never leaves your device's secure enclave. PIN codes are encrypted. No data is transmitted to our servers.
+            All security settings are stored locally on your device only. Your biometric data never leaves your device&apos;s secure enclave. PIN codes are encrypted. No data is transmitted to our servers.
           </Text>
         </Card>
 

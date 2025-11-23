@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
@@ -29,7 +28,7 @@ import {
 type TabType = 'all' | 'my-courses';
 
 const EducationScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const { api, isApiReady, selectedAccount, getKeyPair } = usePolkadot();
 
   const [activeTab, setActiveTab] = useState<TabType>('all');
@@ -97,13 +96,13 @@ const EducationScreen: React.FC = () => {
         address: selectedAccount.address,
         meta: {},
         type: 'sr25519',
-      } as any, courseId);
+      }, courseId);
 
       Alert.alert('Success', 'Successfully enrolled in course!');
       fetchEnrollments();
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Enrollment failed:', error);
-      Alert.alert('Enrollment Failed', error.message || 'Failed to enroll in course');
+      Alert.alert('Enrollment Failed', error instanceof Error ? error.message : 'Failed to enroll in course');
     } finally {
       setEnrolling(null);
     }
@@ -133,13 +132,13 @@ const EducationScreen: React.FC = () => {
                 address: selectedAccount.address,
                 meta: {},
                 type: 'sr25519',
-              } as any, courseId);
+              }, courseId);
 
               Alert.alert('Success', 'Course completed! Certificate issued.');
               fetchEnrollments();
-            } catch (error: any) {
+            } catch (error: unknown) {
               if (__DEV__) console.error('Completion failed:', error);
-              Alert.alert('Error', error.message || 'Failed to complete course');
+              Alert.alert('Error', error instanceof Error ? error.message : 'Failed to complete course');
             }
           },
         },

@@ -45,7 +45,7 @@ const AppNavigator: React.FC = () => {
     setIsAuthenticated(true);
   };
 
-  const handleLogout = () => {
+  const _handleLogout = () => {
     setIsAuthenticated(false);
   };
 

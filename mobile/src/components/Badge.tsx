@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { AppColors, KurdistanColors } from '../theme/colors';
+import { KurdistanColors } from '../theme/colors';
 
 interface BadgeProps {
-  label: string;
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+  label?: string;
+  children?: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'error';
   size?: 'small' | 'medium' | 'large';
   style?: ViewStyle;
   icon?: React.ReactNode;
+  testID?: string;
 }
 
 /**
@@ -16,16 +18,20 @@ interface BadgeProps {
  */
 export const Badge: React.FC<BadgeProps> = ({
   label,
+  children,
   variant = 'primary',
   size = 'medium',
   style,
   icon,
+  testID,
 }) => {
+  const content = label || children;
+
   return (
-    <View style={[styles.badge, styles[variant], styles[`${size}Size`], style]}>
+    <View testID={testID} style={[styles.badge, styles[variant], styles[`${size}Size`], style]}>
       {icon}
       <Text style={[styles.text, styles[`${variant}Text`], styles[`${size}Text`]]}>
-        {label}
+        {content}
       </Text>
     </View>
   );
@@ -54,6 +60,9 @@ const styles = StyleSheet.create({
     backgroundColor: `${KurdistanColors.zer}20`,
   },
   danger: {
+    backgroundColor: `${KurdistanColors.sor}15`,
+  },
+  error: {
     backgroundColor: `${KurdistanColors.sor}15`,
   },
   info: {
@@ -89,6 +98,9 @@ const styles = StyleSheet.create({
     color: '#D97706',
   },
   dangerText: {
+    color: KurdistanColors.sor,
+  },
+  errorText: {
     color: KurdistanColors.sor,
   },
   infoText: {

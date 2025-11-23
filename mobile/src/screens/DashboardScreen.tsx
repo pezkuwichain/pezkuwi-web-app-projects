@@ -15,16 +15,28 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProp } from '@react-navigation/native';
 import type { BottomTabParamList } from '../navigation/BottomTabNavigator';
-import AppColors, { KurdistanColors } from '../theme/colors';
+import { KurdistanColors } from '../theme/colors';
+
+// Quick action images
+import qaEducation from '../../../shared/images/quick-actions/qa_education.png';
+import qaExchange from '../../../shared/images/quick-actions/qa_exchange.png';
+import qaForum from '../../../shared/images/quick-actions/qa_forum.jpg';
+import qaGovernance from '../../../shared/images/quick-actions/qa_governance.jpg';
+import qaTrading from '../../../shared/images/quick-actions/qa_trading.jpg';
+import qaB2B from '../../../shared/images/quick-actions/qa_b2b.png';
+import qaBank from '../../../shared/images/quick-actions/qa_bank.png';
+import qaGames from '../../../shared/images/quick-actions/qa_games.png';
+import qaKurdMedia from '../../../shared/images/quick-actions/qa_kurdmedia.jpg';
+import qaUniversity from '../../../shared/images/quick-actions/qa_university.png';
 
 interface DashboardScreenProps {
-  onNavigateToWallet: () => void;
-  onNavigateToSettings: () => void;
+  _onNavigateToWallet: () => void;
+  _onNavigateToSettings: () => void;
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({
-  onNavigateToWallet,
-  onNavigateToSettings,
+  _onNavigateToWallet,
+  _onNavigateToSettings,
 }) => {
   const { t } = useTranslation();
   const navigation = useNavigation<NavigationProp<BottomTabParamList>>();
@@ -41,70 +53,70 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({
     {
       key: 'education',
       title: 'Education',
-      image: require('../../../shared/images/quick-actions/qa_education.png'),
+      image: qaEducation,
       available: true,
       onPress: () => navigation.navigate('Education'),
     },
     {
       key: 'exchange',
       title: 'Exchange',
-      image: require('../../../shared/images/quick-actions/qa_exchange.png'),
+      image: qaExchange,
       available: true,
       onPress: () => navigation.navigate('Swap'),
     },
     {
       key: 'forum',
       title: 'Forum',
-      image: require('../../../shared/images/quick-actions/qa_forum.jpg'),
+      image: qaForum,
       available: true,
       onPress: () => navigation.navigate('Forum'),
     },
     {
       key: 'governance',
       title: 'Governance',
-      image: require('../../../shared/images/quick-actions/qa_governance.jpg'),
+      image: qaGovernance,
       available: true,
       onPress: () => navigation.navigate('Home'), // TODO: Navigate to Governance screen
     },
     {
       key: 'trading',
       title: 'Trading',
-      image: require('../../../shared/images/quick-actions/qa_trading.jpg'),
+      image: qaTrading,
       available: true,
       onPress: () => navigation.navigate('P2P'),
     },
     {
       key: 'b2b',
       title: 'B2B Trading',
-      image: require('../../../shared/images/quick-actions/qa_b2b.png'),
+      image: qaB2B,
       available: false,
       onPress: () => showComingSoon('B2B Trading'),
     },
     {
       key: 'bank',
       title: 'Banking',
-      image: require('../../../shared/images/quick-actions/qa_bank.png'),
+      image: qaBank,
       available: false,
       onPress: () => showComingSoon('Banking'),
     },
     {
       key: 'games',
       title: 'Games',
-      image: require('../../../shared/images/quick-actions/qa_games.png'),
+      image: qaGames,
       available: false,
       onPress: () => showComingSoon('Games'),
     },
     {
       key: 'kurdmedia',
       title: 'Kurd Media',
-      image: require('../../../shared/images/quick-actions/qa_kurdmedia.jpg'),
+      image: qaKurdMedia,
       available: false,
       onPress: () => showComingSoon('Kurd Media'),
     },
     {
       key: 'university',
       title: 'University',
-      image: require('../../../shared/images/quick-actions/qa_university.png'),
+      image: qaUniversity,
       available: false,
       onPress: () => showComingSoon('University'),
     },

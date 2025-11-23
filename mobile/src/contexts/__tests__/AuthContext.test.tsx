@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, act, waitFor } from '@testing-library/react-native';
+import { renderHook, act } from '@testing-library/react-native';
 import { AuthProvider, useAuth } from '../AuthContext';
 import { supabase } from '../../lib/supabase';
 

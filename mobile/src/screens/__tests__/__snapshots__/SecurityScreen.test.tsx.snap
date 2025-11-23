@@ -1,0 +1,528 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SecurityScreen should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "padding": 16,
+      }
+    }
+  >
+    <View>
+      <View
+        style={
+          {
+            "marginBottom": 24,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 32,
+              "fontWeight": "700",
+              "marginBottom": 4,
+            }
+          }
+        >
+          Security
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 16,
+            }
+          }
+        >
+          Protect your account and assets
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "padding": 16,
+            },
+            false,
+            {
+              "borderColor": "#E0E0E0",
+              "borderWidth": 1,
+              "elevation": 0,
+              "shadowOpacity": 0,
+            },
+            false,
+            undefined,
+            {
+              "backgroundColor": "#00A94F08",
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "fontWeight": "600",
+              "marginBottom": 8,
+            }
+          }
+        >
+          🔐 Privacy Guarantee
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 14,
+              "lineHeight": 20,
+            }
+          }
+        >
+          All security settings are stored locally on your device only. Your biometric data never leaves your device's secure enclave. PIN codes are encrypted. No data is transmitted to our servers.
+        </Text>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "padding": 16,
+            },
+            {
+              "elevation": 4,
+              "shadowColor": "#000",
+              "shadowOffset": {
+                "height": 2,
+                "width": 0,
+              },
+              "shadowOpacity": 0.1,
+              "shadowRadius": 8,
+            },
+            false,
+            false,
+            undefined,
+            {
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "marginBottom": 8,
+            }
+          }
+        >
+          Biometric Authentication
+        </Text>
+        <View
+          style={
+            {
+              "paddingVertical": 16,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "fontStyle": "italic",
+                "textAlign": "center",
+              }
+            }
+          >
+            Biometric authentication is not available on this device
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "padding": 16,
+            },
+            {
+              "elevation": 4,
+              "shadowColor": "#000",
+              "shadowOffset": {
+                "height": 2,
+                "width": 0,
+              },
+              "shadowOpacity": 0.1,
+              "shadowRadius": 8,
+            },
+            false,
+            false,
+            undefined,
+            {
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "marginBottom": 8,
+            }
+          }
+        >
+          PIN Code
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 14,
+              "lineHeight": 20,
+              "marginBottom": 16,
+            }
+          }
+        >
+          Set a backup PIN code for when biometric authentication fails
+        </Text>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": false,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            [
+              {
+                "alignItems": "center",
+                "borderRadius": 12,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "paddingHorizontal": 24,
+                "paddingVertical": 12,
+              },
+              {
+                "backgroundColor": "transparent",
+                "borderColor": "#00A94F",
+                "borderWidth": 2,
+              },
+              {
+                "borderRadius": 12,
+                "paddingHorizontal": 24,
+                "paddingVertical": 12,
+              },
+              {
+                "width": "100%",
+              },
+              false,
+              undefined,
+              false,
+            ]
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "fontWeight": "600",
+                  "textAlign": "center",
+                },
+                {
+                  "color": "#00A94F",
+                },
+                {
+                  "fontSize": 16,
+                },
+                false,
+                undefined,
+              ]
+            }
+          >
+            Set PIN Code
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "padding": 16,
+            },
+            {
+              "elevation": 4,
+              "shadowColor": "#000",
+              "shadowOffset": {
+                "height": 2,
+                "width": 0,
+              },
+              "shadowOpacity": 0.1,
+              "shadowRadius": 8,
+            },
+            false,
+            false,
+            undefined,
+            {
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "marginBottom": 8,
+            }
+          }
+        >
+          Auto-Lock
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#666666",
+              "fontSize": 14,
+              "lineHeight": 20,
+              "marginBottom": 16,
+            }
+          }
+        >
+          Automatically lock the app after inactivity
+        </Text>
+        <View
+          accessibilityState={
+            {
+              "busy": undefined,
+              "checked": undefined,
+              "disabled": undefined,
+              "expanded": undefined,
+              "selected": undefined,
+            }
+          }
+          accessibilityValue={
+            {
+              "max": undefined,
+              "min": undefined,
+              "now": undefined,
+              "text": undefined,
+            }
+          }
+          accessible={true}
+          collapsable={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#F5F5F5",
+              "borderRadius": 12,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingHorizontal": 16,
+              "paddingVertical": 12,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#000000",
+                "fontSize": 16,
+              }
+            }
+          >
+            Auto-lock timer
+          </Text>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#00A94F",
+                  "fontSize": 16,
+                  "fontWeight": "600",
+                  "marginRight": 4,
+                }
+              }
+            >
+              5 min
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#666666",
+                  "fontSize": 20,
+                }
+              }
+            >
+              ›
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "padding": 16,
+            },
+            false,
+            {
+              "borderColor": "#E0E0E0",
+              "borderWidth": 1,
+              "elevation": 0,
+              "shadowOpacity": 0,
+            },
+            false,
+            undefined,
+            {
+              "marginTop": 8,
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 16,
+              "fontWeight": "600",
+              "marginBottom": 12,
+            }
+          }
+        >
+          💡 Security Tips
+        </Text>
+        <View
+          style={
+            {
+              "gap": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "lineHeight": 20,
+              }
+            }
+          >
+            • Enable biometric authentication for faster, more secure access
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "lineHeight": 20,
+              }
+            }
+          >
+            • Set a strong PIN code as backup
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "lineHeight": 20,
+              }
+            }
+          >
+            • Use auto-lock to protect your account when device is idle
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "lineHeight": 20,
+              }
+            }
+          >
+            • Your biometric data never leaves your device
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666666",
+                "fontSize": 14,
+                "lineHeight": 20,
+              }
+            }
+          >
+            • All security settings are stored locally only
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

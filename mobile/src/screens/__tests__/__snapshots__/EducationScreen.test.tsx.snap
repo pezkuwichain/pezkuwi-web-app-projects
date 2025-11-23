@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EducationScreen should match snapshot 1`] = `
+<RCTSafeAreaView
+  style={
+    {
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "padding": 16,
+        "paddingBottom": 12,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          {
+            "color": "#000",
+            "fontSize": 28,
+            "fontWeight": "700",
+            "marginBottom": 4,
+          }
+        }
+      >
+        Perwerde 🎓
+      </Text>
+      <Text
+        style={
+          {
+            "color": "#666",
+            "fontSize": 14,
+          }
+        }
+      >
+        Decentralized Education Platform
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "backgroundColor": "#FFF3CD",
+        "borderColor": "#FFE69C",
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "marginBottom": 12,
+        "marginHorizontal": 16,
+        "padding": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#856404",
+          "fontSize": 14,
+          "textAlign": "center",
+        }
+      }
+    >
+      Connecting to blockchain...
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "borderBottomColor": "#E0E0E0",
+        "borderBottomWidth": 1,
+        "flexDirection": "row",
+        "marginBottom": 16,
+        "paddingHorizontal": 16,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "borderBottomColor": "#00A94F",
+          "borderBottomWidth": 2,
+          "flex": 1,
+          "opacity": 1,
+          "paddingVertical": 12,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#666",
+              "fontSize": 16,
+              "fontWeight": "600",
+            },
+            {
+              "color": "#00A94F",
+            },
+          ]
+        }
+      >
+        All Courses
+      </Text>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "borderBottomColor": "transparent",
+          "borderBottomWidth": 2,
+          "flex": 1,
+          "opacity": 1,
+          "paddingVertical": 12,
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "color": "#666",
+              "fontSize": 16,
+              "fontWeight": "600",
+            },
+            false,
+          ]
+        }
+      >
+        My Courses (
+        0
+        )
+      </Text>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#00A94F"
+      size="large"
+    />
+    <Text
+      style={
+        {
+          "color": "#666",
+          "fontSize": 14,
+          "marginTop": 12,
+        }
+      }
+    >
+      Loading courses...
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;

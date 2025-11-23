@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../contexts/LanguageContext';
 import { languages } from '../i18n';
-import AppColors, { KurdistanColors } from '../theme/colors';
+import { KurdistanColors } from '../theme/colors';
 
 interface WelcomeScreenProps {
   onLanguageSelected: () => void;

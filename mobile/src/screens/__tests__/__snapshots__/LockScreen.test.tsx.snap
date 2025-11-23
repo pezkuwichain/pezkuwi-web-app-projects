@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LockScreen should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+      "justifyContent": "center",
+      "paddingHorizontal": 24,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "marginBottom": 40,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "fontSize": 64,
+          "marginBottom": 8,
+        }
+      }
+    >
+      🌟
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#00A94F",
+          "fontSize": 28,
+          "fontWeight": "700",
+          "marginBottom": 4,
+        }
+      }
+    >
+      PezkuwiChain
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#666666",
+          "fontSize": 16,
+        }
+      }
+    >
+      Digital Kurdistan
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "borderRadius": 50,
+        "elevation": 8,
+        "height": 100,
+        "justifyContent": "center",
+        "marginBottom": 24,
+        "shadowColor": "#000",
+        "shadowOffset": {
+          "height": 4,
+          "width": 0,
+        },
+        "shadowOpacity": 0.1,
+        "shadowRadius": 12,
+        "width": 100,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "fontSize": 48,
+        }
+      }
+    >
+      🔒
+    </Text>
+  </View>
+  <Text
+    style={
+      {
+        "color": "#000000",
+        "fontSize": 24,
+        "fontWeight": "700",
+        "marginBottom": 8,
+      }
+    }
+  >
+    App Locked
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#666666",
+        "fontSize": 16,
+        "marginBottom": 40,
+        "textAlign": "center",
+      }
+    }
+  >
+    Authenticate to unlock and access your wallet
+  </Text>
+  <View
+    style={
+      {
+        "maxWidth": 360,
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "alignItems": "center",
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#666666",
+            "fontSize": 14,
+            "marginBottom": 16,
+            "textAlign": "center",
+          }
+        }
+      >
+        Biometric authentication not available
+      </Text>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": false,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          [
+            {
+              "alignItems": "center",
+              "borderRadius": 12,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "paddingHorizontal": 24,
+              "paddingVertical": 12,
+            },
+            {
+              "backgroundColor": "#00A94F",
+              "elevation": 4,
+              "shadowColor": "#00A94F",
+              "shadowOffset": {
+                "height": 4,
+                "width": 0,
+              },
+              "shadowOpacity": 0.3,
+              "shadowRadius": 8,
+            },
+            {
+              "borderRadius": 12,
+              "paddingHorizontal": 24,
+              "paddingVertical": 12,
+            },
+            {
+              "width": "100%",
+            },
+            false,
+            undefined,
+            false,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "fontWeight": "600",
+                "textAlign": "center",
+              },
+              {
+                "color": "#FFFFFF",
+              },
+              {
+                "fontSize": 16,
+              },
+              false,
+              undefined,
+            ]
+          }
+        >
+          Enter PIN
+        </Text>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      {
+        "bottom": 40,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#666666",
+          "fontSize": 12,
+          "textAlign": "center",
+        }
+      }
+    >
+      🔐 Authentication happens on your device only
+    </Text>
+  </View>
+</View>
+`;

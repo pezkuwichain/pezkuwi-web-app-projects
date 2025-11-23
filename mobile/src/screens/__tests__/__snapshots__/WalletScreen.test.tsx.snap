@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WalletScreen should match snapshot 1`] = `
+<RCTSafeAreaView
+  style={
+    {
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 20,
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#00A94F"
+      size="large"
+    />
+    <Text
+      style={
+        {
+          "color": "#666",
+          "fontSize": 16,
+          "marginTop": 16,
+        }
+      }
+    >
+      Connecting to blockchain...
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;

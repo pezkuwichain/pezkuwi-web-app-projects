@@ -15,12 +15,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { usePolkadot } from '../contexts/PolkadotContext';
 import { submitKycApplication, uploadToIPFS } from '@pezkuwi/lib/citizenship-workflow';
-import AppColors, { KurdistanColors } from '../theme/colors';
+import { KurdistanColors } from '../theme/colors';
 
 const BeCitizenScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
   const { api, selectedAccount } = usePolkadot();
-  const [isExistingCitizen, setIsExistingCitizen] = useState(false);
+  const [_isExistingCitizen, _setIsExistingCitizen] = useState(false);
   const [currentStep, setCurrentStep] = useState<'choice' | 'new' | 'existing'>('choice');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -108,9 +108,9 @@ const BeCitizenScreen: React.FC = () => {
       } else {
         Alert.alert('Application Failed', result.error || 'Failed to submit application');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (__DEV__) console.error('Citizenship application error:', error);
-      Alert.alert('Error', error.message || 'An unexpected error occurred');
+      Alert.alert('Error', error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -239,7 +239,7 @@ const BeCitizenScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Father's Name *</Text>
+            <Text style={styles.label}>Father&apos;s Name *</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter father's name"
@@ -250,7 +250,7 @@ const BeCitizenScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mother's Name *</Text>
+            <Text style={styles.label}>Mother&apos;s Name *</Text>
             <TextInput
               style={styles.input}
               placeholder="Enter mother's name"

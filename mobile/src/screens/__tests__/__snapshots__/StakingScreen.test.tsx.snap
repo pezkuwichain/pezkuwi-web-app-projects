@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StakingScreen should match snapshot 1`] = `
+<RCTScrollView
+  contentContainerStyle={
+    {
+      "padding": 16,
+    }
+  }
+  style={
+    {
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 16,
+          "marginBottom": 16,
+          "padding": 16,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 24,
+            "marginBottom": 12,
+            "opacity": 0.3,
+            "width": "60%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 8,
+            "opacity": 0.3,
+            "width": "40%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 16,
+            "opacity": 0.3,
+            "width": "80%",
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 60,
+            }
+          }
+        />
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 80,
+            }
+          }
+        />
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 16,
+          "marginBottom": 16,
+          "padding": 16,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 24,
+            "marginBottom": 12,
+            "opacity": 0.3,
+            "width": "60%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 8,
+            "opacity": 0.3,
+            "width": "40%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 16,
+            "opacity": 0.3,
+            "width": "80%",
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 60,
+            }
+          }
+        />
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 80,
+            }
+          }
+        />
+      </View>
+    </View>
+    <View
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": 16,
+          "marginBottom": 16,
+          "padding": 16,
+        }
+      }
+    >
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 24,
+            "marginBottom": 12,
+            "opacity": 0.3,
+            "width": "60%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 8,
+            "opacity": 0.3,
+            "width": "40%",
+          }
+        }
+      />
+      <View
+        collapsable={false}
+        style={
+          {
+            "backgroundColor": "#E0E0E0",
+            "borderRadius": 8,
+            "height": 16,
+            "marginBottom": 16,
+            "opacity": 0.3,
+            "width": "80%",
+          }
+        }
+      />
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "gap": 12,
+          }
+        }
+      >
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 60,
+            }
+          }
+        />
+        <View
+          collapsable={false}
+          style={
+            {
+              "backgroundColor": "#E0E0E0",
+              "borderRadius": 16,
+              "height": 32,
+              "opacity": 0.3,
+              "width": 80,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;

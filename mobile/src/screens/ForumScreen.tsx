@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -113,7 +113,7 @@ const MOCK_THREADS: ForumThread[] = [
 type ViewType = 'categories' | 'threads';
 
 const ForumScreen: React.FC = () => {
-  const { t } = useTranslation();
+  const { t: _t } = useTranslation();
 
   const [viewType, setViewType] = useState<ViewType>('categories');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -150,18 +150,18 @@ const ForumScreen: React.FC = () => {
 
       if (data && data.length > 0) {
         // Transform Supabase data to match ForumThread interface
-        const transformedThreads: ForumThread[] = data.map((thread: any) => ({
-          id: thread.id,
-          title: thread.title,
-          content: thread.content,
-          author: thread.author_id,
-          category: thread.forum_categories?.name || 'Unknown',
-          replies_count: thread.replies_count || 0,
-          views_count: thread.views_count || 0,
-          created_at: thread.created_at,
-          last_activity: thread.last_activity || thread.created_at,
-          is_pinned: thread.is_pinned || false,
-          is_locked: thread.is_locked || false,
+        const transformedThreads: ForumThread[] = data.map((thread: Record<string, unknown>) => ({
+          id: String(thread.id),
+          title: String(thread.title),
+          content: String(thread.content),
+          author: String(thread.author_id),
+          category: (thread.forum_categories as { name?: string })?.name || 'Unknown',
+          replies_count: Number(thread.replies_count) || 0,
+          views_count: Number(thread.views_count) || 0,
+          created_at: String(thread.created_at),
+          last_activity: String(thread.last_activity || thread.created_at),
+          is_pinned: Boolean(thread.is_pinned),
+          is_locked: Boolean(thread.is_locked),
         }));
         setThreads(transformedThreads);
       } else {
@@ -183,7 +183,7 @@ const ForumScreen: React.FC = () => {
     fetchThreads(selectedCategory || undefined);
   };
 
-  const handleCategoryPress = (categoryId: string, categoryName: string) => {
+  const handleCategoryPress = (categoryId: string, _categoryName: string) => {
     setSelectedCategory(categoryId);
     setViewType('threads');
     fetchThreads(categoryId);

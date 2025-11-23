@@ -58,6 +58,7 @@ export const Input: React.FC<InputProps> = ({
         {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
         <TextInput
           {...props}
+          editable={props.editable !== undefined ? props.editable : !props.disabled}
           style={[styles.input, leftIcon && styles.inputWithLeftIcon, style]}
           onFocus={(e) => {
             setIsFocused(true);

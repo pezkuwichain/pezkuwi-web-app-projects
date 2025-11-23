@@ -59,19 +59,19 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
     })
   ).current;
 
-  useEffect(() => {
-    if (visible) {
-      openSheet();
-    }
-  }, [visible]);
-
-  const openSheet = () => {
+  const openSheet = React.useCallback(() => {
     Animated.spring(translateY, {
       toValue: 0,
       useNativeDriver: true,
       damping: 20,
     }).start();
-  };
+  }, [translateY]);
+
+  useEffect(() => {
+    if (visible) {
+      openSheet();
+    }
+  }, [visible, openSheet]);
 
   const closeSheet = () => {
     Animated.timing(translateY, {

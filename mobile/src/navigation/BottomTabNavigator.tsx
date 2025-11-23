@@ -131,7 +131,7 @@ const BottomTabNavigator: React.FC = () => {
         component={BeCitizenScreen}
         options={{
           tabBarLabel: 'Be Citizen',
-          tabBarIcon: ({ focused }) => (
+          tabBarIcon: ({ focused: _focused }) => (
             <Text style={[styles.centerIcon]}>
               🏛️
             </Text>

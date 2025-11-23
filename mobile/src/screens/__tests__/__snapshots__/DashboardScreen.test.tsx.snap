@@ -1,0 +1,1366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardScreen should match snapshot 1`] = `
+<RCTSafeAreaView
+  style={
+    {
+      "backgroundColor": "#F5F5F5",
+      "flex": 1,
+    }
+  }
+>
+  <RCTScrollView
+    showsVerticalScrollIndicator={false}
+  >
+    <View>
+      <LinearGradient
+        colors={
+          [
+            "#00A94F",
+            "#FFD700",
+          ]
+        }
+        end={
+          {
+            "x": 1,
+            "y": 0,
+          }
+        }
+        start={
+          {
+            "x": 0,
+            "y": 0,
+          }
+        }
+        style={
+          {
+            "borderBottomLeftRadius": 30,
+            "borderBottomRightRadius": 30,
+            "paddingBottom": 30,
+            "paddingHorizontal": 20,
+            "paddingTop": 20,
+          }
+        }
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <View>
+            <Text
+              style={
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 14,
+                  "opacity": 0.9,
+                }
+              }
+            >
+              Welcome!
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 24,
+                  "fontWeight": "bold",
+                }
+              }
+            >
+              dashboard.title
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "backgroundColor": "#FFFFFF",
+                "borderRadius": 25,
+                "height": 50,
+                "justifyContent": "center",
+                "width": 50,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#00A94F",
+                  "fontSize": 16,
+                  "fontWeight": "bold",
+                }
+              }
+            >
+              PZK
+            </Text>
+          </View>
+        </View>
+      </LinearGradient>
+      <View
+        style={
+          {
+            "backgroundColor": "#FFFFFF",
+            "borderRadius": 20,
+            "elevation": 6,
+            "margin": 20,
+            "marginTop": -20,
+            "padding": 24,
+            "shadowColor": "#000",
+            "shadowOffset": {
+              "height": 4,
+              "width": 0,
+            },
+            "shadowOpacity": 0.1,
+            "shadowRadius": 12,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#666",
+              "fontSize": 14,
+              "marginBottom": 8,
+            }
+          }
+        >
+          dashboard.balance
+        </Text>
+        <Text
+          style={
+            {
+              "color": "#00A94F",
+              "fontSize": 36,
+              "fontWeight": "bold",
+              "marginBottom": 20,
+            }
+          }
+        >
+          0.00 HEZ
+        </Text>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "justifyContent": "space-around",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#999",
+                  "fontSize": 12,
+                  "marginBottom": 4,
+                }
+              }
+            >
+              dashboard.totalStaked
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                }
+              }
+            >
+              0.00
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "backgroundColor": "#E0E0E0",
+                "width": 1,
+              }
+            }
+          />
+          <View
+            style={
+              {
+                "alignItems": "center",
+                "flex": 1,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#999",
+                  "fontSize": 12,
+                  "marginBottom": 4,
+                }
+              }
+            >
+              dashboard.rewards
+            </Text>
+            <Text
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                }
+              }
+            >
+              0.00
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "padding": 20,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "marginBottom": 16,
+            }
+          }
+        >
+          Quick Actions
+        </Text>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 1,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_education.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Education
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 1,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_exchange.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Exchange
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 1,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_forum.jpg",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Forum
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 1,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_governance.jpg",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Governance
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 1,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_trading.jpg",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Trading
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 0.6,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_b2b.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFD700",
+                    "borderRadius": 4,
+                    "paddingHorizontal": 6,
+                    "paddingVertical": 2,
+                    "position": "absolute",
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#000000",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                    }
+                  }
+                >
+                  Soon
+                </Text>
+              </View>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              B2B Trading
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 0.6,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_bank.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFD700",
+                    "borderRadius": 4,
+                    "paddingHorizontal": 6,
+                    "paddingVertical": 2,
+                    "position": "absolute",
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#000000",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                    }
+                  }
+                >
+                  Soon
+                </Text>
+              </View>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Banking
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 0.6,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_games.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFD700",
+                    "borderRadius": 4,
+                    "paddingHorizontal": 6,
+                    "paddingVertical": 2,
+                    "position": "absolute",
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#000000",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                    }
+                  }
+                >
+                  Soon
+                </Text>
+              </View>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Games
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 0.6,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_kurdmedia.jpg",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFD700",
+                    "borderRadius": 4,
+                    "paddingHorizontal": 6,
+                    "paddingVertical": 2,
+                    "position": "absolute",
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#000000",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                    }
+                  }
+                >
+                  Soon
+                </Text>
+              </View>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Kurd Media
+            </Text>
+          </View>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "alignItems": "center",
+                "marginBottom": 16,
+                "opacity": 0.6,
+                "width": "30%",
+              }
+            }
+          >
+            <View
+              style={
+                {
+                  "aspectRatio": 1,
+                  "borderRadius": 12,
+                  "elevation": 3,
+                  "marginBottom": 8,
+                  "overflow": "hidden",
+                  "position": "relative",
+                  "shadowColor": "#000",
+                  "shadowOffset": {
+                    "height": 2,
+                    "width": 0,
+                  },
+                  "shadowOpacity": 0.1,
+                  "shadowRadius": 4,
+                  "width": "100%",
+                }
+              }
+            >
+              <Image
+                resizeMode="cover"
+                source={
+                  {
+                    "testUri": "../../../../shared/images/quick-actions/qa_university.png",
+                  }
+                }
+                style={
+                  {
+                    "height": "100%",
+                    "width": "100%",
+                  }
+                }
+              />
+              <View
+                style={
+                  {
+                    "backgroundColor": "#FFD700",
+                    "borderRadius": 4,
+                    "paddingHorizontal": 6,
+                    "paddingVertical": 2,
+                    "position": "absolute",
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+              >
+                <Text
+                  style={
+                    {
+                      "color": "#000000",
+                      "fontSize": 9,
+                      "fontWeight": "700",
+                    }
+                  }
+                >
+                  Soon
+                </Text>
+              </View>
+            </View>
+            <Text
+              numberOfLines={2}
+              style={
+                {
+                  "color": "#000000",
+                  "fontSize": 12,
+                  "fontWeight": "600",
+                  "lineHeight": 16,
+                  "textAlign": "center",
+                }
+              }
+            >
+              University
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          {
+            "padding": 20,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "#000000",
+              "fontSize": 18,
+              "fontWeight": "600",
+              "marginBottom": 16,
+            }
+          }
+        >
+          dashboard.activeProposals
+        </Text>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "backgroundColor": "#FFFFFF",
+              "borderRadius": 16,
+              "elevation": 3,
+              "padding": 24,
+              "shadowColor": "#000",
+              "shadowOffset": {
+                "height": 2,
+                "width": 0,
+              },
+              "shadowOpacity": 0.05,
+              "shadowRadius": 6,
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "color": "#00A94F",
+                "fontSize": 48,
+                "fontWeight": "bold",
+                "marginBottom": 8,
+              }
+            }
+          >
+            0
+          </Text>
+          <Text
+            style={
+              {
+                "color": "#666",
+                "fontSize": 14,
+                "marginBottom": 16,
+              }
+            }
+          >
+            Active Proposals
+          </Text>
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={false}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "backgroundColor": "#00A94F",
+                "borderRadius": 8,
+                "opacity": 1,
+                "paddingHorizontal": 24,
+                "paddingVertical": 12,
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "color": "#FFFFFF",
+                  "fontSize": 14,
+                  "fontWeight": "600",
+                }
+              }
+            >
+              View All
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
